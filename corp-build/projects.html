@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Проекты — Каркас</title>
+<meta name="description" content="Сданные дома ГК «Каркас»: каркас, газобетон, кирпич, клееный брус. Площадь, сроки и сметы. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Mulish:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .bar{display:flex;gap:28px;flex-wrap:wrap;align-items:end;justify-content:space-between;margin-bottom:28px}
+  .bar .grp{display:grid;gap:8px}
+  .bar .lbl{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chips button{border:2px solid var(--line);background:var(--white);padding:8px 14px;font-weight:700;font-size:14.5px}
+  .chips button[aria-pressed="true"]{background:var(--graphite);border-color:var(--graphite);color:var(--white)}
+  .sort{height:44px;border:2px solid var(--line);background:var(--white);padding:0 12px;font-weight:600}
+  .count{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+  .empty{padding:40px 0;color:var(--ink-2)}
+  .cta-band{background:var(--amber);padding:clamp(28px,4vw,48px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin-top:56px}
+  .cta-band h2{font-size:clamp(28px,3.4vw,44px);max-width:20ch}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Главная</a> / Проекты</div>
+      <h1>Проекты</h1>
+      <p>Дома, которые мы сдали за последние два года. Сметы указаны итоговые, с учётом всех дополнительных работ.</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap">
+      <div class="bar">
+        <div class="grp"><span class="lbl">ТЕХНОЛОГИЯ</span><div class="chips" id="techF"></div></div>
+        <div class="grp"><span class="lbl">ПЛОЩАДЬ</span><div class="chips" id="areaF"></div></div>
+        <div class="grp"><label class="lbl" for="sort">СОРТИРОВКА</label>
+          <select class="sort" id="sort"><option value="area">По площади</option><option value="cost">По смете</option><option value="weeks">По сроку</option></select></div>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="projects" id="list"></div>
+      <p class="empty" id="empty" hidden>Под эти условия проектов нет. Попробуйте другую площадь или технологию.</p>
+      <div class="cta-band">
+        <h2>Не нашли подходящий? Спроектируем под ваш участок</h2>
+        <a class="btn dark" href="contacts.html#form">Обсудить проект</a>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const TECH = {all:"Все", frame:"Каркас", gas:"Газобетон", brick:"Кирпич", timber:"Клееный брус"};
+const AREA = {all:"Любая", s:"до 120 м²", m:"120–200 м²", l:"от 200 м²"};
+const inArea = (a,k) => k==="all" || (k==="s" && a<120) || (k==="m" && a>=120 && a<200) || (k==="l" && a>=200);
+const st = {tech:"all", area:"all", sort:"area"};
+function chips(id, map, key){
+  document.getElementById(id).innerHTML = Object.entries(map).map(([k,v])=>`<button data-key="${key}" data-v="${k}" aria-pressed="${st[key]===k}">${v}</button>`).join("");
+}
+function render(){
+  chips("techF", TECH, "tech"); chips("areaF", AREA, "area");
+  const list = PROJECTS.filter(p=>(st.tech==="all"||p.tech===st.tech) && inArea(p.area, st.area)).sort((a,b)=>a[st.sort]-b[st.sort]);
+  document.getElementById("list").innerHTML = list.map(projectCard).join("");
+  document.getElementById("empty").hidden = list.length>0;
+  document.getElementById("count").textContent = `Найдено: ${list.length} из ${PROJECTS.length}`;
+}
+document.querySelector(".bar").addEventListener("click", e=>{ const b = e.target.closest("[data-key]"); if(!b) return; st[b.dataset.key] = b.dataset.v; render(); });
+document.getElementById("sort").addEventListener("change", e=>{ st.sort = e.target.value; render(); });
+render();
+</script>
+</body>
+</html>

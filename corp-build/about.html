@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>О компании — Каркас</title>
+<meta name="description" content="ГК «Каркас»: история, команда, собственное производство и допуски. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Mulish:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center}
+  @media (max-width:900px){.intro{grid-template-columns:1fr}}
+  .intro img{width:100%;aspect-ratio:4/3;object-fit:cover}
+  .intro p{color:var(--ink-2);font-size:17.5px;max-width:56ch}
+  .timeline{position:relative;display:grid;gap:0;border-left:3px solid var(--graphite);margin-left:10px}
+  .tl{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:0 0 30px 28px;position:relative}
+  .tl::before{content:"";position:absolute;left:-10px;top:6px;width:17px;height:17px;background:var(--amber);border:3px solid var(--concrete)}
+  .tl b{font-family:var(--display);font-size:30px;font-weight:500;line-height:1}
+  .tl h3{font-size:22px;margin-bottom:4px}
+  .tl p{margin:0;color:var(--ink-2)}
+  @media (max-width:560px){.tl{grid-template-columns:1fr;gap:4px}}
+  .team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  @media (max-width:900px){.team{grid-template-columns:1fr 1fr}}
+  .person{background:var(--white);padding:22px;display:grid;gap:6px}
+  .person .av{width:64px;height:64px;background:var(--graphite);color:var(--amber);display:grid;place-items:center;font-family:var(--display);font-size:24px;font-weight:500;margin-bottom:8px}
+  .person h3{font-size:20px}
+  .person span{color:var(--ink-2);font-size:14.5px}
+  .docs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  @media (max-width:900px){.docs{grid-template-columns:1fr}}
+  .doc{border:2px dashed var(--line);padding:22px;display:grid;gap:8px;background:var(--white)}
+  .doc h3{font-size:19px}
+  .doc .mono{color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Главная</a> / О компании</div>
+      <h1>О компании</h1>
+      <p>Своё производство домокомплектов, штатные бригады и инженеры. Не нанимаем субподрядчиков на основные работы.</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap intro">
+      <img src="img/crew.jpg" alt="Команда на строительной площадке" loading="lazy">
+      <div>
+        <span class="eyebrow">Кто мы</span>
+        <h2 style="font-size:clamp(34px,4.5vw,56px);margin:14px 0 20px">Строим так, как строили бы себе</h2>
+        <p>«Каркас» начинался в 2011 году с бригады из пяти человек и одного каркасного дома в Истре. Сегодня в компании 140 сотрудников, цех домокомплектов на 2 400 м² и собственный парк техники.</p>
+        <p>Все наши прорабы — инженеры с профильным образованием. Мы ведём каждый объект в личном кабинете: фото, акты скрытых работ и график платежей доступны заказчику круглосуточно.</p>
+      </div>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>История</h2></div>
+      <div class="timeline">
+        <div class="tl"><b>2011</b><div><h3>Первый дом</h3><p>Каркасный дом 96 м² в Истре. Хозяева живут в нём до сих пор.</p></div></div>
+        <div class="tl"><b>2015</b><div><h3>Свой цех</h3><p>Запустили производство домокомплектов: точность реза до 1 мм.</p></div></div>
+        <div class="tl"><b>2019</b><div><h3>Сотый дом</h3><p>Добавили газобетон и кирпич, открыли отдел проектирования.</p></div></div>
+        <div class="tl"><b>2023</b><div><h3>Личный кабинет</h3><p>Фотоотчёты и акты онлайн, приёмка этапов с телефона.</p></div></div>
+        <div class="tl" style="padding-bottom:0"><b>2026</b><div><h3>327 домов</h3><p>Работаем в Московской, Тверской и Калужской областях.</p></div></div>
+      </div>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Руководство</h2></div>
+      <div class="team">
+        <div class="person"><div class="av">СК</div><h3>Сергей Климов</h3><span>Генеральный директор</span></div>
+        <div class="person"><div class="av">НО</div><h3>Наталья Орлова</h3><span>Главный архитектор</span></div>
+        <div class="person"><div class="av">ПВ</div><h3>Павел Власов</h3><span>Главный инженер</span></div>
+        <div class="person"><div class="av">АМ</div><h3>Алексей Мухин</h3><span>Руководитель производства</span></div>
+      </div>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Документы</h2><p>Номера условные: компания вымышленная.</p></div>
+      <div class="docs">
+        <div class="doc"><h3>Членство в СРО</h3><span class="mono">СРО-С-000-00000000</span><span>Допуск к строительству зданий до 3 этажей</span></div>
+        <div class="doc"><h3>Страхование</h3><span class="mono">Полис № 0000-000000</span><span>Ответственность перед заказчиком на 30 млн ₽</span></div>
+        <div class="doc"><h3>Реквизиты</h3><span class="mono">ИНН 0000000000 · ОГРН 0000000000000</span><span>ООО «Каркас»</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+</body>
+</html>

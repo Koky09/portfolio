@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Контакты — Каркас</title>
+<meta name="description" content="Контакты ГК «Каркас»: офис, телефон, заявка на расчёт сметы. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Mulish:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(28px,5vw,64px)}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--white);padding:clamp(20px,3vw,36px)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .info{display:grid;gap:22px;align-content:start}
+  .info dl{margin:0;display:grid;gap:16px}
+  .info dt{font-family:var(--mono);font-size:12px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+  .info dd{margin:4px 0 0;font-size:19px;font-weight:700}
+  .map{position:relative;aspect-ratio:4/3;background:#2B2E33;overflow:hidden}
+  .map svg{position:absolute;inset:0;width:100%;height:100%}
+  .map .pin{position:absolute;left:52%;top:44%;transform:translate(-50%,-100%);background:var(--amber);font-family:var(--mono);font-size:12px;padding:6px 10px;white-space:nowrap}
+  .map .pin::after{content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);border:8px solid transparent;border-top-color:var(--amber);border-bottom:0}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Главная</a> / Контакты</div>
+      <h1>Контакты</h1>
+      <p>Приезжайте в офис: покажем образцы материалов и узлы в разрезе. Или оставьте заявку, и инженер посчитает смету по вашему участку.</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap grid">
+      <div class="card" id="form">
+        <h2 style="font-size:clamp(28px,3vw,40px);margin-bottom:22px">Заявка на смету</h2>
+        <form class="form" data-demo novalidate>
+          <div class="row2">
+            <label class="f" for="cName">Имя<input id="cName" name="name" autocomplete="name" required></label>
+            <label class="f" for="cPhone">Телефон<input id="cPhone" name="phone" type="tel" autocomplete="tel" required></label>
+          </div>
+          <div class="row2">
+            <label class="f" for="cTech">Технология<select id="cTech"><option>Пока не знаю</option><option>Каркас</option><option>Газобетон</option><option>Кирпич</option><option>Клееный брус</option></select></label>
+            <label class="f" for="cArea">Площадь, м²<input id="cArea" type="number" min="40" max="600" placeholder="150"></label>
+          </div>
+          <label class="f" for="cPlot">Где участок<input id="cPlot" placeholder="Район или посёлок"></label>
+          <label class="f" for="cMsg">Комментарий<textarea id="cMsg" placeholder="Есть ли проект, когда хотите начать"></textarea></label>
+          <button class="btn" type="submit" style="justify-self:start">Отправить заявку</button>
+          <div class="ok" hidden></div>
+        </form>
+      </div>
+      <div class="info">
+        <div class="map" role="img" aria-label="Схема проезда к офису">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g stroke="#3A3E45" stroke-width="12" fill="none"><path d="M-10 90H410"/><path d="M-10 210H410"/><path d="M120-10V310"/><path d="M290-10V310"/></g>
+            <g stroke="#3A3E45" stroke-width="4" fill="none"><path d="M-10 150H410"/><path d="M205-10V310"/></g>
+            <path d="M-10 270C90 240 200 300 410 255" stroke="#4A5058" stroke-width="20" fill="none"/>
+            <g fill="#8A8C90" font-family="Roboto Mono, monospace" font-size="10"><text x="10" y="82">ул. Строителей</text><text x="10" y="202">Промышленный пр.</text></g>
+          </svg>
+          <span class="pin">Каркас · офис 204</span>
+        </div>
+        <dl>
+          <dt>Офис и выставка материалов</dt><dd>ул. Строителей, 17, офис 204</dd>
+          <dt>Часы работы</dt><dd>Пн–Сб, 9:00–19:00</dd>
+          <dt>Телефон</dt><dd style="user-select:all">+7 900 300-20-10</dd>
+          <dt>E-mail</dt><dd style="user-select:all">info@karkas.example</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+</body>
+</html>

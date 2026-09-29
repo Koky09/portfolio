@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Каркас — загородные дома под ключ</title>
+<meta name="description" content="ГК «Каркас»: загородные дома под ключ по фиксированной смете. Калькулятор стоимости, проекты, этапы. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Mulish:wght@400;600;700;800&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .hero{position:relative;min-height:min(86vh,820px);color:var(--white);display:flex;align-items:flex-end;background:#2b2e33;overflow:hidden}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(21,23,26,.94) 0,rgba(21,23,26,.8) 38%,rgba(21,23,26,.25) 70%,rgba(21,23,26,.05) 100%);z-index:1}
+  .hero .wrap{position:relative;z-index:2;width:100%;padding-block:clamp(56px,8vw,110px)}
+  .hero .eyebrow{color:#D3D5D8}
+  .hero h1{font-size:clamp(44px,6vw,92px);max-width:13ch;margin:18px 0 22px}
+  .hero h1 span{color:var(--amber)}
+  .hero p{max-width:44ch;font-size:clamp(17px,1.5vw,20px);color:#D3D5D8;margin:0 0 30px}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--white)}
+  @media (max-width:760px){.numbers{grid-template-columns:1fr 1fr}}
+  .numbers div{padding:26px var(--gut) 26px 28px;border-right:1px solid var(--line)}
+  .numbers div:last-child{border-right:0}
+  .numbers b{display:block;font-family:var(--display);font-size:clamp(34px,4vw,52px);font-weight:500;line-height:1}
+  .numbers span{color:var(--ink-2);font-size:14.5px}
+
+  /* калькулятор */
+  .calc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;background:var(--white)}
+  @media (max-width:960px){.calc{grid-template-columns:1fr}}
+  .calc .inputs{padding:clamp(20px,3vw,40px);display:grid;gap:28px;border-right:1px solid var(--line)}
+  .grp h3{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.08em;color:var(--ink-2);margin-bottom:12px}
+  .seg{display:flex;flex-wrap:wrap;gap:6px}
+  .seg button{border:2px solid var(--line);background:var(--concrete);padding:10px 16px;font-weight:700;font-size:15px}
+  .seg button:hover{border-color:var(--graphite)}
+  .seg button[aria-pressed="true"]{background:var(--graphite);border-color:var(--graphite);color:var(--white)}
+  .seg button small{display:block;font-weight:400;font-size:12px;opacity:.7}
+  .range{display:flex;align-items:center;gap:18px}
+  .range input{flex:1;accent-color:var(--amber);height:28px}
+  .range output{font-family:var(--display);font-size:34px;font-weight:500;min-width:5ch;text-align:right;font-variant-numeric:tabular-nums}
+  .calc .out{padding:clamp(20px,3vw,40px);background:var(--graphite);color:var(--white);display:flex;flex-direction:column;gap:22px}
+  .sum{font-family:var(--display);font-size:clamp(46px,5.4vw,76px);font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+  .sum small{font-size:.4em;color:#A9ACB0;margin-left:6px}
+  .per{color:#A9ACB0;font-size:15px;margin-top:6px}
+  .bar{display:flex;height:22px;background:#15171A}
+  .bar i{display:block;height:100%;transition:width .4s cubic-bezier(.2,.7,.2,1)}
+  .legend{display:grid;gap:8px;font-size:14.5px}
+  .legend div{display:grid;grid-template-columns:12px 1fr auto;gap:10px;align-items:center}
+  .legend i{width:12px;height:12px}
+  .legend b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+  .time{display:flex;gap:24px;flex-wrap:wrap;padding-top:18px;border-top:1px solid var(--graphite-2)}
+  .time b{display:block;font-family:var(--display);font-size:28px;font-weight:500}
+  .time span{color:#A9ACB0;font-size:13.5px}
+  .calc .note{font-size:13px;color:#8A8C90;margin:0}
+
+  /* этапы */
+  .stages{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));counter-reset:st}
+  @media (max-width:1100px){.stages{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media (max-width:620px){.stages{grid-template-columns:1fr}}
+  .stage{border-top:4px solid var(--graphite);padding:18px 18px 22px 0;position:relative}
+  .stage::before{counter-increment:st;content:"0" counter(st);font-family:var(--display);font-size:44px;font-weight:500;color:var(--concrete-2);-webkit-text-stroke:1.5px var(--graphite);color:transparent;display:block;line-height:1;margin-bottom:10px}
+  .stage h3{font-size:20px;margin-bottom:6px}
+  .stage p{margin:0;font-size:15px;color:var(--ink-2)}
+  .stage .w{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:12px;background:var(--amber);padding:3px 8px}
+
+  .guarantee{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--graphite);color:var(--white)}
+  @media (max-width:900px){.guarantee{grid-template-columns:1fr}}
+  .guarantee img{width:100%;height:100%;object-fit:cover;min-height:320px}
+  .guarantee .txt{padding:clamp(28px,5vw,72px);display:grid;gap:18px;align-content:center}
+  .guarantee h2{font-size:clamp(34px,4.5vw,60px)}
+  .guarantee ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+  .guarantee li{display:grid;grid-template-columns:34px 1fr;gap:10px;color:#D3D5D8}
+  .guarantee li b{font-family:var(--display);color:var(--amber);font-size:20px;font-weight:500}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <section class="hero" style="padding:0">
+    <img src="img/hero.jpg" alt="Современный загородный дом с панорамными окнами" fetchpriority="high">
+    <div class="wrap">
+      <span class="eyebrow">Строительная компания · с 2011 года</span>
+      <h1>Дом под ключ <span>по фиксированной</span> смете</h1>
+      <p>Каркас, газобетон, кирпич и клееный брус. Цена в договоре не меняется до сдачи дома, даже если подорожают материалы.</p>
+      <div class="cta">
+        <a class="btn" href="#calc">Рассчитать стоимость</a>
+        <a class="btn line" href="projects.html">Смотреть проекты</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="numbers">
+    <div><b>327</b><span>домов сдано</span></div>
+    <div><b>15 лет</b><span>на рынке</span></div>
+    <div><b>10 лет</b><span>гарантия на конструктив</span></div>
+    <div><b>0 ₽</b><span>доплат сверх сметы</span></div>
+  </div>
+
+  <section id="calc">
+    <div class="wrap">
+      <div class="head">
+        <h2>Калькулятор дома</h2>
+        <p>Предварительная смета по нашим ценам на материалы и работы на этот месяц. Точную цену инженер посчитает по вашему участку.</p>
+      </div>
+      <div class="calc">
+        <div class="inputs">
+          <div class="grp"><h3>ПЛОЩАДЬ ДОМА, М²</h3>
+            <div class="range"><input type="range" id="area" min="60" max="320" step="2" value="150" aria-label="Площадь дома"><output id="areaOut">150</output></div></div>
+          <div class="grp"><h3>ЭТАЖНОСТЬ</h3><div class="seg" id="floors"></div></div>
+          <div class="grp"><h3>ТЕХНОЛОГИЯ СТЕН</h3><div class="seg" id="tech"></div></div>
+          <div class="grp"><h3>ФУНДАМЕНТ</h3><div class="seg" id="found"></div></div>
+          <div class="grp"><h3>ГОТОВНОСТЬ</h3><div class="seg" id="finish"></div></div>
+        </div>
+        <div class="out" aria-live="polite">
+          <div><div class="mono" style="color:#A9ACB0">ПРЕДВАРИТЕЛЬНАЯ СМЕТА</div>
+            <div class="sum" id="sum"></div><div class="per" id="per"></div></div>
+          <div class="bar" id="bar"></div>
+          <div class="legend" id="legend"></div>
+          <div class="time"><div><b id="weeks"></b><span>срок строительства</span></div><div><b id="season"></b><span>заезд при старте сейчас</span></div></div>
+          <a class="btn" href="contacts.html#form" style="align-self:start">Получить точную смету</a>
+          <p class="note">Не является офертой. Цена зависит от участка, геологии и проекта.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Сданные дома</h2><a class="btn dark" href="projects.html">Все проекты</a></div>
+      <div class="projects" id="latest"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Как мы строим</h2><p>На каждом этапе — фотоотчёт в личном кабинете и приёмка с вашим технадзором.</p></div>
+      <div class="stages">
+        <div class="stage"><h3>Проект</h3><p>Планировка, конструктив, смета до рубля.</p><span class="w">2–3 нед.</span></div>
+        <div class="stage"><h3>Фундамент</h3><p>Геология участка и выбор основания.</p><span class="w">1–3 нед.</span></div>
+        <div class="stage"><h3>Коробка</h3><p>Стены, перекрытия, лестница.</p><span class="w">3–10 нед.</span></div>
+        <div class="stage"><h3>Кровля</h3><p>Стропильная система и покрытие.</p><span class="w">2–3 нед.</span></div>
+        <div class="stage"><h3>Инженерия</h3><p>Электрика, вода, канализация, отопление.</p><span class="w">3–4 нед.</span></div>
+        <div class="stage"><h3>Отделка</h3><p>Фасад и интерьер, уборка, передача ключей.</p><span class="w">4–10 нед.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="guarantee">
+    <img src="img/crew.jpg" alt="Бригада на стройке" loading="lazy">
+    <div class="txt">
+      <span class="eyebrow" style="color:#A9ACB0">Гарантии в договоре</span>
+      <h2>Отвечаем рублём, а не обещаниями</h2>
+      <ul>
+        <li><b>01</b>Фиксированная смета: доплаты только если вы сами меняете проект.</li>
+        <li><b>02</b>Неустойка 0,1% от сметы за каждый день задержки.</li>
+        <li><b>03</b>10 лет гарантии на фундамент и стены, 3 года на инженерию.</li>
+        <li><b>04</b>Оплата поэтапно: платите только за принятый этап.</li>
+      </ul>
+      <a class="btn" href="about.html" style="justify-self:start">О компании</a>
+    </div>
+  </div>
+</main>
+<div id="footer"></div>
+
+<script src="app.js"></script>
+<script>
+const OPT = {
+  floors:[{id:1,name:"1 этаж"},{id:2,name:"2 этажа"}],
+  tech:[{id:"frame",name:"Каркас",rate:28000,w:10},{id:"gas",name:"Газобетон",rate:36000,w:18},{id:"brick",name:"Кирпич",rate:48000,w:26},{id:"timber",name:"Клееный брус",rate:44000,w:14}],
+  found:[{id:"screw",name:"Сваи",sub:"для лёгких стен",rate:4500},{id:"strip",name:"Лента",sub:"универсально",rate:9000},{id:"slab",name:"Плита",sub:"сложный грунт",rate:12000}],
+  finish:[{id:"shell",name:"Коробка",w:0},{id:"pre",name:"Предчистовая",w:5},{id:"turnkey",name:"Под ключ",w:11}],
+};
+const st = {area:150, floors:2, tech:"gas", found:"strip", finish:"pre"};
+const COLORS = ["#E89A0C","#F2C14E","#C9CCD1","#8E949C","#5E8C6A","#4A7FB5"];
+
+function seg(key){
+  document.getElementById(key).innerHTML = OPT[key].map(o=>
+    `<button data-k="${key}" data-v="${o.id}" aria-pressed="${st[key]==o.id}">${o.name}${o.sub?`<small>${o.sub}</small>`:""}</button>`).join("");
+}
+function calc(){
+  const t = OPT.tech.find(x=>x.id===st.tech), f = OPT.found.find(x=>x.id===st.found);
+  const foot = st.area / st.floors;
+  const parts = [
+    ["Фундамент", foot * f.rate * (st.tech==="brick" && st.found==="screw" ? 1.6 : 1)],
+    ["Стены и перекрытия", st.area * t.rate * .65],
+    ["Кровля", foot * t.rate * .35 * 1.3],
+    ["Окна и двери", st.area * 3200],
+  ];
+  if(st.finish!=="shell") parts.push(["Инженерия", st.area * 9000]);
+  if(st.finish==="pre") parts.push(["Черновая отделка", st.area * 5000]);
+  if(st.finish==="turnkey") parts.push(["Отделка под ключ", st.area * 23000]);
+  const total = parts.reduce((a,[,v])=>a+v,0);
+  const weeks = Math.round(t.w + st.area/40 + OPT.finish.find(x=>x.id===st.finish).w + (st.floors===2?2:0));
+  return {parts,total,weeks};
+}
+const mln = v => (v/1e6).toLocaleString("ru-RU",{maximumFractionDigits:1});
+function render(){
+  ["floors","tech","found","finish"].forEach(seg);
+  document.getElementById("areaOut").textContent = st.area;
+  const r = calc();
+  document.getElementById("sum").innerHTML = `${mln(r.total)}<small>млн ₽</small>`;
+  document.getElementById("per").textContent = `${Math.round(r.total/st.area).toLocaleString("ru-RU")} ₽ за м² · ${st.area} м²`;
+  document.getElementById("bar").innerHTML = r.parts.map(([n,v],i)=>`<i style="width:${v/r.total*100}%;background:${COLORS[i]}" title="${n}"></i>`).join("");
+  document.getElementById("legend").innerHTML = r.parts.map(([n,v],i)=>`<div><i style="background:${COLORS[i]}"></i><span>${n}</span><b>${mln(v)} млн</b></div>`).join("");
+  document.getElementById("weeks").textContent = `${r.weeks} нед.`;
+  const d = new Date(); d.setDate(d.getDate() + r.weeks*7 + 21);
+  document.getElementById("season").textContent = d.toLocaleDateString("ru-RU",{month:"long",year:"numeric"});
+}
+document.getElementById("area").addEventListener("input", e=>{ st.area = +e.target.value; render(); });
+document.querySelector(".inputs").addEventListener("click", e=>{
+  const b = e.target.closest("[data-k]"); if(!b) return;
+  st[b.dataset.k] = b.dataset.k==="floors" ? +b.dataset.v : b.dataset.v;
+  render();
+});
+document.getElementById("latest").innerHTML = PROJECTS.slice(0,3).map(projectCard).join("");
+render();
+</script>
+</body>
+</html>

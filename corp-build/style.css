@@ -1,0 +1,101 @@
+/* ГК «Каркас» — общие стили для всех страниц */
+:root{
+  --concrete:#E9E7E2; --concrete-2:#DDDAD3; --white:#FAF9F7; --graphite:#22252A; --graphite-2:#3A3E45;
+  --ink-2:#5A5D63; --muted:#8A8C90; --line:#CFCCC4;
+  --amber:#E89A0C; --amber-2:#C98306;
+  --display:"Oswald","Arial Narrow",Arial,sans-serif; --body:"Mulish","Helvetica Neue",Arial,sans-serif; --mono:"Roboto Mono",ui-monospace,Consolas,monospace;
+  --gut:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--concrete);color:var(--graphite);font:400 16.5px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1320px;margin-inline:auto;padding-inline:var(--gut)}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.01em;line-height:1.02;text-wrap:balance}
+.mono{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.eyebrow::before{content:"";width:22px;height:3px;background:var(--amber)}
+
+.demo{background:#111;color:var(--concrete);font-size:12.5px;text-align:center;padding:8px 16px}
+.demo a{color:var(--amber)}
+
+/* шапка */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--graphite);color:var(--white)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:68px;position:relative}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo svg{width:34px;height:34px}
+.logo b{font-family:var(--display);font-size:22px;letter-spacing:.06em;font-weight:600}
+.menu{display:flex;gap:4px;margin-left:auto}
+.menu a{text-decoration:none;padding:8px 14px;font-size:15px;font-weight:600}
+.menu a:hover{background:var(--graphite-2)}
+.menu a[aria-current="page"]{box-shadow:inset 0 -3px 0 var(--amber)}
+.phone{font-family:var(--mono);font-size:14px;white-space:nowrap}
+.burger{display:none;margin-left:auto;background:none;border:0;color:var(--white);padding:8px}
+.burger svg{width:26px;height:26px}
+@media (max-width:980px){
+  .phone{display:none}
+  .burger{display:block}
+  .menu{position:absolute;left:0;right:0;top:68px;flex-direction:column;background:var(--graphite);padding:8px var(--gut) 18px;display:none}
+  .menu.open{display:flex}
+}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 26px;background:var(--amber);color:var(--graphite);border:0;text-decoration:none;font-family:var(--display);font-weight:500;font-size:17px;letter-spacing:.06em;text-transform:uppercase;transition:background .15s}
+.btn:hover{background:var(--amber-2)}
+.btn.dark{background:var(--graphite);color:var(--white)}
+.btn.dark:hover{background:var(--graphite-2)}
+.btn.line{background:transparent;box-shadow:inset 0 0 0 2px currentColor;color:inherit}
+.btn.line:hover{background:rgba(255,255,255,.08)}
+
+section{padding-block:clamp(64px,8vw,112px)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.head h2{font-size:clamp(36px,5vw,68px)}
+.head p{margin:0;max-width:46ch;color:var(--ink-2)}
+
+/* заголовок внутренних страниц */
+.page-head{background:var(--graphite);color:var(--white);padding-block:clamp(40px,6vw,80px)}
+.page-head h1{font-size:clamp(44px,7vw,100px);margin-top:14px}
+.page-head p{margin:18px 0 0;max-width:52ch;color:#C4C6C9;font-size:18px}
+.crumbs{font-family:var(--mono);font-size:12.5px;color:#9FA2A6}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{color:var(--amber)}
+
+/* карточки проектов (главная и страница проектов) */
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:1000px){.projects{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.projects{grid-template-columns:1fr}}
+.pcard{background:var(--white);display:flex;flex-direction:column}
+.pcard .ph{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--concrete-2)}
+.pcard img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.pcard:hover img{transform:scale(1.04)}
+.pcard .tag{position:absolute;left:12px;top:12px;background:var(--graphite);color:var(--white);font-family:var(--mono);font-size:11.5px;padding:5px 9px;text-transform:uppercase;letter-spacing:.06em}
+.pcard .body{padding:20px;display:grid;gap:12px;flex:1}
+.pcard h3{font-size:24px}
+.pcard .where{color:var(--muted);font-size:14px;margin-top:-6px}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:auto}
+.specs div{padding:12px 0 0}
+.specs div+div{padding-left:12px;border-left:1px solid var(--line)}
+.specs b{display:block;font-family:var(--display);font-weight:500;font-size:20px}
+.specs span{font-size:12.5px;color:var(--muted)}
+
+/* формы */
+.form{display:grid;gap:14px}
+.f{display:grid;gap:6px;font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.f input,.f select,.f textarea{height:52px;border:2px solid var(--line);background:var(--white);padding:0 14px;font-size:16px;font-weight:400;text-transform:none;letter-spacing:0;border-radius:0}
+.f textarea{height:auto;min-height:110px;padding:12px 14px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--graphite)}
+.ok{border-left:4px solid var(--amber);background:var(--white);padding:14px 16px;font-size:15px}
+
+/* подвал */
+footer.site{background:#15171A;color:#A9ACB0;padding-block:56px 28px;font-size:14.5px}
+footer.site .cols{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:28px}
+@media (max-width:860px){footer.site .cols{grid-template-columns:1fr 1fr}}
+footer.site h4{margin:0 0 12px;font-family:var(--display);font-weight:500;color:var(--white);text-transform:uppercase;letter-spacing:.06em;font-size:16px}
+footer.site ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+footer.site a{text-decoration:none}
+footer.site a:hover{color:var(--amber)}
+footer.site .fine{margin-top:40px;padding-top:20px;border-top:1px solid #2A2D32;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:#7C7F84}
