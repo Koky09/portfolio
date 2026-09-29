@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ирина Белова — адвокат</title>
+<meta name="description" content="Адвокат Ирина Белова: семейные споры, наследство, недвижимость, трудовые споры, защита бизнеса. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+  :root{
+    --paper:#EEECE6; --paper-2:#E3E0D8; --white:#FAF9F6; --ink:#16181D; --ink-2:#4B4C50; --muted:#7C7B77; --line:#CFCCC3;
+    --ox:#7A2430; --ox-2:#94303D;
+    --serif:"Literata",Georgia,serif; --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+    --gut:clamp(16px,4vw,56px);
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--paper);color:var(--ink);font:400 16.5px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer}
+  :focus-visible{outline:2px solid var(--ox);outline-offset:3px}
+  .wrap{max-width:1240px;margin-inline:auto;padding-inline:var(--gut)}
+  h1,h2,h3{margin:0;font-family:var(--serif);font-weight:500;text-wrap:balance;letter-spacing:-.01em}
+  .label{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+  .demo{background:var(--ink);color:var(--paper);font-size:12.5px;text-align:center;padding:8px 16px}
+  .demo a{color:#D9B8BC}
+
+  header.top{border-bottom:1px solid var(--line)}
+  header.top .wrap{display:flex;align-items:center;gap:28px;height:72px}
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .logo .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--ox);color:var(--white);font-family:var(--serif);font-size:19px}
+  .logo b{font-family:var(--serif);font-weight:500;font-size:18px}
+  .logo small{display:block;font-size:12px;color:var(--muted);line-height:1.1}
+  header nav{margin-left:auto;display:flex;gap:28px;font-size:14.5px}
+  header nav a{text-decoration:none}
+  header nav a:hover{color:var(--ox)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:50px;padding:0 26px;background:var(--ox);color:var(--white);border:0;text-decoration:none;font-weight:500;font-size:15px;transition:background .15s}
+  .btn:hover{background:var(--ox-2)}
+  .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--white)}
+  header .btn{height:42px;padding:0 18px}
+  @media (max-width:860px){header nav{display:none}header .btn{margin-left:auto}}
+
+  .hero{padding-block:clamp(40px,6vw,88px) clamp(56px,7vw,96px)}
+  .hero .grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:end}
+  @media (max-width:900px){.hero .grid{grid-template-columns:1fr}}
+  .hero h1{font-size:clamp(40px,5.2vw,76px);line-height:1.02;margin:16px 0 26px}
+  .hero h1 em{font-style:italic;color:var(--ox)}
+  .hero .lead{font-size:clamp(18px,1.6vw,21px);color:var(--ink-2);max-width:40ch;margin:0 0 30px}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .creds{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:8px 32px;margin-top:40px;padding-top:22px;border-top:1px solid var(--line)}
+  @media (max-width:560px){.creds{grid-template-columns:1fr 1fr}}
+  .creds b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.1}
+  .creds span{font-size:13.5px;color:var(--muted)}
+  .portrait{position:relative}
+  .portrait .ph{aspect-ratio:4/5;overflow:hidden;background:var(--paper-2)}
+  .portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+  .portrait figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+  section{padding-block:clamp(64px,8vw,110px)}
+  .head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:end;margin-bottom:44px}
+  @media (max-width:800px){.head{grid-template-columns:1fr}}
+  .head h2{font-size:clamp(36px,4.6vw,60px);line-height:1.02}
+  .head p{margin:0;color:var(--ink-2);max-width:48ch}
+
+  /* отрасли */
+  .areas{background:var(--white)}
+  .a-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);gap:0;border:1px solid var(--line)}
+  @media (max-width:860px){.a-grid{grid-template-columns:1fr}}
+  .tabs{display:flex;flex-direction:column;border-right:1px solid var(--line)}
+  @media (max-width:860px){.tabs{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}}
+  .tab{display:flex;align-items:baseline;gap:14px;text-align:left;padding:20px 22px;border:0;border-bottom:1px solid var(--line);background:transparent;font-size:17px;font-weight:500}
+  .tab:last-child{border-bottom:0}
+  .tab i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .tab:hover{background:var(--paper)}
+  .tab[aria-selected="true"]{background:var(--ink);color:var(--white)}
+  .tab[aria-selected="true"] i{color:#B9B6AE}
+  @media (max-width:860px){.tab{flex:none;border-bottom:0;border-right:1px solid var(--line);white-space:nowrap}}
+  .panel{padding:clamp(22px,3vw,40px);display:grid;gap:26px}
+  .panel .case{font-family:var(--serif);font-size:clamp(20px,2vw,25px);line-height:1.35;margin:0}
+  .panel .law{font-family:var(--mono);font-size:12.5px;color:var(--ox)}
+  .p-cols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  @media (max-width:600px){.p-cols{grid-template-columns:1fr}}
+  .p-cols h3{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:10px}
+  .steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:8px;font-size:15.5px}
+  .steps li::before{content:counter(s);font-family:var(--mono);font-size:12px;width:22px;height:22px;display:grid;place-items:center;border:1px solid var(--ink);border-radius:50%;margin-top:2px}
+  .docs{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15.5px}
+  .docs li{display:flex;gap:10px}
+  .docs li::before{content:"";flex:none;width:12px;height:15px;border:1px solid var(--ink-2);margin-top:5px;background:linear-gradient(var(--ink-2),var(--ink-2)) 2px 4px/7px 1px no-repeat,linear-gradient(var(--ink-2),var(--ink-2)) 2px 7px/7px 1px no-repeat}
+  .kpis{display:flex;gap:0;border-top:1px solid var(--line);margin-top:4px}
+  .kpis div{flex:1;padding:16px 0 0}
+  .kpis div + div{padding-left:20px;border-left:1px solid var(--line)}
+  .kpis b{display:block;font-family:var(--serif);font-weight:500;font-size:24px}
+  .kpis span{font-size:13px;color:var(--muted)}
+
+  /* этапы */
+  .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--ink)}
+  @media (max-width:860px){.flow{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){.flow{grid-template-columns:1fr}}
+  .flow div{padding:24px 24px 24px 0}
+  .flow b{font-family:var(--mono);font-weight:400;font-size:12px;color:var(--ox)}
+  .flow h3{font-size:22px;margin:10px 0 8px}
+  .flow p{margin:0;color:var(--ink-2);font-size:15.5px}
+
+  /* цены */
+  .prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  @media (max-width:860px){.prices{grid-template-columns:1fr}}
+  .price{background:var(--white);border:1px solid var(--line);padding:28px;display:flex;flex-direction:column;gap:12px}
+  .price.main{background:var(--ink);color:var(--white);border-color:var(--ink)}
+  .price h3{font-size:22px}
+  .price .sum{font-family:var(--serif);font-size:40px;line-height:1}
+  .price .sum small{font-family:var(--sans);font-size:15px;opacity:.7}
+  .price p{margin:0;font-size:15px;opacity:.8}
+
+  .band{position:relative;aspect-ratio:21/8;overflow:hidden;background:var(--ink)}
+  .band img{width:100%;height:100%;object-fit:cover;opacity:.8}
+  .band::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,24,29,.85) 0,rgba(22,24,29,.35) 55%,transparent 80%)}
+  .band blockquote{z-index:1}
+  .band blockquote{position:absolute;left:var(--gut);bottom:clamp(18px,4vw,48px);margin:0;max-width:26ch;color:var(--white);font-family:var(--serif);font-size:clamp(22px,3vw,40px);line-height:1.2}
+  @media (max-width:640px){.band{aspect-ratio:4/3}}
+
+  /* FAQ */
+  details{border-bottom:1px solid var(--line)}
+  details:first-of-type{border-top:1px solid var(--ink)}
+  summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:20px 0;font-family:var(--serif);font-size:20px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-family:var(--mono);font-size:20px;transition:transform .2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{margin:0 0 20px;color:var(--ink-2);max-width:66ch}
+
+  /* контакт */
+  .contact{background:var(--ink);color:var(--white)}
+  .contact .head p{color:#B9B6AE}
+  .c-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(28px,5vw,72px)}
+  @media (max-width:900px){.c-grid{grid-template-columns:1fr}}
+  form{display:grid;gap:14px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .f{display:grid;gap:6px;font-size:13.5px;color:#B9B6AE}
+  .f input,.f select,.f textarea{background:transparent;border:0;border-bottom:1px solid #4B4C50;color:var(--white);padding:10px 0;font-size:16.5px;border-radius:0}
+  .f select option{color:var(--ink)}
+  .f textarea{min-height:110px;resize:vertical}
+  .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-bottom-color:#D9B8BC}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg label{display:flex;align-items:center;gap:8px;border:1px solid #4B4C50;padding:10px 14px;font-size:14.5px;cursor:pointer}
+  .seg input{accent-color:#D9B8BC}
+  .ok{border-left:3px solid #D9B8BC;padding:10px 16px;background:rgba(255,255,255,.05);font-size:15px}
+  .c-info dl{margin:0;display:grid;gap:18px}
+  .c-info dt{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8F8C85}
+  .c-info dd{margin:4px 0 0;font-size:18px}
+  .c-info .note{margin-top:28px;font-size:13.5px;color:#8F8C85;max-width:40ch}
+
+  footer.site{background:var(--ink);color:#8F8C85;border-top:1px solid #2B2D33;padding-block:28px;font-size:13px}
+  footer.site .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="demo">Демо-сайт из портфолио · адвокат и контакты вымышленные · <a href="../">← все работы</a></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark">Б</span><span><b>Ирина Белова</b><small>адвокат</small></span></a>
+    <nav aria-label="Разделы">
+      <a href="#areas">С чем помогаю</a>
+      <a href="#flow">Как работаю</a>
+      <a href="#prices">Стоимость</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <a class="btn" href="#contact">Консультация</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <span class="label">Адвокатский кабинет · рег. № 00/00000</span>
+        <h1>Решаю споры так, чтобы до суда <em>не дошло</em>. А&nbsp;если дошло&nbsp;— выигрываю.</h1>
+        <p class="lead">Семейные дела, наследство, недвижимость и трудовые споры. Веду каждое дело лично, от первой встречи до исполнения решения.</p>
+        <div class="cta">
+          <a class="btn" href="#contact">Записаться на консультацию</a>
+          <a class="btn ghost" href="#areas">С чем я помогаю</a>
+        </div>
+        <div class="creds">
+          <div><b>14 лет</b><span>практики</span></div>
+          <div><b>480+</b><span>завершённых дел</span></div>
+          <div><b>72%</b><span>решены до суда</span></div>
+        </div>
+      </div>
+      <figure class="portrait" style="margin:0">
+        <div class="ph"><img src="img/hero.jpg" alt="Ирина Белова в офисе"></div>
+        <figcaption><span>Ирина Белова</span><span>член адвокатской палаты с 2012 г.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="areas" id="areas">
+    <div class="wrap">
+      <div class="head">
+        <h2>С чем помогаю</h2>
+        <p>Выберите свою ситуацию: покажу, как обычно проходит такое дело, сколько времени оно занимает и какие документы понадобятся.</p>
+      </div>
+      <div class="a-grid">
+        <div class="tabs" role="tablist" aria-label="Отрасли права" id="tabs"></div>
+        <div class="panel" role="tabpanel" id="panel" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow">
+    <div class="wrap">
+      <div class="head"><h2>Как проходит работа</h2><p>Вы всегда знаете, на каком этапе дело и что будет дальше. Отчёт после каждого заседания или переговоров.</p></div>
+      <div class="flow">
+        <div><b>Шаг 1</b><h3>Консультация</h3><p>Час разговора и документы на руках. Скажу честно, есть ли у вас шансы.</p></div>
+        <div><b>Шаг 2</b><h3>Стратегия</h3><p>Письменный план: переговоры, претензия или суд. Сроки и стоимость в договоре.</p></div>
+        <div><b>Шаг 3</b><h3>Работа по делу</h3><p>Готовлю документы, веду переговоры, представляю вас в суде.</p></div>
+        <div><b>Шаг 4</b><h3>Исполнение</h3><p>Решение мало получить. Довожу до денег на счёте или записи в Росреестре.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <img src="img/stamp.jpg" alt="" loading="lazy">
+    <blockquote>«Хороший договор сегодня дешевле любого суда завтра»</blockquote>
+  </div>
+
+  <section id="prices">
+    <div class="wrap">
+      <div class="head"><h2>Стоимость</h2><p>Фиксированная цена за этап, без почасовой оплаты. Итоговая сумма прописывается в договоре до начала работы.</p></div>
+      <div class="prices">
+        <div class="price main"><h3>Консультация</h3><div class="sum">3 000 <small>₽ / 60 мин</small></div><p>В офисе или по видеосвязи. Если заключаем договор, сумма идёт в счёт работы.</p></div>
+        <div class="price"><h3>Документы</h3><div class="sum">от 7 000 <small>₽</small></div><p>Претензия, иск, отзыв на иск, брачный договор, соглашение о разделе имущества.</p></div>
+        <div class="price"><h3>Суд</h3><div class="sum">от 45 000 <small>₽</small></div><p>Ведение дела в суде первой инстанции под ключ, включая подготовку всех документов.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Частые вопросы</h2></div>
+      <details open><summary>Что взять на первую консультацию?</summary><p>Паспорт и все документы по делу, даже если кажется, что они не важны: договоры, переписку, чеки, решения судов. Если документов много, пришлите их заранее, я изучу до встречи.</p></details>
+      <details><summary>Можно ли работать удалённо?</summary><p>Да. Консультации по видеосвязи, документы подписываем электронно или курьером. В суд, если он в другом городе, выезжаю или подключаюсь по ВКС.</p></details>
+      <details><summary>Что, если дело проиграно?</summary><p>Предупрежу о рисках на первой встрече и не возьму дело, в котором не вижу перспектив. Если суд первой инстанции отказал, обсудим апелляцию: часть стоимости уже будет оплачена.</p></details>
+      <details><summary>Сохраняется ли адвокатская тайна?</summary><p>Да, всё, что вы расскажете, защищено адвокатской тайной по закону «Об адвокатской деятельности». Меня нельзя допросить о том, что я узнала от клиента.</p></details>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="head"><h2>Опишите ситуацию</h2><p>Отвечу в течение рабочего дня и скажу, чем могу помочь. Первый ответ бесплатный.</p></div>
+      <div class="c-grid">
+        <form id="form" novalidate>
+          <div class="row2">
+            <label class="f" for="cName">Имя<input id="cName" autocomplete="name" required></label>
+            <label class="f" for="cPhone">Телефон или e-mail<input id="cPhone" required></label>
+          </div>
+          <label class="f" for="cArea">Отрасль<select id="cArea"></select></label>
+          <label class="f" for="cText">Коротко о ситуации<textarea id="cText" placeholder="Например: после развода бывший муж не платит алименты уже 4 месяца"></textarea></label>
+          <div class="seg" role="radiogroup" aria-label="Формат консультации">
+            <label for="fmt1"><input type="radio" name="fmt" id="fmt1" value="офис" checked>В офисе</label>
+            <label for="fmt2"><input type="radio" name="fmt" id="fmt2" value="видео">По видеосвязи</label>
+          </div>
+          <button class="btn" type="submit" style="justify-self:start">Отправить</button>
+          <div class="ok" id="ok" hidden></div>
+        </form>
+        <div class="c-info">
+          <dl>
+            <dt>Офис</dt><dd>Пр. Ленина, 42, офис 310</dd>
+            <dt>Приём</dt><dd>Пн–Пт, 9:00–19:00, по записи</dd>
+            <dt>Телефон</dt><dd style="user-select:all">+7 900 555-12-34</dd>
+            <dt>E-mail</dt><dd style="user-select:all">belova@example.ru</dd>
+          </dl>
+          <p class="note">Отправляя форму, вы соглашаетесь на обработку персональных данных. Информация защищена адвокатской тайной.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site"><div class="wrap"><span>Демо-сайт для портфолио. Адвокат, регистрационный номер и контакты вымышленные.</span><span>Информация на сайте не является публичной офертой.</span></div></footer>
+
+<script>
+const AREAS = [
+  {id:"family", name:"Семейные споры", law:"Семейный кодекс РФ, ст. 38, 80–81",
+   case:"Развод с разделом квартиры, купленной в браке, и определение, с кем будут жить дети.",
+   steps:["Разбираю, что относится к совместному имуществу","Пробуем заключить соглашение о разделе у нотариуса","Если не договорились — иск о разделе и порядке общения с детьми","Сопровождаю исполнение решения"],
+   docs:["Свидетельство о браке","Свидетельства о рождении детей","Документы на имущество","Справки о доходах"],
+   time:"2–6 мес.", cost:"от 45 000 ₽", pre:"65%"},
+  {id:"heir", name:"Наследство", law:"Гражданский кодекс РФ, ст. 1142, 1155",
+   case:"Пропущен шестимесячный срок принятия наследства, а другие наследники уже оформили квартиру.",
+   steps:["Проверяю, есть ли уважительная причина пропуска срока","Собираю доказательства фактического принятия наследства","Иск о восстановлении срока и признании права","Регистрация права в Росреестре"],
+   docs:["Свидетельство о смерти","Документы о родстве","Завещание, если есть","Квитанции об оплате ЖКУ за наследодателя"],
+   time:"3–8 мес.", cost:"от 50 000 ₽", pre:"40%"},
+  {id:"realty", name:"Недвижимость", law:"Гражданский кодекс РФ, ст. 549–558",
+   case:"Проверка квартиры перед покупкой на вторичном рынке: долги, прописанные, риски оспаривания сделки.",
+   steps:["Запрашиваю выписку ЕГРН и историю перехода права","Проверяю продавца: банкротство, суды, дееспособность","Составляю или проверяю договор купли-продажи","Присутствую на сделке и при расчётах"],
+   docs:["Паспорта сторон","Правоустанавливающие документы","Выписка из домовой книги","Согласие супруга продавца"],
+   time:"5–10 дней", cost:"от 25 000 ₽", pre:"—"},
+  {id:"labor", name:"Трудовые споры", law:"Трудовой кодекс РФ, ст. 81, 394",
+   case:"Уволили «по статье» за прогул, хотя был больничный. Работодатель отказывается восстанавливать.",
+   steps:["Проверяю процедуру увольнения по документам","Досудебная претензия работодателю","Иск о восстановлении и оплате вынужденного прогула","Взыскание морального вреда и расходов на юриста"],
+   docs:["Трудовой договор","Приказ об увольнении","Больничный лист","Расчётные листки"],
+   time:"1–3 мес.", cost:"от 30 000 ₽", pre:"55%"},
+  {id:"biz", name:"Защита бизнеса", law:"Гражданский кодекс РФ, ст. 309–310, 395",
+   case:"Контрагент не оплатил поставку на 1,2 млн ₽ и перестал выходить на связь.",
+   steps:["Претензия с расчётом неустойки и процентов","Проверка активов должника","Иск в арбитражный суд, обеспечительные меры","Исполнительный лист и работа с приставами"],
+   docs:["Договор поставки","Товарные накладные, УПД","Акт сверки","Переписка с контрагентом"],
+   time:"2–5 мес.", cost:"от 60 000 ₽", pre:"48%"},
+];
+let cur = 0;
+function render(){
+  document.getElementById("tabs").innerHTML = AREAS.map((a,i)=>
+    `<button class="tab" role="tab" id="t-${a.id}" aria-selected="${i===cur}" aria-controls="panel" data-i="${i}"><i>0${i+1}</i>${a.name}</button>`).join("");
+  const a = AREAS[cur];
+  document.getElementById("panel").innerHTML = `
+    <div class="law">${a.law}</div>
+    <p class="case">«${a.case}»</p>
+    <div class="p-cols">
+      <div><h3>Как обычно проходит</h3><ol class="steps">${a.steps.map(s=>`<li>${s}</li>`).join("")}</ol></div>
+      <div><h3>Что подготовить</h3><ul class="docs">${a.docs.map(s=>`<li>${s}</li>`).join("")}</ul></div>
+    </div>
+    <div class="kpis"><div><b>${a.time}</b><span>обычный срок</span></div><div><b>${a.cost}</b><span>стоимость</span></div><div><b>${a.pre}</b><span>решаются до суда</span></div></div>`;
+}
+document.getElementById("tabs").addEventListener("click", e=>{
+  const b = e.target.closest("[data-i]"); if(!b) return;
+  cur = +b.dataset.i; render(); document.getElementById("cArea").value = AREAS[cur].name;
+});
+document.getElementById("tabs").addEventListener("keydown", e=>{
+  if(!["ArrowDown","ArrowUp","ArrowLeft","ArrowRight"].includes(e.key)) return;
+  e.preventDefault(); cur = (cur + (e.key==="ArrowDown"||e.key==="ArrowRight" ? 1 : AREAS.length-1)) % AREAS.length;
+  render(); document.getElementById("t-"+AREAS[cur].id).focus();
+});
+document.getElementById("cArea").innerHTML = AREAS.map(a=>`<option>${a.name}</option>`).join("") + "<option>Другое</option>";
+document.getElementById("form").addEventListener("submit", e=>{
+  e.preventDefault();
+  const ok = document.getElementById("ok"), n = document.getElementById("cName").value.trim(), c = document.getElementById("cPhone").value.trim();
+  ok.hidden = false;
+  ok.textContent = (!n || !c) ? "Укажите имя и контакт, чтобы я могла ответить."
+    : `${n}, спасибо. Заявка по теме «${document.getElementById("cArea").value}» принята. Это демо-сайт, ответ не придёт.`;
+});
+render();
+</script>
+</body>
+</html>
