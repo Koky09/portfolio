@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Оформление — Обжиг</title>
+<meta name="description" content="Оформление заказа: доставка, подарочная открытка. Демо-сайт для портфолио, оплата не подключена.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  h1{font-size:clamp(44px,6vw,88px);padding-top:24px}
+  .co{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;padding-block:20px 40px;align-items:start}
+  @media (max-width:960px){.co{grid-template-columns:1fr}}
+  .box{background:var(--paper);border-radius:30px;padding:clamp(18px,3vw,30px);display:grid;gap:14px;margin-bottom:16px}
+  .box h2{font-size:26px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .f{display:grid;gap:6px;font-weight:700;font-size:14.5px}
+  .f input,.f textarea{height:52px;border:1.5px solid var(--line);border-radius:16px;padding:0 14px;font-size:16px;background:var(--white)}
+  .f textarea{height:auto;min-height:90px;padding:12px 14px;resize:vertical;font-family:var(--display)}
+  .f input:focus,.f textarea:focus{outline:none;border-color:var(--cobalt)}
+  .opt{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;cursor:pointer;background:var(--white)}
+  .opt input{width:20px;height:20px;accent-color:var(--cobalt);margin:0}
+  .opt:has(input:checked){border-color:var(--cobalt)}
+  .opt small{display:block;color:var(--muted);font-size:13.5px}
+  .gift{display:flex;align-items:center;gap:10px;font-weight:700;cursor:pointer}
+  .gift input{width:20px;height:20px;accent-color:var(--cobalt)}
+  .card-prev{background:var(--white);border-radius:18px;padding:18px;font-family:var(--display);min-height:90px;border:1.5px dashed var(--line);white-space:pre-wrap}
+  .sum{background:var(--ink);color:var(--paper);border-radius:30px;padding:22px;display:grid;gap:12px;position:sticky;top:90px}
+  @media (max-width:960px){.sum{position:static}}
+  .it{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;font-size:15px}
+  .it img,.it .tk{width:52px;height:52px;border-radius:50%;object-fit:cover}
+  .it .tk{background:var(--cobalt);display:grid;place-items:center;font-size:11px;font-weight:800;text-align:center}
+  .it small{display:block;color:#AEB7B0;font-size:13px}
+  .rows{border-top:1px solid #3A423D;padding-top:12px;display:grid;gap:6px}
+  .rows div{display:flex;justify-content:space-between}
+  .tot{display:flex;justify-content:space-between;align-items:end;border-top:1px solid #3A423D;padding-top:12px}
+  .tot b{font-family:var(--display);font-size:38px}
+  .err{color:var(--clay);font-weight:700;min-height:20px}
+  .done{background:var(--paper);border-radius:40px;padding:clamp(24px,5vw,56px);display:grid;gap:14px;justify-items:center;text-align:center;margin-block:20px 40px}
+  .done h2{font-size:clamp(36px,5vw,64px)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap"><h1>Оформление</h1><div id="app"></div></main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const DEL = [{id:"pickup",name:"Самовывоз из мастерской",note:"ул. Гончарная, 3, Ср–Вс",price:0},{id:"cdek",name:"СДЭК",note:"упакуем в стружку и двойную коробку",price:450},{id:"courier",name:"Курьер по городу",note:"хрупкий груз, в руки",price:600}];
+let st = {del:"cdek", gift:false, msg:""};
+const esc = t => t.replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const onlyTickets = () => cart.every(l=>l.type==="ticket");
+function calc(){ const items = cartTotal(); const ship = onlyTickets() ? 0 : DEL.find(d=>d.id===st.del).price; return {items, ship, total: items + ship}; }
+function render(){
+  const app = document.getElementById("app");
+  if(!cart.length){
+    app.innerHTML = `<div class="done"><h2>Корзина пустая</h2><p style="color:var(--ink-2)">Выберите изделие на полке или запишитесь на мастер-класс.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn cobalt" href="index.html#catalog">В магазин</a><a class="btn soft" href="workshops.html">Мастер-классы</a></div></div>`;
+    return;
+  }
+  const c = calc();
+  app.innerHTML = `<div class="co"><div>
+    <div class="box"><h2>Контакты</h2><div class="row2"><label class="f" for="n">Имя<input id="n" autocomplete="name"></label><label class="f" for="p">Телефон<input id="p" type="tel" autocomplete="tel"></label></div></div>
+    ${onlyTickets() ? `<div class="box"><h2>Мастер-класс</h2><p style="margin:0;color:var(--ink-2)">Пришлём напоминание за день. Отменить или перенести можно бесплатно за 48 часов.</p></div>` :
+    `<div class="box"><h2>Доставка</h2><div id="del" style="display:grid;gap:8px">${DEL.map(d=>`<label class="opt" for="d-${d.id}"><input type="radio" name="d" id="d-${d.id}" value="${d.id}" ${st.del===d.id?"checked":""}><span>${d.name}<small>${d.note}</small></span><b>${d.price?rub(d.price):"0 ₽"}</b></label>`).join("")}</div>
+      ${st.del!=="pickup"?`<label class="f" for="a">Адрес<input id="a" autocomplete="street-address"></label>`:""}</div>
+    <div class="box"><h2>Это подарок?</h2><label class="gift" for="g"><input type="checkbox" id="g" ${st.gift?"checked":""}>Положить открытку ручной работы и убрать цены</label>
+      ${st.gift?`<label class="f" for="msg">Текст открытки<textarea id="msg" maxlength="160" placeholder="Напишем от руки">${esc(st.msg)}</textarea></label><div class="card-prev" id="prev">${esc(st.msg)||"Ваш текст появится здесь"}</div>`:""}</div>`}
+    <p class="err" id="err" aria-live="polite"></p></div>
+    <aside class="sum"><h2 style="font-size:28px">Заказ</h2>
+      ${cart.map(l=>`<div class="it">${l.type==="ticket"?`<span class="tk">МК</span>`:`<img src="${l.img}" alt="">`}<span>${l.name}<small>${l.type==="ticket"?l.when:l.note||""}${l.q>1?` · ×${l.q}`:""}</small></span><b>${rub(l.price*l.q)}</b></div>`).join("")}
+      <div class="rows"><div><span>Товары и занятия</span><span>${rub(c.items)}</span></div>${onlyTickets()?"":`<div><span>Доставка</span><span>${c.ship?rub(c.ship):"бесплатно"}</span></div>`}</div>
+      <div class="tot"><span>Итого</span><b>${rub(c.total)}</b></div>
+      <button class="btn cobalt" id="go">Подтвердить</button>
+      <span style="font-size:12.5px;color:#7F8981">Демо: оплата не подключена, заказ не создаётся.</span>
+    </aside></div>`;
+  const del = document.getElementById("del"); if(del) del.onchange = e=>{ st.del = e.target.value; render(); };
+  const g = document.getElementById("g"); if(g) g.onchange = e=>{ st.gift = e.target.checked; render(); };
+  const msg = document.getElementById("msg"); if(msg) msg.oninput = e=>{ st.msg = e.target.value; document.getElementById("prev").textContent = st.msg || "Ваш текст появится здесь"; };
+  document.getElementById("go").onclick = ()=>{
+    const n = document.getElementById("n").value.trim(), p = document.getElementById("p").value.trim();
+    if(!n || !p){ document.getElementById("err").textContent = "Оставьте имя и телефон — позвоним, чтобы подтвердить."; return; }
+    const hasT = cart.some(l=>l.type==="ticket"), hasSet = cart.some(l=>l.type==="set"), total = calc().total;
+    cart = []; save();
+    app.innerHTML = `<div class="done"><span class="kicker">Спасибо, ${n}</span><h2>Заказ принят</h2><p style="color:var(--ink-2);max-width:48ch">${hasSet?"Сервиз начнём лепить на этой неделе, готов будет через 3 недели. ":""}${hasT?"Место на мастер-классе за вами — напомним накануне. ":""}Сумма ${rub(total)}. Это демо-сайт: ничего не оплачено.</p><a class="btn cobalt" href="index.html">В магазин</a></div>`;
+    scrollTo(0,0);
+  };
+}
+document.addEventListener("cart", ()=>{ if(!document.querySelector(".done .kicker")) render(); });
+render();
+</script>
+</body>
+</html>

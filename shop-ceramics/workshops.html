@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Мастер-классы — Обжиг</title>
+<meta name="description" content="Мастер-классы по керамике: гончарный круг, лепка, роспись. Расписание и свободные места. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .intro{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(28px,4vw,56px)}
+  @media (max-width:900px){.intro{grid-template-columns:1fr}}
+  .intro h1{font-size:clamp(44px,6vw,88px)}
+  .intro p{font-size:19px;color:var(--ink-2)}
+  .intro img{border-radius:40px;aspect-ratio:4/3;object-fit:cover;width:100%}
+  .w{background:var(--paper);border-radius:36px;padding:clamp(18px,3vw,32px);display:grid;grid-template-columns:260px minmax(0,1fr);gap:clamp(18px,3vw,36px);margin-bottom:18px;scroll-margin-top:90px}
+  @media (max-width:800px){.w{grid-template-columns:1fr}}
+  .w img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50% 50% 46% 54% / 55% 45% 55% 45%}
+  .w h2{font-size:clamp(26px,3vw,38px)}
+  .w .meta{display:flex;gap:16px;flex-wrap:wrap;color:var(--ink-2);font-weight:700;margin:8px 0}
+  .w p{color:var(--ink-2);margin:0 0 14px}
+  .dates{display:flex;gap:8px;flex-wrap:wrap}
+  .date{border:1.5px solid var(--line);background:var(--white);border-radius:18px;padding:10px 14px;text-align:left;min-width:120px}
+  .date b{display:block;font-size:15.5px}
+  .date small{font-size:13px;color:var(--muted)}
+  .date.low small{color:var(--clay);font-weight:800}
+  .date[aria-pressed="true"]{border-color:var(--cobalt);background:var(--cobalt);color:var(--white)}
+  .date[aria-pressed="true"] small{color:#D3DCF2}
+  .date[disabled]{opacity:.45;cursor:not-allowed;text-decoration:line-through}
+  .book{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+  .book .step{display:flex;align-items:center;background:var(--bg);border-radius:999px}
+  .book .step button{border:0;background:none;width:40px;height:44px;font-size:18px;font-weight:700}
+  .book .step span{min-width:70px;text-align:center;font-weight:800}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap">
+  <div class="intro">
+    <div><span class="kicker">Для всех, кто ни разу не сидел за кругом</span><h1>Мастер-классы</h1>
+      <p>Группы до 10 человек, фартуки и глина включены. Свои изделия мы обожжём и покроем глазурью — заберёте через две недели.</p></div>
+    <img src="img/studio.jpg" alt="Полки мастерской с изделиями перед обжигом" loading="lazy">
+  </div>
+  <div id="list"></div>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const sel = {}; const ppl = {};
+function render(){
+  document.getElementById("list").innerHTML = WORKSHOPS.map(w=>{
+    const ss = sessions(w); const s = sel[w.id]; const n = ppl[w.id] || 1;
+    return `<article class="w" id="${w.id}">
+      <img src="${w.img}" alt="${w.name}" loading="lazy">
+      <div><h2>${w.name}</h2><div class="meta"><span>${w.dur}</span><span>${rub(w.price)}${w.id==="date"?" за пару":" с человека"}</span><span>до ${w.seats} мест</span></div>
+        <p>${w.about}</p>
+        <div class="dates" role="group" aria-label="Дата">${ss.map((x,i)=>`<button class="date ${x.free>0&&x.free<=2?"low":""}" data-w="${w.id}" data-i="${i}" aria-pressed="${s===i}" ${x.free===0?"disabled":""}><b>${x.date.toLocaleDateString("ru-RU",{weekday:"short",day:"numeric",month:"short"})}, ${x.time}</b><small>${x.free===0?"мест нет":x.free<=2?`осталось ${x.free}`:`свободно ${x.free}`}</small></button>`).join("")}</div>
+        <div class="book">${w.id==="date" ? "" : `<span class="step"><button data-m="${w.id}" aria-label="Меньше человек">−</button><span>${n} ${n===1?"чел.":"чел."}</span><button data-p="${w.id}" aria-label="Больше человек">+</button></span>`}
+          <button class="btn cobalt" data-book="${w.id}" ${s===undefined?"disabled":""}>${s===undefined ? "Выберите дату" : `Записаться · ${rub(w.price*(w.id==="date"?1:n))}`}</button></div>
+      </div></article>`;
+  }).join("");
+}
+document.getElementById("list").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b || b.disabled) return;
+  if(b.dataset.w){ sel[b.dataset.w] = +b.dataset.i; ppl[b.dataset.w] = 1; }
+  const max = id => { const w = WORKSHOPS.find(x=>x.id===id); const s = sel[id]; return s===undefined ? w.seats : sessions(w)[s].free; };
+  if(b.dataset.p) ppl[b.dataset.p] = Math.min(max(b.dataset.p), (ppl[b.dataset.p]||1)+1);
+  if(b.dataset.m) ppl[b.dataset.m] = Math.max(1, (ppl[b.dataset.m]||1)-1);
+  if(b.dataset.book){ const w = WORKSHOPS.find(x=>x.id===b.dataset.book); addTicket(w, sessions(w)[sel[w.id]], w.id==="date" ? 1 : (ppl[w.id]||1)); openCart(); }
+  render();
+});
+render();
+if(location.hash){ const el = document.getElementById(location.hash.slice(1)); el && el.scrollIntoView(); }
+</script>
+</body>
+</html>

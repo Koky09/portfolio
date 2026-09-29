@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Обжиг — керамика ручной работы</title>
+<meta name="description" content="Обжиг: керамика ручной работы. Изделия в единственном экземпляре, сервиз под заказ, мастер-классы. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .hero{padding-block:clamp(20px,3vw,40px) clamp(40px,6vw,80px)}
+  .hero .g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
+  @media (max-width:900px){.hero .g{grid-template-columns:1fr}}
+  .hero h1{font-size:clamp(38px,4.6vw,70px)}
+  .hero h1 em{font-style:normal;color:var(--cobalt)}
+  .hero p{font-size:clamp(17px,1.5vw,20px);color:var(--ink-2);max-width:38ch;margin:22px 0 28px}
+  .hero .ph{aspect-ratio:1;overflow:hidden;border-radius:58% 42% 55% 45% / 45% 55% 45% 55%;animation:morph 14s ease-in-out infinite}
+  @keyframes morph{50%{border-radius:44% 56% 42% 58% / 56% 42% 58% 44%}}
+  .hero .ph img{width:100%;height:100%;object-fit:cover}
+  .hero .facts{display:flex;gap:26px;flex-wrap:wrap;margin-top:32px}
+  .hero .facts b{display:block;font-family:var(--display);font-size:30px}
+  .hero .facts span{color:var(--muted);font-size:14.5px}
+
+  .filters{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:32px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chips button{border:0;background:var(--paper);border-radius:999px;padding:9px 16px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:6px}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .tog{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-left:auto;cursor:pointer}
+  .tog input{width:18px;height:18px;accent-color:var(--cobalt)}
+
+  /* сервиз под заказ */
+  .setb{background:var(--paper);border-radius:40px;padding:clamp(22px,4vw,48px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,4vw,48px)}
+  @media (max-width:980px){.setb{grid-template-columns:1fr}}
+  .setb h2{font-size:clamp(34px,4.4vw,58px)}
+  .setb p{color:var(--ink-2)}
+  .glz{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 22px}
+  .glz button{border:1.5px solid var(--line);background:var(--white);border-radius:999px;padding:7px 14px 7px 8px;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14.5px}
+  .glz button i{width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+  .glz button[aria-pressed="true"]{border-color:var(--ink)}
+  .pieces{display:grid;gap:10px}
+  .pc{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;background:var(--white);border-radius:18px;padding:12px 16px}
+  .pc b{display:block}
+  .pc small{color:var(--muted)}
+  .step{display:flex;align-items:center;background:var(--bg);border-radius:999px}
+  .step button{border:0;background:none;width:38px;height:38px;font-size:18px;font-weight:700}
+  .step span{min-width:24px;text-align:center;font-weight:800}
+  .table{background:var(--bg);border-radius:28px;min-height:260px;display:flex;flex-wrap:wrap;gap:10px;align-content:center;justify-content:center;padding:20px}
+  .table svg{width:76px;height:76px;animation:pop .3s ease}
+  @keyframes pop{from{transform:scale(.6);opacity:0}}
+  .table .ph{color:var(--muted);text-align:center}
+  .total{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-top:18px;flex-wrap:wrap}
+  .total b{font-family:var(--display);font-size:40px;line-height:1}
+  .total s{color:var(--muted);margin-right:8px}
+  .total .disc{color:var(--cobalt);font-weight:800}
+
+  .ws{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  @media (max-width:1000px){.ws{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.ws{grid-template-columns:1fr}}
+  .ws a{text-decoration:none;background:var(--paper);border-radius:28px;overflow:hidden;display:flex;flex-direction:column}
+  .ws img{aspect-ratio:4/3;object-fit:cover;width:100%}
+  .ws .b{padding:18px;display:grid;gap:6px}
+  .ws h3{font-size:19px}
+  .ws span{color:var(--muted);font-size:14.5px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <section class="hero">
+    <div class="wrap g">
+      <div>
+        <span class="kicker">Мастерская керамики</span>
+        <h1>Посуда, которую сделали <em>руками</em>, а не станком</h1>
+        <p>Каждую чашку мы центруем, вытягиваем и обжигаем дважды: при 900 и 1 250 °C. Поэтому двух одинаковых не бывает.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn cobalt" href="#catalog">Выбрать изделие</a><a class="btn soft" href="workshops.html">Мастер-классы</a></div>
+        <div class="facts"><div><b>1 250 °C</b><span>второй обжиг</span></div><div><b>12</b><span>изделий на полке</span></div><div><b>2 недели</b><span>от круга до обжига</span></div></div>
+      </div>
+      <div class="ph"><img src="img/hero.jpg" alt="Руки формуют чашку на гончарном круге" fetchpriority="high"></div>
+    </div>
+  </section>
+
+  <section id="catalog" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>На полке сейчас</h2><p>Вещи в наличии. «1 из 1» — изделие существует в единственном экземпляре.</p></div>
+      <div class="filters">
+        <div class="chips" id="cats" role="group" aria-label="Категория"></div>
+        <div class="chips" id="glazes" role="group" aria-label="Глазурь"></div>
+        <label class="tog" for="sold"><input type="checkbox" id="sold">Показать проданные</label>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section id="set" style="padding-top:0">
+    <div class="wrap">
+      <div class="setb">
+        <div>
+          <span class="kicker">Под заказ · 3 недели</span>
+          <h2 style="margin:10px 0 12px">Собрать сервиз</h2>
+          <p>Выберите глазурь и количество предметов. От 4 предметов — скидка 10%, от 8 — 15%.</p>
+          <div class="glz" id="glz" role="group" aria-label="Глазурь сервиза"></div>
+          <div class="pieces" id="pieces"></div>
+        </div>
+        <div>
+          <div class="table" id="table" aria-live="polite"></div>
+          <div class="total"><div><span id="disc" class="disc"></span><br><s id="old"></s><b id="sum"></b></div><button class="btn cobalt" id="addSet">В корзину</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Мастер-классы</h2><a class="btn soft" href="workshops.html">Расписание</a></div>
+      <div class="ws" id="ws"></div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+let cat = "all", glaze = "all", showSold = false;
+function render(){
+  document.getElementById("cats").innerHTML = [["all","Всё"],...Object.entries(CATS)].map(([k,v])=>`<button data-c="${k}" aria-pressed="${cat===k}">${v}</button>`).join("");
+  document.getElementById("glazes").innerHTML = [["all",["Любая глазурь",""]],...Object.entries(GLAZES).filter(([k])=>k!=="mix")].map(([k,[n,c]])=>`<button data-g="${k}" aria-pressed="${glaze===k}">${c?`<span class="glaze" style="background:${c};margin:0"></span>`:""}${n}</button>`).join("");
+  const list = ITEMS.filter(it=>(cat==="all"||it.cat===cat)&&(glaze==="all"||it.glaze===glaze)&&(showSold||it.left>0));
+  document.getElementById("grid").innerHTML = list.map(card).join("") || `<p style="color:var(--muted)">Такого сейчас нет на полке. Закажите сервиз — сделаем в нужной глазури.</p>`;
+}
+document.querySelector(".filters").addEventListener("click", e=>{ const b = e.target.closest("button"); if(!b) return; if(b.dataset.c) cat = b.dataset.c; if(b.dataset.g) glaze = b.dataset.g; render(); });
+document.getElementById("sold").addEventListener("change", e=>{ showSold = e.target.checked; render(); });
+
+// сервиз
+const PIECES = [
+  {id:"mug", name:"Кружка", sub:"300 мл", price:2200, svg:c=>`<path d="M16 18h28v26a8 8 0 0 1-8 8H24a8 8 0 0 1-8-8z" fill="${c}"/><path d="M44 24h4a6 6 0 0 1 0 12h-4" stroke="${c}" stroke-width="4" fill="none"/>`},
+  {id:"bowl", name:"Пиала", sub:"⌀ 12 см", price:1900, svg:c=>`<path d="M8 28h48c0 14-10 22-24 22S8 42 8 28z" fill="${c}"/>`},
+  {id:"plate", name:"Тарелка", sub:"⌀ 24 см", price:2100, svg:c=>`<ellipse cx="32" cy="38" rx="28" ry="10" fill="${c}"/><ellipse cx="32" cy="36" rx="16" ry="5" fill="rgba(0,0,0,.08)"/>`},
+  {id:"deep", name:"Миска", sub:"⌀ 18 см", price:2800, svg:c=>`<path d="M6 22h52c0 18-12 30-26 30S6 40 6 22z" fill="${c}"/><ellipse cx="32" cy="22" rx="26" ry="5" fill="rgba(0,0,0,.1)"/>`},
+];
+const setSt = {glaze:"speck", n:{mug:4, bowl:2, plate:4, deep:0}};
+function renderSet(){
+  document.getElementById("glz").innerHTML = Object.entries(GLAZES).filter(([k])=>k!=="mix").map(([k,[n,c]])=>`<button data-sg="${k}" aria-pressed="${setSt.glaze===k}"><i style="background:${c}"></i>${n}</button>`).join("");
+  document.getElementById("pieces").innerHTML = PIECES.map(p=>`<div class="pc"><span><b>${p.name}</b><small>${p.sub}</small></span><span>${rub(p.price)}</span>
+    <span class="step"><button data-pm="${p.id}" aria-label="Убрать ${p.name}">−</button><span>${setSt.n[p.id]}</span><button data-pp="${p.id}" aria-label="Добавить ${p.name}">+</button></span></div>`).join("");
+  const col = GLAZES[setSt.glaze][1], cnt = Object.values(setSt.n).reduce((a,b)=>a+b,0);
+  const full = PIECES.reduce((a,p)=>a+p.price*setSt.n[p.id],0);
+  const d = cnt>=8 ? .15 : cnt>=4 ? .10 : 0, sum = Math.round(full*(1-d)/100)*100;
+  document.getElementById("table").innerHTML = cnt ? PIECES.flatMap(p=>Array.from({length:setSt.n[p.id]},()=>`<svg viewBox="0 0 64 64" aria-hidden="true">${p.svg(col)}</svg>`)).join("") : `<p class="ph">Добавьте предметы — они появятся на столе</p>`;
+  document.getElementById("disc").textContent = d ? `${cnt} предметов · скидка ${d*100}%` : cnt ? `${cnt} ${cnt===1?"предмет":"предмета"} · до скидки ${4-cnt}` : "";
+  document.getElementById("old").textContent = d ? rub(full) : "";
+  document.getElementById("sum").textContent = rub(sum);
+  document.getElementById("addSet").disabled = !cnt;
+  return {cnt, sum};
+}
+document.getElementById("set").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  if(b.dataset.sg) setSt.glaze = b.dataset.sg;
+  if(b.dataset.pp) setSt.n[b.dataset.pp] = Math.min(12, setSt.n[b.dataset.pp]+1);
+  if(b.dataset.pm) setSt.n[b.dataset.pm] = Math.max(0, setSt.n[b.dataset.pm]-1);
+  if(b.id==="addSet"){
+    const {cnt, sum} = renderSet();
+    const desc = PIECES.filter(p=>setSt.n[p.id]).map(p=>`${p.name.toLowerCase()} ×${setSt.n[p.id]}`).join(", ");
+    cart.push({key:"set-"+Date.now(), type:"set", name:`Сервиз на заказ, ${GLAZES[setSt.glaze][0].toLowerCase()} глазурь`, price:sum, img:"img/i05.jpg", q:1, note:desc});
+    save(); toast(`Сервиз из ${cnt} предметов — в корзине`); openCart(); return;
+  }
+  renderSet();
+});
+document.getElementById("ws").innerHTML = WORKSHOPS.map(w=>`<a href="workshops.html#${w.id}"><img src="${w.img}" alt="" loading="lazy"><div class="b"><h3>${w.name}</h3><span>${w.dur} · ${rub(w.price)}</span></div></a>`).join("");
+render(); renderSet();
+</script>
+</body>
+</html>

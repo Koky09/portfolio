@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Изделие — Обжиг</title>
+<meta name="description" content="Керамика ручной работы: размеры, уход, наличие. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .crumbs{font-size:14.5px;color:var(--muted);padding-top:20px}
+  .crumbs a{text-decoration:none}
+  .pdp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);padding-block:20px 40px;align-items:center}
+  @media (max-width:900px){.pdp{grid-template-columns:1fr}}
+  .pdp .ph{aspect-ratio:1;overflow:hidden;border-radius:52% 48% 60% 40% / 44% 58% 42% 56%;background:var(--paper)}
+  .pdp .ph img{width:100%;height:100%;object-fit:cover}
+  .info{display:grid;gap:18px}
+  .info h1{font-size:clamp(34px,4.4vw,58px)}
+  .price{font-family:var(--display);font-weight:700;font-size:40px}
+  .stock{display:inline-flex;align-items:center;gap:8px;font-weight:800}
+  .stock i{width:10px;height:10px;border-radius:50%;background:#2E8B57}
+  .stock.one i{background:var(--cobalt)} .stock.out i{background:var(--clay)}
+  dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 22px;border-top:1px solid var(--line);padding-top:16px}
+  dt{color:var(--muted)}
+  dd{margin:0;font-weight:700}
+  .care{display:flex;gap:8px;flex-wrap:wrap}
+  .care span{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14.5px}
+  .care span.no{color:var(--muted);text-decoration:line-through}
+  .note{background:var(--paper);border-radius:22px;padding:16px 18px;color:var(--ink-2);font-size:15.5px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap" id="main"></main>
+<section style="padding-top:0"><div class="wrap"><div class="head"><h2>Ещё с полки</h2></div><div class="grid" id="more"></div></div></section>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+function render(){
+  const slug = location.hash.slice(1) || ITEMS[0].slug;
+  const it = ITEMS.find(x=>x.slug===slug) || ITEMS[0];
+  document.title = `${it.name} — Обжиг`;
+  const inCart = cart.find(l=>l.key===it.slug)?.q || 0;
+  const cls = it.left===0 ? "out" : it.left===1 ? "one" : "";
+  const txt = it.left===0 ? "Продано — можно заказать похожее" : it.left===1 ? "В единственном экземпляре" : `В наличии ${it.left} шт.`;
+  document.getElementById("main").innerHTML = `
+    <div class="crumbs"><a href="index.html#catalog">Магазин</a> / ${CATS[it.cat]}</div>
+    <div class="pdp">
+      <div class="ph"><img src="${it.img}" alt="${it.name}"></div>
+      <div class="info">
+        <span class="stock ${cls}"><i></i>${txt}</span>
+        <h1>${it.name}</h1>
+        <span class="price">${rub(it.price)}</span>
+        <dl><dt>Глазурь</dt><dd><span class="glaze" style="background:${GLAZES[it.glaze][1]}"></span>${GLAZES[it.glaze][0]}</dd><dt>Объём</dt><dd>${it.vol}</dd><dt>Размер</dt><dd>${it.size}</dd><dt>Глина</dt><dd>каменная масса, обжиг 1 250 °C</dd></dl>
+        <div class="care"><span class="${it.dw?"":"no"}">Посудомойка</span><span class="${it.mw?"":"no"}">Микроволновка</span><span>Пищевая глазурь</span></div>
+        <div class="note">Изделие сделано вручную: размер может отличаться на 5–7 мм, а рисунок глазури — от фото. Это не брак, а следы руки мастера.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          ${it.left===0 ? `<a class="btn cobalt" href="index.html#set">Заказать похожее</a>` : `<button class="btn cobalt" id="buy" ${inCart>=it.left?"disabled":""}>${inCart>=it.left ? "Уже в корзине" : "В корзину"}</button>`}
+          <a class="btn soft" href="workshops.html">Сделать такое самому</a>
+        </div>
+      </div>
+    </div>`;
+  const b = document.getElementById("buy");
+  if(b) b.onclick = ()=>{ if(addItem(it.slug)){ openCart(); } render(); };
+  document.getElementById("more").innerHTML = ITEMS.filter(x=>x.slug!==it.slug && x.left>0).slice(0,4).map(card).join("");
+}
+window.addEventListener("hashchange", ()=>{ render(); scrollTo(0,0); });
+document.addEventListener("cart", render);
+render();
+</script>
+</body>
+</html>
