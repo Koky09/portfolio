@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Полигон — студия разработки</title>
+<meta name="description" content="Полигон — студия разработки веб-сервисов и мобильных приложений. Оценка проекта онлайн с планом по неделям. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Geologica:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .hero{padding-block:clamp(40px,6vw,88px) clamp(48px,6vw,80px)}
+  .hero .grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+  @media (max-width:960px){.hero .grid{grid-template-columns:1fr}}
+  .hero h1{font-size:clamp(34px,4.3vw,62px);margin:16px 0 22px}
+  .hero h1 em{font-style:normal;color:var(--blue)}
+  .hero .lead{font-size:clamp(17px,1.5vw,20px);color:var(--ink-2);max-width:40ch;margin:0 0 30px}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .shot{position:relative}
+  .shot .ph{aspect-ratio:5/4;border-radius:28px;overflow:hidden;background:var(--bg-2)}
+  .shot img{width:100%;height:100%;object-fit:cover}
+  .code{position:absolute;left:-28px;bottom:-24px;background:var(--ink);color:#DADAE2;border-radius:18px;padding:16px 18px;font-family:var(--mono);font-size:12.5px;line-height:1.7;box-shadow:0 20px 40px -20px rgba(14,14,16,.6);min-width:260px}
+  .code .k{color:#A9A9FF}.code .s{color:#7EE2B8}.code .c{color:#6E6E76}
+  .code .cursor{display:inline-block;width:7px;height:14px;background:#A9A9FF;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  @media (max-width:960px){.code{left:12px;bottom:-20px}}
+  .clients{display:flex;gap:clamp(20px,4vw,56px);flex-wrap:wrap;align-items:center;padding-block:28px;border-block:1px solid var(--line);margin-top:clamp(48px,6vw,80px)}
+  .clients span{font-family:var(--display);font-weight:600;font-size:clamp(18px,1.8vw,24px);color:#B5B5BC;letter-spacing:-.02em}
+
+  .services{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:24px;overflow:hidden}
+  @media (max-width:1000px){.services{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.services{grid-template-columns:1fr}}
+  .svc{padding:26px;display:grid;gap:12px;align-content:start;border-right:1px solid var(--line);background:#fff}
+  .svc:last-child{border-right:0}
+  @media (max-width:1000px){.svc:nth-child(2){border-right:0}.svc:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+  .svc .ic{width:48px;height:48px;border-radius:14px;background:var(--lilac);display:grid;place-items:center;font-family:var(--mono);font-weight:500;color:var(--blue)}
+  .svc h3{font-size:20px}
+  .svc p{margin:0;color:var(--ink-2);font-size:15.5px}
+  .svc .from{font-family:var(--mono);font-size:13px;margin-top:6px}
+
+  /* оценка проекта */
+  .est{background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden}
+  .est-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+  @media (max-width:900px){.est-top{grid-template-columns:1fr}}
+  .est-top > div{padding:clamp(20px,3vw,32px)}
+  .est-top > div + div{border-left:1px solid var(--line)}
+  @media (max-width:900px){.est-top > div + div{border-left:0;border-top:1px solid var(--line)}}
+  .lbl{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-bottom:12px;display:block}
+  .types{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .type{border:1.5px solid var(--line);background:var(--bg);border-radius:16px;padding:14px;text-align:left;display:grid;gap:4px}
+  .type b{font-size:16px}
+  .type small{color:var(--muted);font-size:13px}
+  .type[aria-pressed="true"]{border-color:var(--blue);background:var(--lilac)}
+  .feats{display:flex;flex-wrap:wrap;gap:8px}
+  .feat{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14.5px;cursor:pointer;user-select:none;background:var(--bg)}
+  .feat input{accent-color:var(--blue);margin:0}
+  .feat:has(input:checked){border-color:var(--blue);background:var(--lilac)}
+  .gantt-wrap{padding:clamp(20px,3vw,32px);display:grid;gap:22px}
+  .summary{display:flex;gap:clamp(20px,4vw,48px);flex-wrap:wrap;align-items:end}
+  .summary b{display:block;font-family:var(--display);font-size:clamp(28px,3.4vw,44px);font-weight:600;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
+  .summary span{font-size:13.5px;color:var(--muted)}
+  .gantt{overflow-x:auto}
+  .g{min-width:640px;display:grid;grid-template-columns:130px 1fr;row-gap:8px;font-size:14px}
+  .g .name{display:flex;align-items:center;color:var(--ink-2)}
+  .g .track{position:relative;height:30px;background:repeating-linear-gradient(90deg,transparent 0 calc(var(--wk) - 1px),var(--line) calc(var(--wk) - 1px) var(--wk))}
+  .g .bar{position:absolute;top:3px;bottom:3px;border-radius:8px;display:flex;align-items:center;padding-left:10px;font-family:var(--mono);font-size:11.5px;color:#fff;white-space:nowrap;transition:left .45s cubic-bezier(.2,.7,.2,1),width .45s cubic-bezier(.2,.7,.2,1)}
+  .g .axis{grid-column:2;display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .team{display:flex;gap:8px;flex-wrap:wrap}
+  .team span{background:var(--bg-2);border-radius:999px;padding:6px 12px;font-size:13.5px}
+  .team span b{font-family:var(--mono);font-weight:500;margin-right:4px}
+
+  .process{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  @media (max-width:900px){.process{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){.process{grid-template-columns:1fr}}
+  .step{border-top:2px solid var(--ink);padding-top:16px;display:grid;gap:8px}
+  .step h3{font-size:19px}
+  .step p{margin:0;color:var(--ink-2);font-size:15px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="grid">
+        <div>
+          <span class="cm">студия разработки, с 2016 года</span>
+          <h1>Делаем продукты, которыми <em>пользуются каждый день</em></h1>
+          <p class="lead">Веб-сервисы, мобильные приложения и внутренние системы. Команда полного цикла: от аналитики до поддержки после запуска.</p>
+          <div class="cta"><a class="btn" href="#estimate">Оценить проект <span class="arr">→</span></a><a class="btn ghost" href="cases.html">Смотреть кейсы</a></div>
+        </div>
+        <div class="shot">
+          <div class="ph"><img src="img/hero.jpg" alt="Команда студии обсуждает проект у доски" fetchpriority="high"></div>
+          <div class="code" aria-hidden="true"><span class="c">// deploy.ts</span><br><span class="k">await</span> release(<span class="s">"v2.4.0"</span>)<br><span class="k">const</span> users = <span class="s">120_000</span><br>status: <span class="s">"ok"</span> <span class="cursor"></span></div>
+        </div>
+      </div>
+      <div class="clients" aria-label="Клиенты"><span class="cm" style="font-size:12.5px">нам доверяют</span><span>Капля</span><span>Суп да каша</span><span>Кадр</span><span>Лавка</span><span>Смена</span><span>Звук</span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Что делаем</h2><p>Берём продукт целиком или усиливаем вашу команду отдельными специалистами.</p></div>
+      <div class="services">
+        <div class="svc"><div class="ic">&lt;/&gt;</div><h3>Веб-сервисы</h3><p>Личные кабинеты, маркетплейсы, SaaS. React, Next.js, Go.</p><span class="from">от 1,2 млн ₽</span></div>
+        <div class="svc"><div class="ic">▯</div><h3>Мобильные приложения</h3><p>iOS и Android на Flutter или нативно, публикация в сторах.</p><span class="from">от 1,8 млн ₽</span></div>
+        <div class="svc"><div class="ic">⊞</div><h3>CRM и ERP</h3><p>Внутренние системы под ваши процессы, интеграция с 1С.</p><span class="from">от 900 тыс. ₽</span></div>
+        <div class="svc"><div class="ic">↯</div><h3>Боты и интеграции</h3><p>Telegram-боты, платёжки, API, автоматизация рутины.</p><span class="from">от 250 тыс. ₽</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="estimate" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Оценка за минуту</h2><p>Выберите тип продукта и функции — покажем план по неделям, состав команды и вилку бюджета. Цифры из наших реальных ставок.</p></div>
+      <div class="est">
+        <div class="est-top">
+          <div><span class="lbl">// что делаем</span><div class="types" id="types"></div></div>
+          <div><span class="lbl">// какие функции нужны</span><div class="feats" id="feats"></div></div>
+        </div>
+        <div class="gantt-wrap" aria-live="polite">
+          <div class="summary">
+            <div><b id="sWeeks"></b><span>до релиза</span></div>
+            <div><b id="sBudget"></b><span>бюджет</span></div>
+            <div><b id="sPeople"></b><span>в команде</span></div>
+          </div>
+          <div class="gantt"><div class="g" id="gantt"></div></div>
+          <div class="team" id="team"></div>
+          <a class="btn" href="contacts.html" style="justify-self:start">Обсудить детали <span class="arr">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Свежие кейсы</h2><a class="btn ghost" href="cases.html" style="justify-self:end">Все кейсы</a></div>
+      <div class="cases" id="latest"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Как работаем</h2><p>Спринты по две недели, демо в конце каждого. Вы видите продукт живьём, а не в отчётах.</p></div>
+      <div class="process">
+        <div class="step"><span class="cm">неделя 1–2</span><h3>Аналитика</h3><p>Интервью, карта функций, приоритеты для первой версии.</p></div>
+        <div class="step"><span class="cm">неделя 2–5</span><h3>Дизайн</h3><p>Прототип, UI-кит и кликабельный макет всех экранов.</p></div>
+        <div class="step"><span class="cm">спринты</span><h3>Разработка</h3><p>Демо каждые две недели, доступ к тестовой сборке.</p></div>
+        <div class="step"><span class="cm">после релиза</span><h3>Поддержка</h3><p>Мониторинг 24/7, исправления и развитие по SLA.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const TYPES = [
+  {id:"web", name:"Веб-сервис", sub:"кабинет, SaaS", a:2, d:4, dev:8, be:8, front:"Фронтенд"},
+  {id:"mobile", name:"Приложение", sub:"iOS + Android", a:2, d:5, dev:10, be:8, front:"Мобильная"},
+  {id:"crm", name:"CRM-система", sub:"для команды", a:3, d:3, dev:9, be:10, front:"Фронтенд"},
+  {id:"bot", name:"Telegram-бот", sub:"с админкой", a:1, d:1, dev:3, be:4, front:"Интерфейс"},
+];
+const FEATS = [
+  {id:"auth", name:"Регистрация и профили", dev:1, be:1},
+  {id:"pay", name:"Онлайн-оплата", dev:1, be:1.5, qa:.5},
+  {id:"admin", name:"Админ-панель", dev:2, be:1},
+  {id:"chat", name:"Чат и уведомления", dev:1.5, be:1.5},
+  {id:"catalog", name:"Каталог и поиск", dev:1.5, be:1},
+  {id:"int", name:"Интеграция с 1С", be:2.5},
+  {id:"stats", name:"Аналитика и графики", dev:1.5, be:1},
+];
+const RATE = {an:120, ds:110, fe:130, be:140, qa:90, pm:100}; // тыс. ₽ в неделю
+const st = {type:"mobile", feats:new Set(["auth","pay","chat"])};
+
+function plan(){
+  const t = TYPES.find(x=>x.id===st.type);
+  let dev = t.dev, be = t.be, qa = 0;
+  st.feats.forEach(id=>{ const f = FEATS.find(x=>x.id===id); dev += f.dev||0; be += f.be||0; qa += f.qa||0; });
+  const a0 = 0, a1 = t.a;
+  const d0 = a1 - .5, d1 = d0 + t.d;
+  const v0 = d0 + t.d*.5, v1 = v0 + dev;
+  const b0 = a1, b1 = Math.max(b0 + be, v1 - 1);
+  const q0 = v0 + dev*.5, q1 = Math.max(v1, b1) + 1 + qa;
+  const l0 = q1, l1 = q1 + 1;
+  const rows = [
+    ["Аналитика", a0, a1, "#8B8B93"],
+    ["Дизайн", d0, d1, "#FF6B4A"],
+    [t.front, v0, v1, "#3B3BF5"],
+    ["Бэкенд", b0, b1, "#0E0E10"],
+    ["Тестирование", q0, q1, "#18A874"],
+    ["Запуск", l0, l1, "#A9A9FF"],
+  ];
+  const total = l1;
+  const cost = t.a*RATE.an + t.d*RATE.ds + dev*RATE.fe*(st.type==="mobile"?1.8:1) + (b1-b0)*RATE.be + (q1-q0)*RATE.qa + total*RATE.pm*.5;
+  const team = [["аналитик",1],["дизайнер",1],st.type==="mobile" ? ["мобильная разработка",2] : ["фронтенд",dev>10?2:1],["бэкенд",be>10?2:1],["тестировщик",1],["менеджер",1]];
+  return {rows,total,cost,team};
+}
+function render(){
+  document.getElementById("types").innerHTML = TYPES.map(t=>`<button class="type" data-t="${t.id}" aria-pressed="${st.type===t.id}"><b>${t.name}</b><small>${t.sub}</small></button>`).join("");
+  document.getElementById("feats").innerHTML = FEATS.map(f=>`<label class="feat" for="f-${f.id}"><input type="checkbox" id="f-${f.id}" data-f="${f.id}" ${st.feats.has(f.id)?"checked":""}>${f.name}</label>`).join("");
+  draw();
+}
+function draw(){
+  const p = plan(), W = Math.ceil(p.total);
+  const g = document.getElementById("gantt");
+  g.style.setProperty("--wk", `calc(100% / ${W})`);
+  g.innerHTML = p.rows.map(([n,s,e,c])=>`<div class="name">${n}</div><div class="track"><div class="bar" style="left:${s/W*100}%;width:${(e-s)/W*100}%;background:${c}">${Math.round((e-s)*10)/10} нед.</div></div>`).join("")
+    + `<div class="axis">${Array.from({length:5},(_,i)=>`<span>нед. ${Math.round(i*W/4)}</span>`).join("")}</div>`;
+  document.getElementById("sWeeks").textContent = `${W} нед.`;
+  const lo = p.cost*.9/1000, hi = p.cost*1.15/1000;
+  document.getElementById("sBudget").textContent = `${lo.toFixed(1).replace(".",",")}–${hi.toFixed(1).replace(".",",")} млн ₽`;
+  const ppl = p.team.reduce((a,[,n])=>a+n,0);
+  document.getElementById("sPeople").textContent = `${ppl} чел.`;
+  document.getElementById("team").innerHTML = p.team.map(([r,n])=>`<span><b>${n}×</b>${r}</span>`).join("");
+}
+document.getElementById("types").addEventListener("click", e=>{ const b = e.target.closest("[data-t]"); if(!b) return; st.type = b.dataset.t; render(); });
+document.getElementById("feats").addEventListener("change", e=>{ const id = e.target.dataset.f; e.target.checked ? st.feats.add(id) : st.feats.delete(id); draw(); });
+document.getElementById("latest").innerHTML = CASES.slice(0,2).map(caseCard).join("");
+render();
+</script>
+</body>
+</html>

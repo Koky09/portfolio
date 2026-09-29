@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кейсы — Полигон</title>
+<meta name="description" content="Кейсы студии «Полигон»: финтех, фудтех, медиа, образование, e-commerce, B2B. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Geologica:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .filters{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:32px}
+  .filters .grp{display:grid;gap:8px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chips button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-size:14.5px;font-weight:500}
+  .chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+  .quote{margin-top:64px;background:var(--lilac);border-radius:28px;padding:clamp(24px,4vw,56px);display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
+  @media (max-width:700px){.quote{grid-template-columns:1fr}}
+  .quote .mark{font-family:var(--display);font-size:120px;line-height:.7;color:var(--blue)}
+  .quote blockquote{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.02em;line-height:1.3}
+  .quote footer{margin-top:18px;font-size:15px;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap">
+    <span class="cm">кейсы</span>
+    <h1>Кейсы</h1>
+    <p>Продукты, которые мы спроектировали, разработали и продолжаем поддерживать. Метрики — через год после запуска.</p>
+  </div></div>
+  <section>
+    <div class="wrap">
+      <div class="filters">
+        <div class="grp"><span class="cm">отрасль</span><div class="chips" id="indF"></div></div>
+        <div class="grp"><span class="cm">платформа</span><div class="chips" id="platF"></div></div>
+      </div>
+      <div class="cases" id="list"></div>
+      <p id="empty" hidden style="color:var(--ink-2)">Таких кейсов пока нет. Может, ваш будет первым?</p>
+      <div class="quote">
+        <div class="mark" aria-hidden="true">“</div>
+        <div>
+          <blockquote>Мы пришли с идеей на салфетке, а через пять месяцев у нас было приложение с рейтингом 4,7 и очередь из инвесторов.</blockquote>
+          <footer>Мария Гордеева, основатель «Капли»</footer>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const st = {ind:"all", plat:"all"};
+const PLATS = ["Веб","iOS","Android","Smart TV"];
+function render(){
+  document.getElementById("indF").innerHTML = [["all","Все"],...Object.entries(IND)].map(([k,v])=>`<button data-k="ind" data-v="${k}" aria-pressed="${st.ind===k}">${v}</button>`).join("");
+  document.getElementById("platF").innerHTML = [["all","Все"],...PLATS.map(p=>[p,p])].map(([k,v])=>`<button data-k="plat" data-v="${k}" aria-pressed="${st.plat===k}">${v}</button>`).join("");
+  const list = CASES.filter(c=>(st.ind==="all"||c.ind===st.ind)&&(st.plat==="all"||c.plat.includes(st.plat)));
+  document.getElementById("list").innerHTML = list.map(c=>caseCard(c).replace('<a class="case" href','<a class="case" id="'+c.name+'" href')).join("");
+  document.getElementById("empty").hidden = list.length>0;
+}
+document.querySelector(".filters").addEventListener("click", e=>{ const b = e.target.closest("[data-k]"); if(!b) return; st[b.dataset.k] = b.dataset.v; render(); });
+render();
+</script>
+</body>
+</html>

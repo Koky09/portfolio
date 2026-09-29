@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Контакты — Полигон</title>
+<meta name="description" content="Бриф на разработку в студию «Полигон». Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Geologica:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(28px,5vw,64px)}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:28px;padding:clamp(20px,3vw,36px)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .pick{display:flex;gap:8px;flex-wrap:wrap}
+  .pick label{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:9px 16px;font-size:14.5px;cursor:pointer}
+  .pick input{accent-color:var(--blue);margin:0}
+  .pick label:has(input:checked){border-color:var(--blue);background:var(--lilac)}
+  fieldset{border:0;padding:0;margin:0;display:grid;gap:8px}
+  legend{font-size:14px;font-weight:500;margin-bottom:8px}
+  .side{display:grid;gap:22px;align-content:start}
+  .side .item{border-top:1px solid var(--line);padding-top:16px}
+  .side b{display:block;font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.02em;margin-top:4px}
+  .side img{border-radius:22px;aspect-ratio:4/3;object-fit:cover;width:100%}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap">
+    <span class="cm">контакты</span>
+    <h1>Расскажите о проекте</h1>
+    <p>Ответим в течение рабочего дня. Если нужно, подпишем NDA до обсуждения деталей.</p>
+  </div></div>
+  <section>
+    <div class="wrap grid">
+      <div class="card">
+        <form class="form" data-demo novalidate>
+          <div class="row2">
+            <label class="f" for="cName">Имя<input id="cName" autocomplete="name" required></label>
+            <label class="f" for="cContact">Telegram или e-mail<input id="cContact" required></label>
+          </div>
+          <label class="f" for="cCompany">Компания<input id="cCompany" autocomplete="organization"></label>
+          <fieldset><legend>Что нужно сделать</legend>
+            <div class="pick">
+              <label for="k1"><input type="checkbox" id="k1">Веб-сервис</label><label for="k2"><input type="checkbox" id="k2">Приложение</label>
+              <label for="k3"><input type="checkbox" id="k3">CRM</label><label for="k4"><input type="checkbox" id="k4">Бот</label><label for="k5"><input type="checkbox" id="k5">Дизайн</label>
+            </div></fieldset>
+          <fieldset><legend>Бюджет</legend>
+            <div class="pick">
+              <label for="b1"><input type="radio" name="b" id="b1">до 1 млн ₽</label><label for="b2"><input type="radio" name="b" id="b2" checked>1–3 млн ₽</label>
+              <label for="b3"><input type="radio" name="b" id="b3">3–10 млн ₽</label><label for="b4"><input type="radio" name="b" id="b4">больше 10 млн ₽</label>
+            </div></fieldset>
+          <label class="f" for="cMsg">Коротко о задаче<textarea id="cMsg" placeholder="Что хотите сделать, для кого и к какому сроку"></textarea></label>
+          <button class="btn" type="submit" style="justify-self:start">Отправить бриф <span class="arr">→</span></button>
+          <div class="ok" hidden></div>
+        </form>
+      </div>
+      <div class="side">
+        <img src="img/office.jpg" alt="Переговорная студии" loading="lazy">
+        <div class="item"><span class="cm">новый проект</span><b style="user-select:all">hello@poligon.example</b></div>
+        <div class="item"><span class="cm">телефон</span><b style="user-select:all">+7 900 404-00-01</b></div>
+        <div class="item"><span class="cm">офис</span><b>Технопарк, корпус Б, 5 этаж</b></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+</body>
+</html>
