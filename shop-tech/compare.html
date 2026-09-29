@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Сравнение — Модуль</title>
+<meta name="description" content="Сравнение характеристик товаров с подсветкой лучших значений. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  h1{font-size:clamp(36px,5vw,64px);padding-top:28px}
+  .opts{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:18px 0}
+  .chk{display:flex;align-items:center;gap:8px;font-weight:500;cursor:pointer}
+  .chk input{width:18px;height:18px;accent-color:var(--orange)}
+  .tbl{background:var(--white);border-radius:28px;padding:clamp(12px,2vw,24px);overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:640px}
+  th,td{padding:14px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  thead th{border-bottom:0}
+  th[scope=row]{color:var(--ink-2);font-weight:500;width:200px}
+  .prod{display:grid;gap:8px}
+  .prod img{width:100%;max-width:200px;aspect-ratio:1;object-fit:cover;border-radius:16px}
+  .prod a{font-weight:500;text-decoration:none}
+  .prod .price{font-family:var(--display);font-weight:700;font-size:22px}
+  .prod .rm{border:0;background:none;color:var(--muted);text-decoration:underline;padding:0;justify-self:start;font-size:13.5px}
+  td.best{background:#E8F7EE;font-weight:700;color:var(--green)}
+  td.best::after{content:" ✓"}
+  tr.same{display:none}
+  .show-same tr.same{display:table-row}
+  .empty2{background:var(--white);border-radius:28px;padding:40px;text-align:center;color:var(--ink-2);display:grid;gap:14px;justify-items:center}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap">
+  <h1>Сравнение</h1>
+  <div id="app"></div>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+let showSame = true;
+function render(){
+  const app = document.getElementById("app");
+  const list = cmp.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+  if(list.length < 2){
+    app.innerHTML = `<div class="empty2"><b style="font-size:20px">Добавьте хотя бы два товара одной категории</b><span>Нажмите «⇄» на карточке в каталоге.</span>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn" href="index.html#catalog">В каталог</a><button class="btn ghost" id="demo">Показать пример: наушники</button></div></div>`;
+    document.getElementById("demo").onclick = ()=>{ cmp = ["n1","noch","kapli"]; saveCmp(); render(); };
+    return;
+  }
+  const cat = list[0].cat;
+  const rows = SPECS[cat].map(([name,key,better])=>{
+    const vals = list.map(p=>p.s[key]);
+    const same = vals.every(v=>String(v)===String(vals[0]));
+    let best = -1;
+    if(better && !same){ const nums = vals.map(Number); const target = better==="max" ? Math.max(...nums) : Math.min(...nums.filter(n=>n>0)); best = nums.indexOf(target); }
+    return `<tr class="${same?"same":""}"><th scope="row">${name}</th>${vals.map((v,i)=>`<td class="${i===best?"best":""}">${typeof v==="number"?(v===0?"—":v.toLocaleString("ru-RU")):v}</td>`).join("")}</tr>`;
+  }).join("");
+  const cheapest = Math.min(...list.map(p=>p.price)), topRate = Math.max(...list.map(p=>p.rate));
+  app.innerHTML = `<p style="color:var(--ink-2);margin:0">${CATS[cat]}: ${list.length} из 3. Зелёным отмечено лучшее значение в строке.</p>
+    <div class="opts"><label class="chk" for="same"><input type="checkbox" id="same" ${showSame?"":"checked"}>Только различия</label></div>
+    <div class="tbl ${showSame?"show-same":""}"><table>
+      <thead><tr><th></th>${list.map(p=>`<th><div class="prod"><img src="${p.img}" alt=""><a href="product.html#${p.id}">${p.name}</a><span class="price">${rub(p.price)}</span><button class="btn" data-add="${p.id}" style="height:40px;font-size:14.5px">В корзину</button><button class="rm" data-rmc="${p.id}">Убрать из сравнения</button></div></th>`).join("")}</tr></thead>
+      <tbody>
+        <tr><th scope="row">Цена</th>${list.map(p=>`<td class="${p.price===cheapest?"best":""}">${rub(p.price)}</td>`).join("")}</tr>
+        <tr><th scope="row">Рейтинг</th>${list.map(p=>`<td class="${p.rate===topRate&&list.filter(x=>x.rate===topRate).length===1?"best":""}">${String(p.rate).replace(".",",")} (${p.rev})</td>`).join("")}</tr>
+        ${rows}
+      </tbody></table></div>`;
+  document.getElementById("same").onchange = e=>{ showSame = !e.target.checked; render(); };
+}
+document.addEventListener("click", e=>{ const r = e.target.closest("[data-rmc]"); if(r){ cmp = cmp.filter(x=>x!==r.dataset.rmc); saveCmp(); render(); } });
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Оформление — Модуль</title>
+<meta name="description" content="Оформление заказа: доставка сегодня, рассрочка, промокод. Демо-сайт для портфолио, оплата не подключена.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  h1{font-size:clamp(36px,5vw,64px);padding-top:28px}
+  .steps{display:flex;gap:8px;margin:18px 0}
+  .steps span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+  .steps span.on{background:var(--orange)}
+  .co{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;padding-bottom:40px;align-items:start}
+  @media (max-width:960px){.co{grid-template-columns:1fr}}
+  .box{background:var(--white);border-radius:24px;padding:clamp(18px,3vw,28px);display:grid;gap:14px;margin-bottom:14px}
+  .box h2{font-size:24px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .f{display:grid;gap:6px;font-weight:500;font-size:14.5px}
+  .f input{height:50px;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;font-size:16px;background:var(--bg)}
+  .f input:focus{outline:none;border-color:var(--ink);background:var(--white)}
+  .opt{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
+  .opt input{width:20px;height:20px;accent-color:var(--orange);margin:0}
+  .opt:has(input:checked){border-color:var(--ink)}
+  .opt small{display:block;color:var(--muted);font-size:13.5px}
+  .sum{background:var(--white);border-radius:24px;padding:22px;display:grid;gap:12px;position:sticky;top:84px}
+  @media (max-width:960px){.sum{position:static}}
+  .it{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;font-size:14.5px}
+  .it img{width:52px;height:52px;border-radius:10px;object-fit:cover}
+  .it small{display:block;color:var(--muted)}
+  .promo{display:flex;gap:8px}
+  .promo input{flex:1;height:44px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;text-transform:uppercase;font-family:var(--mono)}
+  .promo button{border:0;border-radius:12px;background:var(--ink);color:var(--white);padding:0 14px;font-weight:700}
+  .msg{font-size:13.5px;color:var(--green);min-height:18px}
+  .rows{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:6px}
+  .rows div{display:flex;justify-content:space-between}
+  .tot{display:flex;justify-content:space-between;align-items:end;border-top:1px solid var(--line);padding-top:12px}
+  .tot b{font-family:var(--display);font-size:34px}
+  .err{color:#D23A1A;font-weight:500;min-height:20px}
+  .done{background:var(--white);border-radius:28px;padding:clamp(24px,5vw,56px);display:grid;gap:14px;justify-items:center;text-align:center;margin-block:20px 40px}
+  .done h2{font-size:clamp(32px,4vw,52px)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap"><h1>Оформление</h1><div class="steps" aria-hidden="true"><span class="on"></span><span class="on"></span><span></span></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const before = new Date().getHours() < 16;
+const DEL = [
+  {id:"courier", name:`Курьер ${before?"сегодня, 18–22":"завтра, 10–14"}`, note:"по городу, с проверкой перед оплатой", price:390},
+  {id:"pickup", name:"Шоурум «Модуль»", note:before?"заберите через 1 час":"завтра с 10:00", price:0},
+  {id:"cdek", name:"Пункт выдачи СДЭК", note:"1–3 дня", price:290},
+];
+const PAY = [["card","Картой онлайн"],["split","Рассрочка 0% на 12 мес."],["cash","При получении"]];
+let st = {del:"courier", pay:"card", promo:false};
+function calc(){ const items = cartTotal(); const ship = items>=20000 ? 0 : DEL.find(d=>d.id===st.del).price; const disc = st.promo ? Math.round(items*.05) : 0; return {items, ship, disc, total: items+ship-disc}; }
+function render(){
+  const app = document.getElementById("app");
+  if(!cart.length){ app.innerHTML = `<div class="done"><h2>Корзина пустая</h2><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn" href="index.html#catalog">В каталог</a><button class="btn ghost" id="sample">Положить пример</button></div></div>`;
+    document.getElementById("sample").onclick = ()=>{ addToCart("k75"); addToCart("z20"); }; return; }
+  const c = calc();
+  app.innerHTML = `<div class="co"><div>
+    <div class="box"><h2>Контакты</h2><div class="row2"><label class="f" for="n">Имя<input id="n" autocomplete="name"></label><label class="f" for="p">Телефон<input id="p" type="tel" autocomplete="tel"></label></div></div>
+    <div class="box"><h2>Получение</h2><div id="del" style="display:grid;gap:8px">${DEL.map(d=>`<label class="opt" for="d-${d.id}"><input type="radio" name="d" id="d-${d.id}" value="${d.id}" ${st.del===d.id?"checked":""}><span>${d.name}<small>${d.note}</small></span><b>${d.price&&c.items<20000?rub(d.price):"0 ₽"}</b></label>`).join("")}</div>
+      ${st.del!=="pickup"?`<label class="f" for="a">Адрес${st.del==="cdek"?" пункта":""}<input id="a" autocomplete="street-address"></label>`:""}</div>
+    <div class="box"><h2>Оплата</h2><div id="pay" style="display:grid;gap:8px">${PAY.map(([k,v])=>`<label class="opt" for="p-${k}"><input type="radio" name="pay" id="p-${k}" value="${k}" ${st.pay===k?"checked":""}><span>${v}${k==="split"?`<small>${rub(Math.ceil(c.total/12))} в месяц, одобрение за 2 минуты</small>`:""}</span><span></span></label>`).join("")}</div></div>
+    <p class="err" id="err" aria-live="polite"></p></div>
+    <aside class="sum"><h2 style="font-size:24px">Ваш заказ</h2>
+      ${cart.map(l=>{ const p = PRODUCTS.find(x=>x.id===l.id); return `<div class="it"><img src="${p.img}" alt=""><span>${p.name}${l.q>1?` × ${l.q}`:""}<small>${l.color}</small></span><b>${rub(p.price*l.q)}</b></div>`; }).join("")}
+      <div class="promo"><input id="pr" placeholder="Промокод" aria-label="Промокод" value="${st.promo?"MODUL5":""}"><button type="button" id="apply">Применить</button></div>
+      <div class="msg" id="pm">${st.promo?"Скидка 5% применена":"Для примера: MODUL5"}</div>
+      <div class="rows"><div><span>Товары</span><span>${rub(c.items)}</span></div>${c.disc?`<div><span>Промокод</span><span>−${rub(c.disc)}</span></div>`:""}<div><span>Доставка</span><span>${c.ship?rub(c.ship):"бесплатно"}</span></div></div>
+      <div class="tot"><span>Итого</span><b>${rub(c.total)}</b></div>
+      <button class="btn" id="go">Подтвердить заказ</button>
+      <span style="font-size:12.5px;color:var(--muted)">Демо: оплата не подключена, заказ не создаётся.</span>
+    </aside></div>`;
+  document.getElementById("del").onchange = e=>{ st.del = e.target.value; render(); };
+  document.getElementById("pay").onchange = e=>{ st.pay = e.target.value; };
+  document.getElementById("apply").onclick = ()=>{ const v = document.getElementById("pr").value.trim().toUpperCase(); if(v==="MODUL5"){ st.promo = true; render(); } else document.getElementById("pm").textContent = v ? "Промокод не найден" : "Введите промокод"; };
+  document.getElementById("go").onclick = ()=>{
+    const n = document.getElementById("n").value.trim(), p = document.getElementById("p").value.trim();
+    if(!n || !p){ document.getElementById("err").textContent = "Укажите имя и телефон — пришлём SMS со статусом заказа."; return; }
+    const total = calc().total, num = "M-" + String(Date.now()).slice(-6), d = DEL.find(x=>x.id===st.del);
+    cart = []; save();
+    document.querySelectorAll(".steps span").forEach(s=>s.classList.add("on"));
+    app.innerHTML = `<div class="done"><span class="mono">Заказ ${num}</span><h2>Спасибо, ${n}!</h2><p style="color:var(--ink-2);max-width:46ch">${d.name}. Сумма ${rub(total)}${st.pay==="split"?`, рассрочка по ${rub(Math.ceil(total/12))} в месяц`:""}. Это демо-сайт: заказ не создан.</p><a class="btn" href="index.html">В каталог</a></div>`;
+    scrollTo(0,0);
+  };
+}
+document.addEventListener("cart", ()=>{ if(!document.querySelector(".done .mono")) render(); });
+render();
+</script>
+</body>
+</html>
