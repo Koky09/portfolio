@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Оформление — ШАГ</title>
+<meta name="description" content="Корзина и оформление заказа. Демо-сайт для портфолио, оплата не подключена.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  h1{font-size:clamp(44px,6vw,88px);padding-top:12px}
+  .co{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding-block:20px 40px;align-items:start}
+  @media (max-width:960px){.co{grid-template-columns:1fr}}
+  .box{background:var(--white);border-radius:28px;padding:clamp(18px,3vw,28px);display:grid;gap:14px;margin-bottom:16px}
+  .box h2{font-size:26px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .f{display:grid;gap:6px;font-weight:700;font-size:14px}
+  .f input{height:52px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;font-size:16px;background:var(--bg)}
+  .f input:focus{outline:none;border-color:var(--ink);background:var(--white)}
+  .opt{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;cursor:pointer}
+  .opt input{width:20px;height:20px;accent-color:var(--ink);margin:0}
+  .opt:has(input:checked){border-color:var(--ink);background:var(--lime)}
+  .opt small{display:block;color:var(--ink-2);font-size:13.5px}
+  .sum{background:var(--ink);color:var(--white);border-radius:28px;padding:22px;display:grid;gap:12px;position:sticky;top:90px}
+  @media (max-width:960px){.sum{position:static}}
+  .it{display:grid;grid-template-columns:84px 1fr auto;gap:12px;align-items:center;font-size:14.5px}
+  .it .mini{background:#232323;border-radius:14px;aspect-ratio:4/3;display:grid;place-items:center}
+  .it .mini svg{width:92%}
+  .it small{display:block;color:#A9A9A2}
+  .lines2{display:grid;gap:6px;border-top:1px solid #2E2E2E;padding-top:12px;font-size:15px}
+  .lines2 div{display:flex;justify-content:space-between}
+  .tot{display:flex;justify-content:space-between;align-items:end;border-top:1px solid #2E2E2E;padding-top:12px}
+  .tot b{font-family:var(--display);font-size:40px}
+  .promo{display:flex;gap:8px}
+  .promo input{flex:1;height:46px;border-radius:999px;border:0;padding:0 16px;text-transform:uppercase;font-weight:700}
+  .promo button{border:0;border-radius:999px;background:var(--lime);padding:0 16px;font-weight:800}
+  .msg{font-size:13.5px;color:var(--lime);min-height:18px}
+  .err{color:var(--red);font-weight:600;min-height:20px}
+  .done{background:var(--white);border-radius:32px;padding:clamp(24px,5vw,56px);display:grid;gap:14px;justify-items:center;text-align:center;margin-block:20px 40px}
+  .done h2{font-size:clamp(40px,6vw,80px)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap">
+  <h1>Оформление</h1>
+  <div id="app"></div>
+</main>
+<div id="footer"></div>
+<script src="shoe.js"></script>
+<script src="app.js"></script>
+<script>
+const DEL = [
+  {id:"pvz", name:"Пункт выдачи СДЭК", note:"1–5 дней, примерка в пункте", price:390},
+  {id:"courier", name:"Курьер с примеркой", note:"ждёт 15 минут, пока вы меряете", price:590},
+  {id:"store", name:"Шоурум", note:"ул. Лесная, 12, ежедневно 11–21", price:0},
+];
+let st = {del:"pvz", promo:false};
+const FREE = 10000;
+function calc(){ const items = cartTotal(), d = DEL.find(x=>x.id===st.del); const ship = items>=FREE ? 0 : d.price; const disc = st.promo ? 500 : 0; return {items, ship, disc, total: items + ship - disc}; }
+function render(){
+  const app = document.getElementById("app");
+  if(!cart.length){
+    app.innerHTML = `<div class="done"><h2>Корзина пустая</h2><p style="color:var(--ink-2)">Загляните в каталог или соберите пару сами.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn" href="index.html#catalog">Каталог</a><a class="btn lime" href="constructor.html">Конструктор</a><button class="btn white" id="sample" style="box-shadow:inset 0 0 0 1.5px var(--line)">Положить пример</button></div></div>`;
+    document.getElementById("sample").onclick = ()=>{ const p = PRODUCTS[2]; addToCart({slug:p.slug,name:p.name,model:p.model,c:p.c,size:41,price:p.price}); };
+    return;
+  }
+  const c = calc();
+  app.innerHTML = `<div class="co"><div>
+    <div class="box"><h2>Получатель</h2>
+      <div class="row2"><label class="f" for="n">Имя<input id="n" autocomplete="name"></label><label class="f" for="p">Телефон<input id="p" type="tel" autocomplete="tel" placeholder="+7"></label></div></div>
+    <div class="box"><h2>Доставка</h2><div id="del" style="display:grid;gap:8px">${DEL.map(d=>`<label class="opt" for="d-${d.id}"><input type="radio" name="d" id="d-${d.id}" value="${d.id}" ${st.del===d.id?"checked":""}><span>${d.name}<small>${d.note}</small></span><b>${d.price===0||c.items>=FREE?"0 ₽":rub(d.price)}</b></label>`).join("")}</div>
+      ${st.del!=="store"?`<label class="f" for="a">Адрес или пункт выдачи<input id="a" autocomplete="street-address"></label>`:""}</div>
+    <div class="box"><h2>Оплата</h2><p style="margin:0;color:var(--ink-2)">При получении, после примерки: картой или по СБП. Не подошло — отдаёте курьеру и ничего не платите за товар.</p></div>
+    <p class="err" id="err" aria-live="polite"></p>
+  </div>
+  <aside class="sum"><h2 style="font-size:30px">Заказ</h2>
+    ${cart.map(l=>`<div class="it"><div class="mini">${shoeSVG(l.model,l.c,{text:l.text})}</div><span>${l.name} × ${l.q}<small>${MODELS[l.model].name} · ${l.size} RU${l.text?` · «${l.text}»`:""}</small></span><b>${rub(l.price*l.q)}</b></div>`).join("")}
+    <div class="promo"><input id="pr" placeholder="Промокод" aria-label="Промокод" value="${st.promo?"SHAG500":""}"><button type="button" id="apply">ОК</button></div>
+    <div class="msg" id="pm">${st.promo?"−500 ₽ на заказ":"Для примера: SHAG500"}</div>
+    <div class="lines2"><div><span>Товары</span><span>${rub(c.items)}</span></div>${c.disc?`<div><span>Промокод</span><span>−${rub(c.disc)}</span></div>`:""}<div><span>Доставка</span><span>${c.ship?rub(c.ship):"бесплатно"}</span></div></div>
+    <div class="tot"><span>Итого</span><b>${rub(c.total)}</b></div>
+    <button class="btn lime" id="go">Подтвердить заказ</button>
+    <span style="font-size:12.5px;color:#76766F">Демо: заказ никуда не отправится.</span>
+  </aside></div>`;
+  document.getElementById("del").onchange = e=>{ st.del = e.target.value; render(); };
+  document.getElementById("apply").onclick = ()=>{ const v = document.getElementById("pr").value.trim().toUpperCase(); if(v==="SHAG500"){ st.promo = true; render(); } else document.getElementById("pm").textContent = v ? "Промокод не найден" : "Введите промокод"; };
+  document.getElementById("go").onclick = ()=>{
+    const n = document.getElementById("n").value.trim(), p = document.getElementById("p").value.trim();
+    if(!n || !p){ document.getElementById("err").textContent = "Укажите имя и телефон — курьер позвонит перед доставкой."; return; }
+    const total = calc().total, num = "SH-" + String(Date.now()).slice(-5);
+    const custom = cart.some(l=>l.custom);
+    cart = []; save();
+    app.innerHTML = `<div class="done"><span class="pill">Заказ ${num}</span><h2>Готово, ${n}!</h2><p style="color:var(--ink-2);max-width:46ch">${custom?"Своя пара уйдёт в пошив завтра, через 10 дней отправим. ":""}Сумма ${rub(total)}, оплата после примерки. Это демо-сайт: заказ не создан.</p><a class="btn" href="index.html">В каталог</a></div>`;
+    scrollTo(0,0);
+  };
+}
+document.addEventListener("cart", ()=>{ if(!document.querySelector(".done .pill")) render(); });
+render();
+</script>
+</body>
+</html>

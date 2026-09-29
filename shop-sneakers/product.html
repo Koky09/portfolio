@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кеды — ШАГ</title>
+<meta name="description" content="Карточка модели: размеры в наличии, материалы, доставка. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .pdp{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding-block:8px 40px;align-items:start}
+  @media (max-width:960px){.pdp{grid-template-columns:1fr}}
+  .stage{border-radius:32px;aspect-ratio:5/4;position:relative;overflow:hidden;display:grid;place-items:center}
+  .pair{position:relative;width:88%}
+  .pair .a{position:relative;z-index:2;animation:bob 4s ease-in-out infinite}
+  .pair .b{position:absolute;inset:0;transform:translate(9%,-20%) scale(.84);filter:brightness(.86) saturate(.95)}
+  .pair{padding-top:8%}
+  @keyframes bob{50%{transform:translateY(-6px)}}
+  .views{position:absolute;left:16px;bottom:16px;display:flex;gap:6px}
+  .views button{border:0;background:rgba(255,255,255,.85);border-radius:999px;padding:8px 14px;font-weight:700;font-size:13.5px}
+  .views button[aria-pressed="true"]{background:var(--ink);color:var(--white)}
+  .panel{background:var(--white);border-radius:32px;padding:clamp(20px,3vw,32px);display:grid;gap:18px;position:sticky;top:90px}
+  @media (max-width:960px){.panel{position:static}}
+  .panel h1{font-size:clamp(44px,5vw,72px)}
+  .price{font-family:var(--display);font-size:36px}
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .facts div{background:var(--bg);border-radius:16px;padding:10px 14px}
+  .facts span{display:block;font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .facts b{font-size:15px}
+  .sizes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .sizes button{height:48px;border:1.5px solid var(--line);background:var(--white);border-radius:14px;font-weight:800;font-size:15px;position:relative}
+  .sizes button:hover:not([disabled]){border-color:var(--ink)}
+  .sizes button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--lime)}
+  .sizes button[disabled]{color:var(--muted);background:var(--bg);cursor:not-allowed;text-decoration:line-through}
+  .sizes button small{display:block;font-size:10.5px;font-weight:500;opacity:.7;line-height:1}
+  .shead{display:flex;justify-content:space-between;align-items:baseline}
+  .shead a{font-size:14px;font-weight:600}
+  .ship{display:grid;gap:8px;font-size:14.5px;color:var(--ink-2)}
+  .ship div{display:flex;gap:10px}
+  .ship div::before{content:"●";color:var(--lime);-webkit-text-stroke:1px var(--ink)}
+  .err{color:var(--red);font-weight:600;font-size:14.5px;min-height:20px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap" id="main"></main>
+<section style="padding-top:0"><div class="wrap"><div class="head"><h2>Ещё модели</h2></div><div class="grid" id="more"></div></div></section>
+<div id="footer"></div>
+<script src="shoe.js"></script>
+<script src="app.js"></script>
+<script>
+let size = null, view = "pair";
+function render(){
+  const slug = location.hash.slice(1) || PRODUCTS[0].slug;
+  const p = PRODUCTS.find(x=>x.slug===slug) || PRODUCTS[0];
+  document.title = `${p.name} — ШАГ`;
+  const svg = shoeSVG(p.model, p.c, {label:`Кеды ${p.name}`});
+  document.getElementById("main").innerHTML = `<div class="pdp">
+    <div class="stage" style="background:${p.bg}">
+      <div class="pair">${view==="pair" ? `<div class="b" aria-hidden="true">${svg}</div>` : ""}<div class="a">${svg}</div></div>
+      <div class="views" role="group" aria-label="Вид"><button data-v="pair" aria-pressed="${view==="pair"}">Пара</button><button data-v="side" aria-pressed="${view==="side"}">Сбоку</button></div>
+    </div>
+    <div class="panel">
+      ${p.tag ? `<span class="pill" style="justify-self:start">${p.tag}</span>` : ""}
+      <h1>${p.name}</h1>
+      <span class="price">${rub(p.price)}</span>
+      <div class="facts"><div><span>Модель</span><b>${MODELS[p.model].name}</b></div><div><span>Верх</span><b>${p.mat}</b></div><div><span>Подошва</span><b>${p.model==="run"?"EVA + резина":"вулк. резина"}</b></div><div><span>Стелька</span><b>ортопедическая</b></div></div>
+      <div><div class="shead"><b>Размер (RU)</b><a href="index.html#sizes">Как узнать размер</a></div>
+        <div class="sizes" id="sizes" style="margin-top:10px">${SIZES.map(([ru,eu,us,cm])=>{ const ok = stock(p.slug, ru); return `<button data-s="${ru}" aria-pressed="${size===ru}" ${ok?"":"disabled"} aria-label="Размер ${ru}${ok?"":", нет в наличии"}">${ru}<small>${String(cm).replace(".",",")} см</small></button>`; }).join("")}</div></div>
+      <p class="err" id="err" aria-live="polite"></p>
+      <button class="btn lime" id="buy">${size ? `В корзину · ${size} размер` : "Выберите размер"}</button>
+      <a class="btn white" href="constructor.html?from=${p.slug}" style="box-shadow:inset 0 0 0 1.5px var(--line)">Перекрасить в конструкторе</a>
+      <div class="ship"><div>Доставка СДЭК 1–5 дней, бесплатно от 10 000 ₽</div><div>Примерка перед оплатой</div><div>Обмен и возврат 30 дней</div></div>
+    </div></div>`;
+  document.getElementById("more").innerHTML = PRODUCTS.filter(x=>x.slug!==p.slug).slice(0,4).map(card).join("");
+  document.getElementById("sizes").onclick = e=>{ const b = e.target.closest("[data-s]"); if(!b || b.disabled) return; size = +b.dataset.s; render(); };
+  document.querySelector(".views").onclick = e=>{ const b = e.target.closest("[data-v]"); if(!b) return; view = b.dataset.v; render(); };
+  document.getElementById("buy").onclick = ()=>{
+    if(!size){ document.getElementById("err").textContent = "Сначала выберите размер — зачёркнутые закончились."; return; }
+    addToCart({slug:p.slug, name:p.name, model:p.model, c:p.c, size, price:p.price}); openCart();
+  };
+}
+window.addEventListener("hashchange", ()=>{ size = null; render(); scrollTo(0,0); });
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Конструктор кед — ШАГ</title>
+<meta name="description" content="Соберите свою пару: цвет каждой детали, модель и имя на подошве. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  h1{font-size:clamp(44px,6vw,88px);padding-top:12px}
+  .lab{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;padding-block:20px 40px;align-items:start}
+  @media (max-width:980px){.lab{grid-template-columns:1fr}}
+  .canvas{position:sticky;top:90px;background:var(--white);border-radius:32px;padding:20px;display:grid;gap:14px}
+  @media (max-width:980px){.canvas{position:static}}
+  .canvas .shoe{border-radius:24px;aspect-ratio:4/3;display:grid;place-items:center;transition:background .3s}
+  .canvas .shoe svg{width:92%}
+  .canvas .shoe svg path{transition:fill .25s}
+  .bgs{display:flex;gap:6px;justify-content:center}
+  .bgs button{width:26px;height:26px;border-radius:50%;border:2px solid var(--white);box-shadow:0 0 0 1px var(--line)}
+  .bgs button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+  .ctrl{display:grid;gap:14px}
+  .box{background:var(--white);border-radius:24px;padding:18px}
+  .box h3{font-size:18px;margin-bottom:12px}
+  .models{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  @media (max-width:520px){.models{grid-template-columns:repeat(3,1fr)}}
+  .models button{border:1.5px solid var(--line);background:var(--bg);border-radius:14px;padding:6px 4px;font-size:12.5px;font-weight:700;display:grid;gap:2px}
+  .models button svg{width:100%}
+  .models button[aria-pressed="true"]{border-color:var(--ink);background:var(--lime)}
+  .parts{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .parts button{border:0;background:var(--bg);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+  .parts button i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+  .parts button[aria-pressed="true"]{background:var(--ink);color:var(--white)}
+  .pal{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+  .pal button{aspect-ratio:1;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1px var(--line);transition:transform .15s}
+  .pal button:hover{transform:scale(1.1)}
+  .pal button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+  .name{display:flex;gap:8px}
+  .name input{flex:1;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;font-family:var(--display);font-size:20px;text-transform:uppercase}
+  .name input:focus{outline:none;border-color:var(--ink)}
+  .order{background:var(--ink);color:var(--white);border-radius:24px;padding:18px;display:grid;gap:12px}
+  .order .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .order .tot{font-family:var(--display);font-size:34px}
+  .order select{height:48px;border-radius:14px;border:0;padding:0 12px;font-weight:700;color:var(--ink);background:var(--white)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .actions button{border:0;background:var(--bg);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap">
+  <h1>Конструктор</h1>
+  <div class="lab">
+    <div class="canvas">
+      <div class="shoe" id="shoe"></div>
+      <div class="bgs" id="bgs" role="group" aria-label="Фон"></div>
+      <div class="actions"><button id="rand">Случайные цвета</button><button id="reset">Сбросить</button></div>
+    </div>
+    <div class="ctrl">
+      <div class="box"><h3>1. Модель</h3><div class="models" id="models"></div></div>
+      <div class="box"><h3>2. Цвета деталей</h3><div class="parts" id="parts" role="group" aria-label="Деталь"></div><div class="pal" id="pal" role="group" aria-label="Цвет"></div></div>
+      <div class="box"><h3>3. Имя на подошве <span style="font-family:var(--body);text-transform:none;font-size:14px;color:var(--muted)">+1 500 ₽, до 6 букв</span></h3>
+        <div class="name"><input id="txt" maxlength="6" placeholder="Например, ОЛЯ" aria-label="Текст на подошве" autocomplete="off"></div></div>
+      <div class="order">
+        <div class="row"><span>Своя пара · пошив 10 дней</span><span class="tot" id="tot"></span></div>
+        <div class="row"><label for="sz" style="font-weight:700">Размер</label><select id="sz"></select></div>
+        <button class="btn lime" id="add">В корзину</button>
+      </div>
+    </div>
+  </div>
+</main>
+<div id="footer"></div>
+<script src="shoe.js"></script>
+<script src="app.js"></script>
+<script>
+const PARTS = {upper:"Верх", toe:"Носок", heel:"Пятка", stripe:"Полоска", laces:"Шнурки", midsole:"Подошва", outsole:"Протектор"};
+const PALETTE = ["#F4F4F0","#E6E6DF","#1C1C1C","#6B6D70","#C8F03C","#E0452B","#F2C230","#F08A3C","#E86A8E","#A8DCC6","#2E6B55","#9CC7E8","#1D3F8C","#7B4FA0","#C9A877","#7A5A3A"];
+const BGS = ["#EFEFEA","#DCE9B4","#F2D2C8","#CFE3F3","#1C1C1C"];
+const BASE = 9900, NAME = 1500;
+const from = PRODUCTS.find(p=>p.slug===new URLSearchParams(location.search).get("from"));
+const init = () => ({model: from ? from.model : "low", c: {...(from ? from.c : PRODUCTS[0].c)}, part:"upper", bg: from ? from.bg : BGS[0]});
+let st = init();
+function draw(){
+  const t = document.getElementById("txt").value.trim();
+  const shoe = document.getElementById("shoe");
+  shoe.style.background = st.bg;
+  shoe.innerHTML = shoeSVG(st.model, st.c, {text:t, label:"Ваша пара"});
+  document.getElementById("tot").textContent = rub(BASE + (t ? NAME : 0));
+}
+function render(){
+  document.getElementById("models").innerHTML = Object.entries(MODELS).map(([k,v])=>`<button data-m="${k}" aria-pressed="${st.model===k}">${shoeSVG(k, st.c)}${v.name}</button>`).join("");
+  document.getElementById("parts").innerHTML = Object.entries(PARTS).map(([k,v])=>`<button data-p="${k}" aria-pressed="${st.part===k}"><i style="background:${st.c[k]}"></i>${v}</button>`).join("");
+  document.getElementById("pal").innerHTML = PALETTE.map(c=>`<button data-c="${c}" style="background:${c}" aria-pressed="${st.c[st.part].toLowerCase()===c.toLowerCase()}" aria-label="Цвет ${c}"></button>`).join("");
+  document.getElementById("bgs").innerHTML = BGS.map(b=>`<button data-b="${b}" style="background:${b}" aria-pressed="${st.bg===b}" aria-label="Фон"></button>`).join("");
+  draw();
+}
+document.getElementById("models").onclick = e=>{ const b = e.target.closest("[data-m]"); if(b){ st.model = b.dataset.m; render(); } };
+document.getElementById("parts").onclick = e=>{ const b = e.target.closest("[data-p]"); if(b){ st.part = b.dataset.p; render(); } };
+document.getElementById("pal").onclick = e=>{ const b = e.target.closest("[data-c]"); if(b){ st.c[st.part] = b.dataset.c; render(); } };
+document.getElementById("bgs").onclick = e=>{ const b = e.target.closest("[data-b]"); if(b){ st.bg = b.dataset.b; render(); } };
+document.getElementById("txt").oninput = e=>{ e.target.value = e.target.value.replace(/[^A-Za-zА-Яа-яЁё0-9 ]/g,""); draw(); };
+document.getElementById("rand").onclick = ()=>{ const r = () => PALETTE[Math.floor(Math.random()*PALETTE.length)]; Object.keys(PARTS).forEach(k=>st.c[k] = r()); st.c.laces = st.c.midsole = "#F4F4F0"; st.model = Object.keys(MODELS)[Math.floor(Math.random()*5)]; render(); };
+document.getElementById("reset").onclick = ()=>{ st = init(); document.getElementById("txt").value = ""; render(); };
+document.getElementById("sz").innerHTML = SIZES.map(([ru,,, cm])=>`<option value="${ru}" ${ru===41?"selected":""}>${ru} RU · ${String(cm).replace(".",",")} см</option>`).join("");
+document.getElementById("add").onclick = ()=>{
+  const t = document.getElementById("txt").value.trim();
+  addToCart({slug:"custom", custom:true, name:"Своя пара", model:st.model, c:{...st.c}, text:t, size:+document.getElementById("sz").value, price:BASE + (t?NAME:0)});
+  openCart();
+};
+render();
+</script>
+</body>
+</html>
