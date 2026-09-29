@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Оформление — Подоконник</title>
+<meta name="description" content="Оформление заказа растений: доставка в тёплой машине, выбор дня. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Ubuntu:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  h1{font-size:clamp(44px,6vw,88px);padding-top:28px}
+  .co{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;padding-block:20px 40px;align-items:start}
+  @media (max-width:960px){.co{grid-template-columns:1fr}}
+  .box{background:var(--white);border-radius:30px;padding:clamp(18px,3vw,30px);display:grid;gap:14px;margin-bottom:16px}
+  .box h2{font-size:28px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .f{display:grid;gap:6px;font-weight:700;font-size:14.5px}
+  .f input{height:52px;border:1.5px solid var(--line);border-radius:16px;padding:0 14px;font-size:16px;background:var(--bg)}
+  .f input:focus{outline:none;border-color:var(--forest);background:var(--white)}
+  .days{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+  .days button{flex:none;border:1.5px solid var(--line);background:var(--bg);border-radius:16px;padding:10px 12px;min-width:84px;text-align:center;font-weight:700}
+  .days button small{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+  .days button[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:var(--white)}
+  .days button[aria-pressed="true"] small{color:#B7C7BC}
+  .days button[disabled]{opacity:.4;cursor:not-allowed}
+  .slots{display:flex;gap:6px;flex-wrap:wrap}
+  .slots button{border:1.5px solid var(--line);background:var(--bg);border-radius:999px;padding:8px 14px;font-weight:700}
+  .slots button[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:var(--white)}
+  .note{background:#FDF1D6;border-radius:18px;padding:12px 16px;font-size:14.5px}
+  .sum{background:var(--forest);color:var(--white);border-radius:30px;padding:22px;display:grid;gap:12px;position:sticky;top:90px}
+  @media (max-width:960px){.sum{position:static}}
+  .it{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;font-size:15px}
+  .it img{width:48px;height:58px;object-fit:cover;border-radius:12px 12px 24px 24px}
+  .it small{display:block;color:#B7C7BC;font-size:13px}
+  .rows{border-top:1px solid var(--forest-2);padding-top:12px;display:grid;gap:6px}
+  .rows div{display:flex;justify-content:space-between}
+  .tot{display:flex;justify-content:space-between;align-items:end;border-top:1px solid var(--forest-2);padding-top:12px}
+  .tot b{font-family:var(--display);font-size:40px}
+  .err{color:#B64A33;font-weight:700;min-height:20px}
+  .done{background:var(--white);border-radius:40px;padding:clamp(24px,5vw,56px);display:grid;gap:14px;justify-items:center;text-align:center;margin-block:20px 40px}
+  .done h2{font-size:clamp(38px,5vw,68px)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap"><h1>Оформление</h1><div id="app"></div></main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const FREE = 5000, SHIP = 490;
+const SLOTS = ["10–14","14–18","18–22"];
+const today = new Date(); today.setHours(0,0,0,0);
+const DAYS = Array.from({length:7},(_,i)=>{ const d = new Date(today); d.setDate(today.getDate()+i+1); return d; });
+let st = {day:0, slot:1};
+// зимой (ноябрь–март) — только курьер в тёплой машине
+const winter = [10,11,0,1,2].includes(today.getMonth());
+function calc(){ const items = cartTotal(); return {items, ship: items>=FREE ? 0 : SHIP, total: items + (items>=FREE?0:SHIP)}; }
+function render(){
+  const app = document.getElementById("app");
+  if(!cart.length){ app.innerHTML = `<div class="done"><h2>Корзина пустая</h2><p style="color:var(--ink-2)">Подберите растение под свой подоконник.</p><a class="btn" href="index.html#finder">Подобрать</a></div>`; return; }
+  const c = calc();
+  app.innerHTML = `<div class="co"><div>
+    <div class="box"><h2>Получатель</h2><div class="row2"><label class="f" for="n">Имя<input id="n" autocomplete="name"></label><label class="f" for="p">Телефон<input id="p" type="tel" autocomplete="tel"></label></div>
+      <label class="f" for="a">Адрес<input id="a" autocomplete="street-address" placeholder="Улица, дом, квартира, этаж"></label></div>
+    <div class="box"><h2>Когда привезти</h2>
+      <div class="days" role="group" aria-label="День доставки">${DAYS.map((d,i)=>`<button data-d="${i}" aria-pressed="${st.day===i}" ${d.getDay()===1?"disabled":""}>${d.toLocaleDateString("ru-RU",{weekday:"short"})}<small>${d.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})}</small></button>`).join("")}</div>
+      <div class="slots" role="group" aria-label="Время">${SLOTS.map((s,i)=>`<button data-s="${i}" aria-pressed="${st.slot===i}">${s}</button>`).join("")}</div>
+      <div class="note">${winter ? "Сейчас холодно: везём только курьером в машине с подогревом, растения упакованы в термопакет." : "Везём в машине с климат-контролем, растения закреплены в коробках."} В понедельник доставки нет — у теплицы санитарный день.</div></div>
+    <p class="err" id="err" aria-live="polite"></p></div>
+    <aside class="sum"><h2 style="font-size:30px">Заказ</h2>
+      ${cart.map(l=>{ const p = PLANTS.find(x=>x.slug===l.slug); return `<div class="it"><img src="${p.img}" alt=""><span>${p.name}${l.q>1?` × ${l.q}`:""}<small>${l.size} · ${POTS[l.pot][0].toLowerCase()}</small></span><b>${rub(linePrice(l))}</b></div>`; }).join("")}
+      <div class="rows"><div><span>Растения</span><span>${rub(c.items)}</span></div><div><span>Доставка</span><span>${c.ship?rub(c.ship):"бесплатно"}</span></div></div>
+      <div class="tot"><span>Итого</span><b>${rub(c.total)}</b></div>
+      <button class="btn blush" id="go">Подтвердить заказ</button>
+      <span style="font-size:12.5px;color:#8FA595">Демо: оплата не подключена.</span>
+    </aside></div>`;
+  document.querySelector(".days").onclick = e=>{ const b = e.target.closest("[data-d]"); if(b && !b.disabled){ st.day = +b.dataset.d; render(); } };
+  document.querySelector(".slots").onclick = e=>{ const b = e.target.closest("[data-s]"); if(b){ st.slot = +b.dataset.s; render(); } };
+  document.getElementById("go").onclick = ()=>{
+    const n = document.getElementById("n").value.trim(), p = document.getElementById("p").value.trim(), a = document.getElementById("a").value.trim();
+    if(!n || !p || !a){ document.getElementById("err").textContent = "Заполните имя, телефон и адрес — курьер позвонит за час."; return; }
+    const when = `${DAYS[st.day].toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"})}, ${SLOTS[st.slot]}`;
+    const slugs = cart.map(l=>l.slug); try{ localStorage.setItem("podokonnik-last", JSON.stringify(slugs)); }catch(_){}
+    cart = []; save();
+    app.innerHTML = `<div class="done"><span class="kicker">Заказ принят</span><h2>Спасибо, ${n}!</h2><p style="color:var(--ink-2);max-width:46ch">Привезём ${when}. Чтобы растения прижились, мы уже подготовили для них график полива.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn" href="care.html">Открыть график полива</a><a class="btn soft" href="index.html">В каталог</a></div><p style="font-size:13px;color:var(--muted)">Это демо-сайт: заказ не создан.</p></div>`;
+    scrollTo(0,0);
+  };
+}
+// первый доступный день — не понедельник
+if(DAYS[st.day].getDay()===1) st.day = 1;
+document.addEventListener("cart", ()=>{ if(!document.querySelector(".done .kicker")) render(); });
+render();
+</script>
+</body>
+</html>

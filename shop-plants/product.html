@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Растение — Подоконник</title>
+<meta name="description" content="Карточка растения: размер, кашпо, свет, полив, токсичность. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Ubuntu:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .crumbs{font-size:14.5px;color:var(--muted);padding-top:20px}
+  .crumbs a{text-decoration:none}
+  .pdp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(24px,5vw,64px);padding-block:18px 40px}
+  @media (max-width:900px){.pdp{grid-template-columns:1fr}}
+  .gal{display:grid;gap:10px;align-content:start}
+  .gal .main{border-radius:200px 200px 32px 32px;overflow:hidden;aspect-ratio:4/5;background:var(--white);position:relative}
+  .gal .main img{width:100%;height:100%;object-fit:cover}
+  .pot{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:44%;height:22%;border-radius:10px 10px 40% 40% / 10px 10px 30% 30%;mix-blend-mode:multiply;opacity:.0;transition:opacity .3s,background .3s}
+  .thumbs{display:flex;gap:8px}
+  .thumbs button{width:74px;height:90px;border:2px solid transparent;border-radius:16px;overflow:hidden;padding:0;background:var(--white)}
+  .thumbs button[aria-current="true"]{border-color:var(--forest)}
+  .thumbs img{width:100%;height:100%;object-fit:cover}
+  .info{display:grid;gap:18px;align-content:start}
+  .info h1{font-size:clamp(40px,5vw,72px)}
+  .latin{font-style:italic;color:var(--muted);margin-top:-8px}
+  .passport{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .passport div{background:var(--white);border-radius:18px;padding:12px 14px}
+  .passport span{display:block;font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .passport b{font-size:16px}
+  .passport .warn{background:#FBE3DC}
+  .passport .ok{background:#DDEEDF}
+  .lightbar{display:flex;gap:4px;margin-top:6px}
+  .lightbar i{flex:1;height:8px;border-radius:4px;background:var(--line)}
+  .lightbar i.on{background:var(--sun)}
+  .opt h3{font-family:var(--body);font-weight:700;font-size:15px;margin-bottom:10px}
+  .opts{display:flex;gap:8px;flex-wrap:wrap}
+  .opts button{border:1.5px solid var(--line);background:var(--white);border-radius:16px;padding:10px 14px;font-weight:500;text-align:left;display:flex;align-items:center;gap:10px}
+  .opts button small{display:block;color:var(--muted);font-size:13px}
+  .opts button i{width:22px;height:22px;border-radius:6px 6px 10px 10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
+  .opts button[aria-pressed="true"]{border-color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest)}
+  .buy{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:6px}
+  .buy .price{font-family:var(--display);font-weight:700;font-size:42px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap" id="main"></main>
+<section style="padding-top:0"><div class="wrap"><div class="head"><h2>С похожим уходом</h2></div><div class="grid" id="more"></div></div></section>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+let st = {size:null, pot:"none", img:0};
+function render(){
+  const slug = location.hash.slice(1) || PLANTS[0].slug;
+  const p = PLANTS.find(x=>x.slug===slug) || PLANTS[0];
+  const sizes = Object.keys(p.price); if(!st.size || !p.price[st.size]) st.size = sizes[Math.min(1,sizes.length-1)];
+  const imgs = [p.img, p.img2].filter(Boolean);
+  document.title = `${p.name} — Подоконник`;
+  document.getElementById("main").innerHTML = `
+    <div class="crumbs"><a href="index.html#catalog">Растения</a> / ${p.name}</div>
+    <div class="pdp">
+      <div class="gal"><div class="main"><img src="${imgs[st.img]||imgs[0]}" alt="${p.name}"></div>
+        ${imgs.length>1?`<div class="thumbs">${imgs.map((s,i)=>`<button data-img="${i}" aria-current="${st.img===i}" aria-label="Фото ${i+1}"><img src="${s}" alt=""></button>`).join("")}</div>`:""}</div>
+      <div class="info">
+        <h1>${p.name}</h1><span class="latin">${p.latin}</span>
+        <p style="margin:0;color:var(--ink-2);font-size:17.5px">${p.about}</p>
+        <div class="passport">
+          <div><span>Свет</span><b>${lightShort(p)}</b><div class="lightbar" aria-hidden="true">${[1,2,3,4].map(l=>`<i class="${p.light.includes(l)?"on":""}"></i>`).join("")}</div></div>
+          <div><span>Полив</span><b>раз в ${p.water} дней</b></div>
+          <div><span>Уход</span><b>${CARE[p.care]}</b></div>
+          <div class="${p.safe?"ok":"warn"}"><span>Питомцы</span><b>${p.safe?"не ядовито":"ядовито для кошек и собак"}</b></div>
+        </div>
+        <div class="opt"><h3>Размер</h3><div class="opts" id="oSize">${sizes.map(s=>`<button data-s="${s}" aria-pressed="${st.size===s}"><span>${s}<small>${p.h[s]} · ${rub(p.price[s])}</small></span></button>`).join("")}</div></div>
+        <div class="opt"><h3>Кашпо</h3><div class="opts" id="oPot">${Object.entries(POTS).map(([k,[n,pr,c]])=>`<button data-p="${k}" aria-pressed="${st.pot===k}"><i style="background:${c}"></i><span>${n}<small>${pr?"+"+rub(pr):"входит в цену"}</small></span></button>`).join("")}</div></div>
+        <div class="buy"><span class="price">${rub(p.price[st.size] + POTS[st.pot][1])}</span><button class="btn" id="buy">В корзину</button></div>
+        <p style="margin:0;font-size:14px;color:var(--muted)">Растение живое, поэтому форма листьев и куста отличается от фото. Высота указана вместе с горшком.</p>
+      </div>
+    </div>`;
+  document.getElementById("oSize").onclick = e=>{ const b = e.target.closest("[data-s]"); if(b){ st.size = b.dataset.s; render(); } };
+  document.getElementById("oPot").onclick = e=>{ const b = e.target.closest("[data-p]"); if(b){ st.pot = b.dataset.p; render(); } };
+  const th = document.querySelector(".thumbs"); if(th) th.onclick = e=>{ const b = e.target.closest("[data-img]"); if(b){ st.img = +b.dataset.img; render(); } };
+  document.getElementById("buy").onclick = ()=>{ addToCart(p.slug, st.size, st.pot); openCart(); };
+  document.getElementById("more").innerHTML = PLANTS.filter(x=>x.slug!==p.slug).sort((a,b)=>Math.abs(a.water-p.water)-Math.abs(b.water-p.water)).slice(0,4).map(card).join("");
+}
+window.addEventListener("hashchange", ()=>{ st = {size:null, pot:"none", img:0}; render(); scrollTo(0,0); });
+render();
+</script>
+</body>
+</html>

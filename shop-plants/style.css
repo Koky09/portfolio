@@ -1,0 +1,93 @@
+/* Подоконник — магазин комнатных растений. Общие стили */
+:root{
+  --bg:#F1F4EE; --white:#FFFFFF; --forest:#1F3D2B; --forest-2:#2C5439; --leaf:#4E8A55; --ink:#17241B; --ink-2:#4F5E53; --muted:#86928A; --line:#D7DED5;
+  --blush:#F2C4B8; --blush-2:#E7A796; --sun:#F4C95D;
+  --display:"Philosopher","Georgia",serif; --body:"Ubuntu","Helvetica Neue",Arial,sans-serif;
+  --gut:clamp(16px,4vw,56px); --r:26px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16.5px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--leaf);outline-offset:3px}
+.wrap{max-width:1320px;margin-inline:auto;padding-inline:var(--gut)}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:700;letter-spacing:-.01em;line-height:1.02;text-wrap:balance}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--leaf)}
+
+.demo{background:var(--forest);color:#DDE7DF;font-size:12.5px;text-align:center;padding:8px 16px}
+.demo a{color:var(--blush)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:22px;height:70px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:700;font-size:26px}
+.logo svg{width:32px;height:32px}
+.menu{display:flex;gap:4px;margin-left:auto}
+.menu a{text-decoration:none;padding:8px 16px;border-radius:999px;font-weight:500;font-size:15.5px}
+.menu a:hover{background:var(--white)}
+.menu a[aria-current="page"]{background:var(--forest);color:var(--white)}
+.cart-btn{display:flex;align-items:center;gap:8px;background:var(--blush);border:0;border-radius:999px;padding:10px 18px;font-weight:700;font-size:15px}
+.cart-btn b{background:var(--forest);color:var(--white);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12.5px;padding:0 6px}
+@media (max-width:760px){.menu{display:none}.cart-btn{margin-left:auto}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 28px;border-radius:999px;background:var(--forest);color:var(--white);border:0;text-decoration:none;font-weight:700;font-size:16px;transition:background .15s}
+.btn:hover{background:var(--forest-2)}
+.btn.blush{background:var(--blush);color:var(--ink)}
+.btn.blush:hover{background:var(--blush-2)}
+.btn.soft{background:var(--white);color:var(--ink)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+
+section{padding-block:clamp(56px,7vw,104px)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:30px}
+.head h2{font-size:clamp(38px,5vw,68px)}
+.head p{margin:0;max-width:44ch;color:var(--ink-2)}
+
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px 18px}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}}
+.card{display:flex;flex-direction:column;gap:8px;text-decoration:none;position:relative}
+.card .ph{aspect-ratio:4/5;border-radius:var(--r) var(--r) 120px 120px;overflow:hidden;background:var(--white)}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.card:hover img{transform:scale(1.05)}
+.card .tags{position:absolute;left:10px;top:10px;display:flex;gap:4px;flex-wrap:wrap}
+.card .tags span{background:rgba(255,255,255,.92);border-radius:999px;padding:3px 9px;font-size:12px;font-weight:700}
+.card .tags .safe{background:var(--forest);color:var(--white)}
+.card h3{font-size:22px;margin-top:4px}
+.card .latin{font-style:italic;color:var(--muted);font-size:14px;margin-top:-4px}
+.card .row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.card .price{font-weight:700;font-size:17px}
+.icons{display:flex;gap:10px;color:var(--ink-2);font-size:13.5px}
+
+/* корзина */
+.scrim{position:fixed;inset:0;background:rgba(23,36,27,.4);z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--bg);z-index:70;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column}
+.drawer.on{transform:none}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line)}
+.drawer header h3{font-size:30px}
+.x{border:0;background:var(--white);width:42px;height:42px;border-radius:50%;font-size:20px}
+.lines{flex:1;overflow:auto;padding:0 22px}
+.line{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.line img{width:62px;height:76px;object-fit:cover;border-radius:14px 14px 30px 30px}
+.line b{display:block}
+.line small{color:var(--muted);font-size:13.5px}
+.qty{display:inline-flex;align-items:center;background:var(--white);border-radius:999px;margin-top:6px}
+.qty button{border:0;background:none;width:30px;height:30px;font-size:16px}
+.qty span{min-width:20px;text-align:center;font-weight:700;font-size:14px}
+.drawer footer{padding:18px 22px 22px;border-top:1px solid var(--line);display:grid;gap:12px}
+.sum{display:flex;justify-content:space-between;font-weight:700;font-size:19px}
+.empty{padding:40px 0;text-align:center;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--forest);color:var(--white);padding:12px 20px;border-radius:999px;font-weight:700;font-size:14.5px;z-index:80;transition:transform .3s,opacity .3s;white-space:nowrap}
+.toast.on{transform:translate(-50%,0);opacity:1}
+
+footer.site{background:var(--forest);color:#B7C7BC;margin-top:40px;border-radius:40px 40px 0 0}
+footer.site .wrap{padding-block:52px 28px;display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:24px;font-size:15px}
+@media (max-width:760px){footer.site .wrap{grid-template-columns:1fr 1fr}}
+footer.site h4{margin:0 0 10px;font-family:var(--display);color:var(--white);font-size:20px}
+footer.site ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+footer.site a{text-decoration:none}
+footer.site a:hover{color:var(--blush)}
+footer.site .fine{grid-column:1/-1;border-top:1px solid var(--forest-2);padding-top:16px;font-size:12.5px;color:#8FA595}

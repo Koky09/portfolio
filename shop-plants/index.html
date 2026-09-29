@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Подоконник — комнатные растения</title>
+<meta name="description" content="Подоконник: комнатные растения с доставкой. Подбор по свету и питомцам, график полива. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Ubuntu:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .hero{position:relative;background:var(--forest);color:var(--white);overflow:hidden;border-radius:0 0 48px 48px}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:32px;align-items:center;padding-block:clamp(40px,6vw,80px)}
+  @media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+  .hero h1{font-size:clamp(46px,6.4vw,100px)}
+  .hero h1 span{color:var(--blush)}
+  .hero p{font-size:clamp(17px,1.5vw,20px);color:#CBD9CF;max-width:40ch;margin:22px 0 28px}
+  .hero .ph{border-radius:220px 220px 32px 32px;overflow:hidden;aspect-ratio:4/5;max-height:560px}
+  .hero .ph img{width:100%;height:100%;object-fit:cover}
+  .hero .facts{display:flex;gap:24px;flex-wrap:wrap;margin-top:34px}
+  .hero .facts b{display:block;font-family:var(--display);font-size:30px;color:var(--white)}
+  .hero .facts span{font-size:14px;color:#A9BFB0}
+
+  .finder{background:var(--white);border-radius:40px;padding:clamp(22px,4vw,48px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,4vw,48px)}
+  @media (max-width:980px){.finder{grid-template-columns:1fr}}
+  .q{margin-bottom:22px}
+  .q h3{font-family:var(--body);font-weight:700;font-size:16px;margin-bottom:10px}
+  .opts{display:flex;gap:6px;flex-wrap:wrap}
+  .opts button{border:1.5px solid var(--line);background:var(--bg);border-radius:16px;padding:10px 14px;text-align:left;font-weight:500;font-size:15px}
+  .opts button small{display:block;color:var(--muted);font-size:12.5px}
+  .opts button[aria-pressed="true"]{border-color:var(--forest);background:var(--forest);color:var(--white)}
+  .opts button[aria-pressed="true"] small{color:#B7C7BC}
+  .res-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+  .res-head b{font-family:var(--display);font-size:28px}
+  .res{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  @media (max-width:640px){.res{grid-template-columns:1fr 1fr}}
+  .res .card .ph{aspect-ratio:1;border-radius:22px 22px 80px 80px}
+  .why{font-size:13px;color:var(--leaf);font-weight:700}
+
+  .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:26px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chips button{border:0;background:var(--white);border-radius:999px;padding:9px 16px;font-weight:500;font-size:15px}
+  .chips button[aria-pressed="true"]{background:var(--forest);color:var(--white)}
+  .tog{display:inline-flex;align-items:center;gap:8px;font-weight:700;cursor:pointer;margin-left:auto}
+  .tog input{width:18px;height:18px;accent-color:var(--forest)}
+
+  .shop{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+  @media (max-width:800px){.shop{grid-template-columns:1fr}}
+  .shop img{border-radius:32px;width:100%;aspect-ratio:4/3;object-fit:cover}
+  .shop .t{background:var(--blush);border-radius:32px;padding:clamp(22px,4vw,44px);display:grid;gap:14px;align-content:center}
+  .shop h2{font-size:clamp(32px,4vw,52px)}
+  .shop ul{margin:0;padding-left:20px;display:grid;gap:8px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <section class="hero" style="padding:0">
+    <div class="wrap">
+      <div>
+        <span class="kicker" style="color:var(--blush)">Растения с доставкой</span>
+        <h1>Зелень, которая <span>выживет</span> у вас дома</h1>
+        <p>Подберём растение под ваш свет, питомцев и забывчивость. Привезём в тёплой машине, а если погибнет за две недели — заменим.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn blush" href="#finder">Подобрать растение</a><a class="btn soft" href="#catalog">Весь каталог</a></div>
+        <div class="facts"><div><b>14 дней</b><span>гарантия приживаемости</span></div><div><b>+12 °C</b><span>в машине даже зимой</span></div><div><b>5 из 12</b><span>безопасны для котов</span></div></div>
+      </div>
+      <div class="ph"><img src="img/hero.jpg" alt="Тень монстеры на терракотовой стене" fetchpriority="high"></div>
+    </div>
+  </section>
+
+  <section id="finder">
+    <div class="wrap">
+      <div class="finder">
+        <div>
+          <span class="kicker">Подбор за 3 вопроса</span>
+          <h2 style="font-size:clamp(34px,4vw,52px);margin:10px 0 24px">Какое растение вам подойдёт</h2>
+          <div class="q"><h3>Куда смотрят окна?</h3><div class="opts" id="qLight"></div></div>
+          <div class="q"><h3>Есть кошка или собака?</h3><div class="opts" id="qPet"></div></div>
+          <div class="q" style="margin-bottom:0"><h3>Как часто готовы поливать?</h3><div class="opts" id="qWater"></div></div>
+        </div>
+        <div>
+          <div class="res-head"><b id="resTitle"></b><a href="#catalog" style="font-size:14.5px">весь каталог</a></div>
+          <div class="res" id="res" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="catalog" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Все растения</h2><p>Цена указана в техническом горшке. Кашпо выбирается в карточке.</p></div>
+      <div class="filters">
+        <div class="chips" id="fCare" role="group" aria-label="Сложность ухода"></div>
+        <label class="tog" for="fSafe"><input type="checkbox" id="fSafe">Только безопасные для питомцев</label>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap shop">
+      <img src="img/shop.jpg" alt="Стеллажи с растениями в магазине" loading="lazy">
+      <div class="t">
+        <span class="kicker" style="color:var(--forest)">Шоурум</span>
+        <h2>Приходите выбрать вживую</h2>
+        <ul><li>ул. Садовая-Кудринская, 9 (адрес условный)</li><li>Ежедневно 10:00–21:00</li><li>Пересадка в ваше кашпо — бесплатно</li></ul>
+        <a class="btn" href="care.html" style="justify-self:start">Составить график полива</a>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const Q = {
+  light:[["n","Север","или окно далеко",[1,2]],["ew","Восток / запад","утреннее или вечернее солнце",[2,3]],["s","Юг","много прямого солнца",[3,4]]],
+  pet:[["yes","Есть",""],["no","Нет",""]],
+  water:[["often","Раз в неделю","люблю ухаживать",5],["mid","Раз в 2 недели","по настроению",10],["rare","Забываю","честно",16]],
+};
+const qs = {light:"ew", pet:"yes", water:"mid"};
+function opts(id, key){ document.getElementById(id).innerHTML = Q[key].map(([k,n,s])=>`<button data-k="${key}" data-v="${k}" aria-pressed="${qs[key]===k}">${n}${s?`<small>${s}</small>`:""}</button>`).join(""); }
+function finder(){
+  opts("qLight","light"); opts("qPet","pet"); opts("qWater","water");
+  const L = Q.light.find(x=>x[0]===qs.light)[3], W = Q.water.find(x=>x[0]===qs.water)[3];
+  const fit = PLANTS.filter(p=>p.light.some(l=>L.includes(l)) && (qs.pet==="no"||p.safe) && p.water >= W*.7 && !(qs.water==="rare" && p.care===3));
+  document.getElementById("resTitle").textContent = fit.length ? `Подходят: ${fit.length}` : "Сложное сочетание";
+  document.getElementById("res").innerHTML = fit.slice(0,6).map(p=>card(p).replace("</a>", `<span class="why">${p.safe?"не опасна для питомцев · ":""}полив раз в ${p.water} дн.</span></a>`)).join("")
+    || `<p style="color:var(--ink-2);grid-column:1/-1">Для тёмной комнаты с котом и редким поливом идеального растения нет. Посмотрите хавортию для подоконника у окна или калатею, если готовы поливать чаще.</p>`;
+}
+document.querySelector(".finder").addEventListener("click", e=>{ const b = e.target.closest("[data-k]"); if(!b) return; qs[b.dataset.k] = b.dataset.v; finder(); });
+
+let care = 0, safeOnly = false;
+function catalog(){
+  document.getElementById("fCare").innerHTML = [[0,"Любой уход"],[1,"Легко"],[2,"Средне"],[3,"Капризные"]].map(([k,v])=>`<button data-c="${k}" aria-pressed="${care===k}">${v}</button>`).join("");
+  document.getElementById("grid").innerHTML = PLANTS.filter(p=>(!care||p.care===care)&&(!safeOnly||p.safe)).map(card).join("");
+}
+document.getElementById("fCare").addEventListener("click", e=>{ const b = e.target.closest("[data-c]"); if(!b) return; care = +b.dataset.c; catalog(); });
+document.getElementById("fSafe").addEventListener("change", e=>{ safeOnly = e.target.checked; catalog(); });
+finder(); catalog();
+</script>
+</body>
+</html>
