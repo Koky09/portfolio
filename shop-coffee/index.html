@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Жаровня — свежеобжаренный кофе</title>
+<meta name="description" content="Жаровня: спешелти-кофе свежей обжарки. Каталог с фильтрами, подбор по вкусу, корзина. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@600;800&family=Wix+Madefor+Text:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .hero{position:relative;background:var(--ink);color:var(--bg);overflow:hidden}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;z-index:0}
+  .hero .wrap{position:relative;z-index:1;padding-block:clamp(56px,9vw,130px) clamp(40px,6vw,80px);display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;align-items:end}
+  @media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+  .hero h1{font-size:clamp(64px,11vw,180px);line-height:.82}
+  .hero h1 span{color:var(--crema)}
+  .hero p{font-size:clamp(17px,1.5vw,20px);max-width:36ch;margin:0 0 24px;color:#E8DED4}
+  .next{background:rgba(247,245,240,.1);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(247,245,240,.25);border-radius:var(--r);padding:18px 20px;display:grid;gap:4px}
+  .next b{font-family:var(--display);font-size:44px;font-weight:800;line-height:1;text-transform:uppercase}
+  .next span{font-size:14px;color:#D9CEC4}
+
+  .filters{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:26px}
+  .seg{display:flex;gap:4px;background:var(--white);border:1.5px solid var(--line);border-radius:999px;padding:4px}
+  .seg button{border:0;background:none;border-radius:999px;padding:7px 14px;font-weight:600;font-size:14.5px}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+  .sort{margin-left:auto;height:44px;border:1.5px solid var(--line);border-radius:999px;background:var(--white);padding:0 14px;font-weight:600}
+  @media (max-width:760px){.sort{margin-left:0}}
+  .count{color:var(--muted);font-size:14px;margin:-12px 0 20px}
+
+  .finder{background:var(--roast);color:var(--bg);border-radius:28px;padding:clamp(22px,4vw,48px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(24px,4vw,48px)}
+  @media (max-width:980px){.finder{grid-template-columns:1fr}}
+  .finder h2{font-size:clamp(48px,6vw,86px)}
+  .finder p{color:#D9CEC4}
+  .slider{display:grid;gap:6px;margin-top:18px}
+  .slider label{display:flex;justify-content:space-between;font-weight:700}
+  .slider label span{color:#D9CEC4;font-weight:400;font-size:14px}
+  .slider input{accent-color:var(--crema);width:100%}
+  .matches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  @media (max-width:640px){.matches{grid-template-columns:1fr}}
+  .match{background:rgba(247,245,240,.08);border-radius:var(--r);padding:14px;display:grid;gap:8px;text-decoration:none}
+  .match .pack{border-radius:12px;aspect-ratio:1;display:grid;place-items:center}
+  .match .pack svg{width:62%}
+  .match h3{font-size:24px}
+  .match .pct{font-size:13px;color:var(--crema);font-weight:700}
+
+  .brew{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  @media (max-width:760px){.brew{grid-template-columns:1fr}}
+  .brew article{position:relative;border-radius:28px;overflow:hidden;min-height:360px;color:var(--bg);display:flex;align-items:flex-end}
+  .brew img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .brew article::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(29,20,16,.85));z-index:1}
+  .brew .t{position:relative;z-index:2;padding:24px;display:grid;gap:8px}
+  .brew h3{font-size:48px}
+  .brew dl{display:grid;grid-template-columns:repeat(4,auto);gap:4px 18px;margin:0;justify-content:start}
+  .brew dt{font-size:12px;color:#D9CEC4;text-transform:uppercase;letter-spacing:.1em}
+  .brew dd{margin:0;font-weight:800;font-size:18px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <section class="hero" style="padding:0">
+    <img src="img/hero.jpg" alt="Свежеобжаренные зёрна в охлаждающем лотке ростера" fetchpriority="high">
+    <div class="wrap">
+      <div>
+        <h1>Свежая<br><span>обжарка</span><br>каждую среду</h1>
+      </div>
+      <div>
+        <p>Спешелти-кофе из десяти стран. Обжариваем небольшими партиями под эспрессо и фильтр и отправляем на следующий день.</p>
+        <div class="next"><span>Следующая обжарка</span><b id="nextRoast"></b><span id="nextNote"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="catalog">
+    <div class="wrap">
+      <div class="head"><h2>Кофе</h2><p>Точки на пачке — степень обжарки. SCA — оценка по шкале Ассоциации спешелти-кофе, всё выше 80 считается спешелти.</p></div>
+      <div class="filters">
+        <div class="seg" id="fMethod" role="group" aria-label="Способ заваривания"></div>
+        <div class="seg" id="fRoast" role="group" aria-label="Обжарка"></div>
+        <select class="sort" id="sort" aria-label="Сортировка"><option value="pop">Сначала популярные</option><option value="cheap">Сначала дешевле</option><option value="sca">По оценке SCA</option></select>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section id="finder" style="padding-top:0">
+    <div class="wrap">
+      <div class="finder">
+        <div>
+          <h2>Подобрать по вкусу</h2>
+          <p>Двигайте ползунки — справа сразу покажем три самых похожих лота.</p>
+          <div class="slider"><label for="sA">Кислотность <span id="lA"></span></label><input type="range" id="sA" min="1" max="5" value="4"></div>
+          <div class="slider"><label for="sB">Плотность <span id="lB"></span></label><input type="range" id="sB" min="1" max="5" value="2"></div>
+          <div class="slider"><label for="sS">Сладость <span id="lS"></span></label><input type="range" id="sS" min="1" max="5" value="4"></div>
+        </div>
+        <div class="matches" id="matches" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Как заварить</h2><p>Два базовых рецепта, с которых стоит начать. Остальное — дело вкуса.</p></div>
+      <div class="brew">
+        <article><img src="img/pour.jpg" alt="Заваривание в пуровере" loading="lazy"><div class="t"><h3>Фильтр</h3><dl><dt>Кофе</dt><dt>Вода</dt><dt>Темп.</dt><dt>Время</dt><dd>15 г</dd><dd>250 мл</dd><dd>94 °C</dd><dd>3:00</dd></dl></div></article>
+        <article><img src="img/espresso.jpg" alt="Экстракция эспрессо" loading="lazy"><div class="t"><h3>Эспрессо</h3><dl><dt>Кофе</dt><dt>Выход</dt><dt>Темп.</dt><dt>Время</dt><dd>18 г</dd><dd>36 г</dd><dd>93 °C</dd><dd>0:28</dd></dl></div></article>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+// ближайшая среда
+const d = new Date(); const add = (3 - d.getDay() + 7) % 7 || 7; const wed = new Date(d); wed.setDate(d.getDate() + add);
+document.getElementById("nextRoast").textContent = wed.toLocaleDateString("ru-RU",{day:"numeric",month:"long"});
+document.getElementById("nextNote").textContent = `Заказы до вторника 23:59 обжарим к этой дате`;
+
+const st = {method:"all", roast:"all", sort:"pop"};
+function seg(id, key, opts){ document.getElementById(id).innerHTML = opts.map(([k,v])=>`<button data-k="${key}" data-v="${k}" aria-pressed="${st[key]===k}">${v}</button>`).join(""); }
+function render(){
+  seg("fMethod","method",[["all","Любой способ"],["filter","Фильтр"],["espresso","Эспрессо"]]);
+  seg("fRoast","roast",[["all","Любая обжарка"],["светлая","Светлая"],["средняя","Средняя"],["тёмная","Тёмная"]]);
+  let list = PRODUCTS.filter(p=>(st.method==="all"||p.method.includes(st.method)) && (st.roast==="all"||p.roast===st.roast));
+  if(st.sort==="cheap") list = [...list].sort((a,b)=>a.p250-b.p250);
+  if(st.sort==="sca") list = [...list].sort((a,b)=>b.sca-a.sca);
+  document.getElementById("grid").innerHTML = list.map(card).join("") || `<p style="color:var(--muted)">Такого сочетания нет — попробуйте другую обжарку.</p>`;
+  document.getElementById("count").textContent = `${list.length} из ${PRODUCTS.length} лотов`;
+}
+document.querySelector(".filters").addEventListener("click", e=>{ const b = e.target.closest("[data-k]"); if(!b) return; st[b.dataset.k] = b.dataset.v; render(); });
+document.getElementById("sort").addEventListener("change", e=>{ st.sort = e.target.value; render(); });
+
+const WORDS = ["","очень мягкая","мягкая","средняя","яркая","очень яркая"];
+const BODY = ["","лёгкое","лёгкое","среднее","плотное","очень плотное"];
+function finder(){
+  const a = +sA.value, b = +sB.value, s = +sS.value;
+  lA.textContent = WORDS[a]; lB.textContent = BODY[b]; lS.textContent = ["","мало","немного","средне","сладкий","очень сладкий"][s];
+  const scored = PRODUCTS.map(p=>({p, d: Math.hypot(p.acid-a, p.body-b, p.sweet-s)})).sort((x,y)=>x.d-y.d).slice(0,3);
+  document.getElementById("matches").innerHTML = scored.map(({p,d})=>`<a class="match" href="product.html#${p.slug}">
+    <div class="pack" style="background:${packBg(p)}">${bag(p)}</div>
+    <span class="pct">совпадение ${Math.round(100 - d/6.93*100)}%</span><h3>${p.country} ${p.region}</h3><span style="font-size:14px;color:#D9CEC4">${p.notes}</span></a>`).join("");
+}
+[sA,sB,sS].forEach(el=>el.addEventListener("input", finder));
+render(); finder();
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Оформление заказа — Жаровня</title>
+<meta name="description" content="Корзина и оформление заказа. Демо-сайт для портфолио, оплата не подключена.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@600;800&family=Wix+Madefor+Text:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  h1{font-size:clamp(56px,8vw,120px);padding-top:32px}
+  .co{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:start;padding-block:28px 40px}
+  @media (max-width:960px){.co{grid-template-columns:1fr}}
+  .step{background:var(--white);border-radius:24px;padding:clamp(18px,3vw,28px);margin-bottom:16px}
+  .step h2{font-size:36px;display:flex;gap:12px;align-items:center;margin-bottom:18px}
+  .step h2 i{font-style:normal;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-size:20px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:560px){.row2{grid-template-columns:1fr}}
+  .f{display:grid;gap:6px;font-weight:600;font-size:14px}
+  .f input{height:52px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;font-size:16px;background:var(--bg)}
+  .f input:focus{outline:none;border-color:var(--ink)}
+  .opts{display:grid;gap:8px}
+  .o{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
+  .o input{width:20px;height:20px;accent-color:var(--ink);margin:0}
+  .o:has(input:checked){border-color:var(--ink);background:var(--bg)}
+  .o small{display:block;color:var(--muted);font-size:13.5px}
+  .o b{white-space:nowrap}
+  .sum-card{position:sticky;top:90px;background:var(--ink);color:var(--bg);border-radius:24px;padding:24px;display:grid;gap:14px}
+  @media (max-width:960px){.sum-card{position:static}}
+  .sum-card h2{font-size:40px}
+  .it{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;font-size:14.5px}
+  .it .mini{width:52px;height:52px;border-radius:10px;display:grid;place-items:center}
+  .it .mini svg{width:34px}
+  .it small{display:block;color:#B9ACA3;font-size:12.5px}
+  .rows{border-top:1px solid #3A2B24;padding-top:12px;display:grid;gap:6px;font-size:15px}
+  .rows div{display:flex;justify-content:space-between}
+  .total{display:flex;justify-content:space-between;align-items:end;border-top:1px solid #3A2B24;padding-top:12px}
+  .total b{font-family:var(--display);font-size:52px;line-height:1}
+  .promo{display:flex;gap:8px}
+  .promo input{flex:1;height:46px;border-radius:999px;border:1.5px solid #3A2B24;background:transparent;color:var(--bg);padding:0 16px;text-transform:uppercase}
+  .promo button{border:0;border-radius:999px;background:var(--bg);color:var(--ink);padding:0 16px;font-weight:700}
+  .msg{font-size:13.5px;color:var(--crema);min-height:18px}
+  .done{background:var(--white);border-radius:24px;padding:clamp(24px,4vw,48px);text-align:center;display:grid;gap:12px;justify-items:center}
+  .done h2{font-size:clamp(48px,6vw,80px)}
+  .err{color:var(--red);font-size:14px;min-height:20px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main class="wrap">
+  <h1>Оформление</h1>
+  <div id="app"></div>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const DELIVERY = [
+  {id:"pickup", name:"Самовывоз из обжарочной", note:"ул. Литейная, 5, по четвергам после 12:00", price:0, days:"в четверг"},
+  {id:"cdek", name:"СДЭК, пункт выдачи", note:"2–5 дней после отправки", price:290, days:"2–5 дней"},
+  {id:"courier", name:"Курьер по городу", note:"в четверг с 14:00 до 21:00", price:350, days:"в четверг"},
+];
+const PAY = [["card","Картой онлайн"],["sbp","СБП по QR-коду"],["cash","При получении"]];
+let state = {del:"cdek", pay:"card", promo:null};
+function calc(){
+  const items = cartTotal(); const d = DELIVERY.find(x=>x.id===state.del);
+  const ship = items>=FREE || d.price===0 ? 0 : d.price;
+  const disc = state.promo ? Math.round(items*.1) : 0;
+  return {items, ship, disc, total: items - disc + ship};
+}
+function render(){
+  const app = document.getElementById("app");
+  if(!cart.length){
+    app.innerHTML = `<div class="done"><h2>Корзина пустая</h2><p style="color:var(--ink-2)">Добавьте кофе из каталога или положите пример, чтобы посмотреть оформление.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn" href="index.html#catalog">В каталог</a><button class="btn crema" id="sample">Положить пример</button></div></div>`;
+    document.getElementById("sample").onclick = ()=>{ addToCart("yirgacheffe",{grind:"Для фильтра"}); addToCart("blend",{w:1000,grind:"В зёрнах",sub:true}); render(); };
+    return;
+  }
+  const c = calc();
+  app.innerHTML = `<div class="co">
+    <form id="form" novalidate>
+      <div class="step"><h2><i>1</i>Контакты</h2>
+        <div class="row2"><label class="f" for="n">Имя<input id="n" autocomplete="name" required></label><label class="f" for="p">Телефон<input id="p" type="tel" autocomplete="tel" required placeholder="+7"></label></div>
+        <label class="f" for="e" style="margin-top:12px">E-mail для чека<input id="e" type="email" autocomplete="email"></label></div>
+      <div class="step"><h2><i>2</i>Доставка</h2><div class="opts" id="del">${DELIVERY.map(d=>`<label class="o" for="d-${d.id}"><input type="radio" name="del" id="d-${d.id}" value="${d.id}" ${state.del===d.id?"checked":""}><span>${d.name}<small>${d.note}</small></span><b>${d.price===0?"бесплатно":c.items>=FREE?"бесплатно":rub(d.price)}</b></label>`).join("")}</div>
+        ${state.del!=="pickup"?`<label class="f" for="addr" style="margin-top:12px">${state.del==="cdek"?"Город и пункт СДЭК":"Адрес"}<input id="addr" autocomplete="street-address"></label>`:""}</div>
+      <div class="step"><h2><i>3</i>Оплата</h2><div class="opts" id="pay">${PAY.map(([k,v])=>`<label class="o" for="p-${k}"><input type="radio" name="pay" id="p-${k}" value="${k}" ${state.pay===k?"checked":""}><span>${v}</span><span></span></label>`).join("")}</div></div>
+      <p class="err" id="err" aria-live="polite"></p>
+    </form>
+    <aside class="sum-card">
+      <h2>Заказ</h2>
+      ${cart.map(l=>{ const p = PRODUCTS.find(x=>x.slug===l.slug); return `<div class="it"><div class="mini" style="background:${packBg(p)}">${bag(p)}</div><span>${title(p)} × ${l.q}<small>${l.w===1000?"1 кг":"250 г"} · ${l.grind.toLowerCase()}${l.sub?" · подписка":""}</small></span><b>${rub(linePrice(l))}</b></div>`; }).join("")}
+      <div class="promo"><input id="promo" placeholder="Промокод" aria-label="Промокод" value="${state.promo||""}"><button type="button" id="applyPromo">Применить</button></div>
+      <div class="msg" id="pmsg">${state.promo ? "Промокод применён: −10% на кофе" : "Для примера: ZHAR10"}</div>
+      <div class="rows"><div><span>Кофе</span><span>${rub(c.items)}</span></div>${c.disc?`<div><span>Скидка</span><span>−${rub(c.disc)}</span></div>`:""}<div><span>Доставка</span><span>${c.ship?rub(c.ship):"бесплатно"}</span></div></div>
+      <div class="total"><span>К оплате</span><b>${rub(c.total)}</b></div>
+      <button class="btn crema" id="place">Оформить заказ</button>
+      <span style="font-size:12.5px;color:#8A7C73">Демо: оплата не подключена, заказ никуда не уйдёт.</span>
+    </aside></div>`;
+  document.getElementById("del").onchange = e=>{ state.del = e.target.value; render(); };
+  document.getElementById("pay").onchange = e=>{ state.pay = e.target.value; };
+  document.getElementById("applyPromo").onclick = ()=>{
+    const v = document.getElementById("promo").value.trim().toUpperCase();
+    if(v==="ZHAR10"){ state.promo = v; render(); } else { document.getElementById("pmsg").textContent = v ? "Такого промокода нет" : "Введите промокод"; }
+  };
+  document.getElementById("place").onclick = ()=>{
+    const n = document.getElementById("n").value.trim(), ph = document.getElementById("p").value.trim();
+    if(!n || !ph){ document.getElementById("err").textContent = "Укажите имя и телефон — без них мы не сможем передать заказ."; document.getElementById(!n?"n":"p").focus(); return; }
+    const num = "ZH-" + String(Date.now()).slice(-6);
+    const total = calc().total; cart = []; save();
+    app.innerHTML = `<div class="done"><span class="label">Заказ ${num}</span><h2>Спасибо, ${n}!</h2><p style="color:var(--ink-2);max-width:44ch">Мы обжарим ваш кофе в ближайшую среду и отправим в четверг. На сумму ${rub(total)}. Это демо-сайт: заказ не создан и деньги не списаны.</p><a class="btn" href="index.html">Вернуться в каталог</a></div>`;
+    scrollTo(0,0);
+  };
+}
+document.addEventListener("cart", ()=>{ if(!document.querySelector(".done h2")?.textContent.startsWith("Спасибо")) render(); });
+render();
+</script>
+</body>
+</html>

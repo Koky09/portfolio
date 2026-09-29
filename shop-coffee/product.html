@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кофе — Жаровня</title>
+<meta name="description" content="Карточка кофе: вкусовой профиль, помол, подписка и рецепт. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@600;800&family=Wix+Madefor+Text:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .crumbs{font-size:14px;color:var(--muted);padding-top:28px}
+  .crumbs a{text-decoration:none}
+  .pdp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);padding-block:24px 40px;align-items:start}
+  @media (max-width:900px){.pdp{grid-template-columns:1fr}}
+  .stage{position:sticky;top:90px;border-radius:32px;aspect-ratio:1;display:grid;place-items:center}
+  @media (max-width:900px){.stage{position:static}}
+  .stage svg{width:58%;filter:drop-shadow(0 30px 30px rgba(29,20,16,.3));animation:float 5s ease-in-out infinite}
+  @keyframes float{50%{transform:translateY(-8px) rotate(-1deg)}}
+  .info{display:grid;gap:22px}
+  .info h1{font-size:clamp(56px,7vw,104px)}
+  .notes{font-size:20px;color:var(--ink-2);margin:0}
+  .facts{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid var(--ink)}
+  .facts div{padding:10px 0;border-bottom:1px solid var(--line)}
+  .facts span{display:block;font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+  .facts b{font-weight:600}
+  .profile{display:grid;gap:10px}
+  .prow{display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;font-weight:600;font-size:14.5px}
+  .dots{display:flex;gap:5px}
+  .dots i{flex:1;height:10px;border-radius:5px;background:var(--line)}
+  .dots i.on{background:var(--crema)}
+  .opt h3{font-family:var(--body);font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chips button{border:1.5px solid var(--line);background:var(--white);border-radius:999px;padding:9px 16px;font-weight:600;font-size:14.5px}
+  .chips button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+  .chips button small{font-weight:400;opacity:.7;margin-left:4px}
+  .sub{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer;background:var(--white)}
+  .sub input{width:20px;height:20px;accent-color:var(--crema);margin-top:2px}
+  .sub:has(input:checked){border-color:var(--crema)}
+  .buy{display:flex;gap:12px;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;background:var(--bg);padding-block:12px}
+  .buy .price{font-family:var(--display);font-weight:800;font-size:48px;line-height:1}
+  .buy .old{text-decoration:line-through;color:var(--muted);font-size:18px;margin-left:6px}
+  .qty-l{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;background:var(--white)}
+  .qty-l button{border:0;background:none;width:44px;height:48px;font-size:20px}
+  .qty-l span{min-width:28px;text-align:center;font-weight:700}
+  .recipe{background:var(--white);border-radius:var(--r);padding:18px 20px;display:grid;gap:6px}
+  .recipe b{font-family:var(--display);font-size:26px;text-transform:uppercase}
+  .related .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media (max-width:900px){.related .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main id="main"></main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+let opt = {grind:GRINDS[0], w:250, sub:false, q:1};
+function render(){
+  const slug = location.hash.slice(1) || PRODUCTS[0].slug;
+  const p = PRODUCTS.find(x=>x.slug===slug) || PRODUCTS[0];
+  document.title = `${title(p)} — Жаровня`;
+  const base = opt.w===1000 ? p.p1000 : p.p250, price = Math.round(base*(opt.sub?.9:1))*opt.q;
+  const recipe = p.method.includes("filter") ? ["Фильтр (V60)","15 г кофе, 250 мл воды 94 °C, 3 минуты. Помол как крупная соль."] : ["Эспрессо","18 г кофе → 36 г напитка за 26–30 секунд, 93 °C."];
+  const related = PRODUCTS.filter(x=>x.slug!==p.slug).sort((a,b)=>Math.hypot(a.acid-p.acid,a.body-p.body,a.sweet-p.sweet)-Math.hypot(b.acid-p.acid,b.body-p.body,b.sweet-p.sweet)).slice(0,4);
+  document.getElementById("main").innerHTML = `
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html#catalog">Кофе</a> / ${title(p)}</div>
+    <div class="pdp">
+      <div class="stage" style="background:${packBg(p)}">${bag(p)}</div>
+      <div class="info">
+        <span class="label">${p.method.map(m=>METHOD[m]).join(" · ")} · ${p.roast} обжарка · SCA ${String(p.sca).replace(".",",")}</span>
+        <h1>${title(p)}</h1>
+        <p class="notes">В чашке: ${p.notes}.</p>
+        <div class="profile">
+          ${[["Кислотность",p.acid],["Плотность",p.body],["Сладость",p.sweet]].map(([n,v])=>`<div class="prow"><span>${n}</span><div class="dots" role="img" aria-label="${n}: ${v} из 5">${[1,2,3,4,5].map(i=>`<i class="${i<=v?"on":""}"></i>`).join("")}</div></div>`).join("")}
+        </div>
+        <div class="facts"><div><span>Обработка</span><b>${p.process}</b></div><div><span>Высота</span><b>${p.alt}</b></div><div><span>Разновидность</span><b>${p.variety}</b></div><div><span>Производитель</span><b>${p.farm}</b></div></div>
+        <div class="opt"><h3>Вес</h3><div class="chips" id="oW"><button data-w="250" aria-pressed="${opt.w===250}">250 г <small>${rub(p.p250)}</small></button><button data-w="1000" aria-pressed="${opt.w===1000}">1 кг <small>${rub(p.p1000)}</small></button></div></div>
+        <div class="opt"><h3>Помол</h3><div class="chips" id="oG">${GRINDS.map(g=>`<button data-g="${g}" aria-pressed="${opt.grind===g}">${g}</button>`).join("")}</div></div>
+        <label class="sub" for="sub"><input type="checkbox" id="sub" ${opt.sub?"checked":""}><div><b>Подписка каждые 2 недели −10%</b><br><span style="color:var(--ink-2);font-size:14.5px">Привезём свежую обжарку автоматически. Пауза или отмена в один клик.</span></div></label>
+        <div class="recipe"><span class="label">Рецепт от обжарщика</span><b>${recipe[0]}</b><span>${recipe[1]}</span></div>
+        <div class="buy">
+          <span class="price">${rub(price)}${opt.sub?`<span class="old">${rub(base*opt.q)}</span>`:""}</span>
+          <span class="qty-l"><button id="qm" aria-label="Меньше">−</button><span>${opt.q}</span><button id="qp" aria-label="Больше">+</button></span>
+          <button class="btn crema" id="buy">В корзину</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="related" style="padding-top:20px"><div class="wrap"><div class="head"><h2>Похожие по вкусу</h2></div><div class="grid">${related.map(card).join("")}</div></div></section>`;
+  document.getElementById("oW").onclick = e=>{ const b = e.target.closest("[data-w]"); if(b){ opt.w = +b.dataset.w; render(); } };
+  document.getElementById("oG").onclick = e=>{ const b = e.target.closest("[data-g]"); if(b){ opt.grind = b.dataset.g; render(); } };
+  document.getElementById("sub").onchange = e=>{ opt.sub = e.target.checked; render(); };
+  document.getElementById("qm").onclick = ()=>{ opt.q = Math.max(1, opt.q-1); render(); };
+  document.getElementById("qp").onclick = ()=>{ opt.q = Math.min(20, opt.q+1); render(); };
+  document.getElementById("buy").onclick = ()=>{ addToCart(p.slug, opt); openCart(); };
+}
+window.addEventListener("hashchange", ()=>{ opt = {grind:GRINDS[0], w:250, sub:false, q:1}; render(); scrollTo(0,0); });
+render();
+</script>
+</body>
+</html>

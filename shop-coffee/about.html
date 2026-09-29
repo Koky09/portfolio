@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Обжарка — Жаровня</title>
+<meta name="description" content="Как мы обжариваем кофе: профиль обжарки, график, команда. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@600;800&family=Wix+Madefor+Text:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(40px,6vw,80px)}
+  @media (max-width:900px){.intro{grid-template-columns:1fr}}
+  .intro h1{font-size:clamp(64px,9vw,140px)}
+  .intro p{font-size:19px;color:var(--ink-2)}
+  .intro img{border-radius:28px;width:100%;aspect-ratio:4/3;object-fit:cover}
+  .chart{background:var(--ink);color:var(--bg);border-radius:28px;padding:clamp(18px,3vw,36px)}
+  .chart svg{width:100%;height:auto;display:block}
+  .phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+  @media (max-width:700px){.phases{grid-template-columns:1fr}}
+  .phases div{border-top:3px solid;padding-top:10px}
+  .phases b{font-family:var(--display);font-size:26px;text-transform:uppercase;display:block}
+  .phases span{color:#D9CEC4;font-size:14.5px}
+  .week{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  @media (max-width:800px){.week{grid-template-columns:1fr 1fr}}
+  .day{background:var(--white);border-radius:var(--r);padding:20px;display:grid;gap:6px}
+  .day b{font-family:var(--display);font-size:34px;text-transform:uppercase;line-height:1}
+  .day.hot{background:var(--crema)}
+  .pics{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pics img{border-radius:24px;width:100%;aspect-ratio:4/3;object-fit:cover}
+  @media (max-width:700px){.pics{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="wrap intro">
+    <div>
+      <span class="label">О нас</span>
+      <h1>Обжарка</h1>
+      <p>Мы обжариваем на 15-килограммовом барабанном ростере раз в неделю. Каждый лот сначала проходит 5–7 пробных обжарок, пока не найдём профиль, в котором он раскрывается лучше всего.</p>
+    </div>
+    <img src="img/roast.jpg" alt="Барабанный ростер в работе" loading="lazy">
+  </div>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Профиль обжарки</h2><p>Так выглядит обжарка Эфиопии Иргачеффе: температура зерна по минутам. Светлая обжарка — короткое развитие после первого крэка.</p></div>
+      <div class="chart">
+        <svg viewBox="0 0 800 340" role="img" aria-label="График температуры зерна при обжарке: от 200 °C загрузки до 206 °C выгрузки за 10 минут, первый крэк на 8:30 при 196 °C">
+          <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#3E9A5A"/><stop offset=".48" stop-color="#F2C230"/><stop offset=".85" stop-color="#C98A4B"/><stop offset="1" stop-color="#D6452F"/></linearGradient></defs>
+          <g id="axes"></g>
+          <path id="curve" fill="none" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/>
+          <g id="marks"></g>
+        </svg>
+        <div class="phases">
+          <div style="border-color:#3E9A5A"><b>Сушка · 0:00–4:10</b><span>Зерно теряет влагу и желтеет, до 150 °C.</span></div>
+          <div style="border-color:#F2C230"><b>Майяр · 4:10–8:30</b><span>Сахара и аминокислоты дают цвет и сладость.</span></div>
+          <div style="border-color:#D6452F"><b>Развитие · 8:30–10:00</b><span>После первого крэка — 1:30 для кислотности и цветов.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Неделя обжарочной</h2><p>Поэтому кофе приходит свежим: между обжаркой и отправкой — меньше суток.</p></div>
+      <div class="week">
+        <div class="day"><span class="label">пн–вт</span><b>Заказы</b><span>Собираем заказы до вторника 23:59.</span></div>
+        <div class="day hot"><span class="label" style="color:var(--ink)">среда</span><b>Обжарка</b><span>Обжариваем ровно столько, сколько заказали.</span></div>
+        <div class="day"><span class="label">четверг</span><b>Отправка</b><span>Фасуем в пачки с клапаном и отдаём в СДЭК.</span></div>
+        <div class="day"><span class="label">пт–пн</span><b>У вас</b><span>Кофе раскрывается на 5–10 день после обжарки.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap pics">
+      <img src="img/cherry.jpg" alt="Кофейные ягоды на ветке" loading="lazy">
+      <img src="img/team.jpg" alt="Команда обжарочной за работой" loading="lazy">
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+// кривая температуры зерна (BT): точки [минуты, °C]
+const BT = [[0,200],[0.5,150],[1,110],[1.5,98],[2,102],[3,118],[4,146],[5,162],[6,174],[7,184],[8,192.5],[8.5,196],[9,199.5],[9.5,202.5],[10,205.5]];
+const X = m => 60 + m/10*700, Y = t => 300 - (t-80)/140*270;
+document.getElementById("curve").setAttribute("d", BT.map(([m,t],i)=>`${i?"L":"M"}${X(m)},${Y(t)}`).join(" "));
+let ax = "";
+for(let t=80;t<=220;t+=20) ax += `<line x1="60" y1="${Y(t)}" x2="760" y2="${Y(t)}" stroke="#3A2B24"/><text x="50" y="${Y(t)+4}" text-anchor="end" font-family="Wix Madefor Text" font-size="12" fill="#968A82">${t}°</text>`;
+for(let m=0;m<=10;m+=2) ax += `<text x="${X(m)}" y="322" text-anchor="middle" font-family="Wix Madefor Text" font-size="12" fill="#968A82">${m}:00</text>`;
+document.getElementById("axes").innerHTML = ax;
+document.getElementById("marks").innerHTML = `
+  <line x1="${X(8.5)}" y1="30" x2="${X(8.5)}" y2="300" stroke="#F7F5F0" stroke-dasharray="4 5"/>
+  <circle cx="${X(8.5)}" cy="${Y(196)}" r="7" fill="#F7F5F0"/>
+  <text x="${X(8.5)-10}" y="44" text-anchor="end" font-family="Wix Madefor Text" font-size="13" font-weight="700" fill="#F7F5F0">первый крэк · 8:30 · 196°</text>
+  <circle cx="${X(1.5)}" cy="${Y(98)}" r="5" fill="#968A82"/><text x="${X(1.5)+10}" y="${Y(98)+18}" font-family="Wix Madefor Text" font-size="12" fill="#968A82">точка разворота 98°</text>
+  <circle cx="${X(10)}" cy="${Y(205.5)}" r="5" fill="#D6452F"/><text x="${X(10)}" y="${Y(205.5)-12}" text-anchor="end" font-family="Wix Madefor Text" font-size="12" fill="#D6452F">выгрузка 205°</text>`;
+</script>
+</body>
+</html>
