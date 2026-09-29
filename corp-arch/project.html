@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Проект — Ось</title>
+<meta name="description" content="Проект бюро «Ось»: описание, цифры и интерактивная планировка. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600&family=Noto+Sans:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .cover{aspect-ratio:21/9;overflow:hidden;background:var(--line)}
+  .cover img{width:100%;height:100%;object-fit:cover}
+  @media (max-width:700px){.cover{aspect-ratio:4/3}}
+  .intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,5vw,80px);padding-block:clamp(40px,6vw,80px)}
+  @media (max-width:900px){.intro{grid-template-columns:1fr}}
+  .facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink)}
+  .facts div{padding:14px 0;border-bottom:1px solid var(--line)}
+  .facts div:nth-child(odd){padding-right:14px}
+  .facts span{display:block;font-family:var(--display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .facts b{font-family:var(--display);font-weight:500;font-size:22px}
+  .intro p{font-size:19px;color:var(--ink-2);margin:0 0 16px}
+  .plan{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+  @media (max-width:900px){.plan{grid-template-columns:1fr}}
+  .sheet{background:var(--paper);border:1px solid var(--line);padding:clamp(14px,2vw,28px);position:relative}
+  .sheet svg{width:100%;height:auto;display:block}
+  .room{cursor:pointer}
+  .room rect{fill:transparent;transition:fill .2s}
+  .room.on rect{fill:rgba(176,100,62,.16)}
+  .room text{font-family:var(--display);pointer-events:none}
+  .stamp{position:absolute;right:14px;bottom:14px;border:1px solid var(--ink);font-family:var(--display);font-size:11px;letter-spacing:.08em;display:grid;grid-template-columns:auto auto;background:var(--paper)}
+  .stamp span{padding:4px 8px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+  .stamp span:nth-child(2n){border-right:0}
+  .stamp span:nth-last-child(-n+2){border-bottom:0}
+  table{width:100%;border-collapse:collapse;font-size:15.5px}
+  th,td{text-align:left;padding:10px 0;border-bottom:1px solid var(--line)}
+  th{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  td.a{text-align:right;font-family:var(--display);font-variant-numeric:tabular-nums}
+  tbody tr{cursor:pointer}
+  tbody tr.on td{color:var(--clay)}
+  tfoot td{font-weight:500;border-bottom:0;border-top:1px solid var(--ink)}
+  .gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  @media (max-width:700px){.gal{grid-template-columns:1fr}}
+  .gal img{width:100%;aspect-ratio:4/3;object-fit:cover}
+  .pager{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--ink);padding-top:18px}
+  .pager a{text-decoration:none;font-family:var(--display);font-size:clamp(20px,2.4vw,32px);text-transform:uppercase}
+  .pager a:hover{color:var(--clay)}
+  .pager small{display:block;font-size:12px;letter-spacing:.16em;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main id="main"></main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const SCALE = 40; // пикселей на метр в SVG
+function planSvg(pl){
+  const W = pl.w*SCALE, H = pl.h*SCALE, pad = 40;
+  const dims = `<g font-family="Jura" font-size="12" fill="#8A877F">
+    <line x1="0" y1="${H+22}" x2="${W}" y2="${H+22}" stroke="#8A877F"/><line x1="0" y1="${H+16}" x2="0" y2="${H+28}" stroke="#8A877F"/><line x1="${W}" y1="${H+16}" x2="${W}" y2="${H+28}" stroke="#8A877F"/>
+    <text x="${W/2}" y="${H+38}" text-anchor="middle">${(pl.w*1000).toLocaleString("ru-RU")}</text>
+    <line x1="${W+22}" y1="0" x2="${W+22}" y2="${H}" stroke="#8A877F"/><text x="${W+30}" y="${H/2}" transform="rotate(90 ${W+30} ${H/2})" text-anchor="middle">${(pl.h*1000).toLocaleString("ru-RU")}</text></g>`;
+  const rooms = pl.rooms.map(([n,x,y,w,h],i)=>{
+    const cx = (x+w/2)*SCALE, cy = (y+h/2)*SCALE, a = (w*h).toFixed(1).replace(".",",");
+    const small = w*h < 6;
+    return `<g class="room" data-i="${i}" tabindex="0" role="button" aria-label="${n}, ${a} м²">
+      <rect x="${x*SCALE}" y="${y*SCALE}" width="${w*SCALE}" height="${h*SCALE}"/>
+      <text x="${cx}" y="${cy-2}" text-anchor="middle" font-size="${small?11:14}" fill="#151515">${n.length>14&&small?n.slice(0,10)+"…":n}</text>
+      <text x="${cx}" y="${cy+16}" text-anchor="middle" font-size="12" fill="#B0643E">${a} м²</text></g>`;
+  }).join("");
+  const walls = pl.rooms.map(([,x,y,w,h])=>`<rect x="${x*SCALE}" y="${y*SCALE}" width="${w*SCALE}" height="${h*SCALE}" fill="none" stroke="#151515" stroke-width="3"/>`).join("");
+  return `<svg viewBox="-10 -10 ${W+pad+20} ${H+pad+20}" role="group" aria-label="Планировка">
+    <rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="#151515" stroke-width="7"/>${walls}${rooms}${dims}</svg>`;
+}
+function render(){
+  const slug = decodeURIComponent(location.hash.slice(1)) || PROJECTS[0].slug;
+  const i = Math.max(0, PROJECTS.findIndex(p=>p.slug===slug)), p = PROJECTS[i];
+  const pl = PLANS[p.plan], next = PROJECTS[(i+1)%PROJECTS.length], prev = PROJECTS[(i-1+PROJECTS.length)%PROJECTS.length];
+  const total = pl.rooms.reduce((a,[, , ,w,h])=>a+w*h,0);
+  document.title = `${p.name} — Ось`;
+  document.getElementById("main").innerHTML = `
+    <div class="page-head"><div class="wrap"><span class="tag"><a href="projects.html" style="text-decoration:none">Проекты</a> / ${TYPES[p.type]}</span><h1>${p.name}</h1></div></div>
+    <div class="wrap"><div class="cover"><img src="${p.img}" alt="${p.name}"></div>
+      <div class="intro">
+        <div class="facts"><div><span>Тип</span><b>${TYPES[p.type]}</b></div><div><span>Город</span><b>${p.city}</b></div><div><span>Площадь</span><b>${p.area.toLocaleString("ru-RU")} м²</b></div><div><span>Год</span><b>${p.year}</b></div><div><span>Статус</span><b>${p.status}</b></div><div><span>Стадии</span><b>01–04</b></div></div>
+        <div><p>${p.about}</p><p>Работали со всеми стадиями: от концепции до авторского надзора. Ниже — типовая планировка, наведите на помещение, чтобы увидеть его площадь.</p></div>
+      </div>
+      <div class="head" style="margin-bottom:28px"><h2>План</h2><p>Размеры в миллиметрах, площади помещений по внутреннему контуру стен.</p></div>
+      <div class="plan">
+        <div class="sheet">${planSvg(pl)}<div class="stamp" aria-hidden="true"><span>Лист</span><span>АР-03</span><span>Масштаб</span><span>1:100</span></div></div>
+        <table><thead><tr><th>Помещение</th><th style="text-align:right">м²</th></tr></thead>
+          <tbody>${pl.rooms.map(([n, , ,w,h],k)=>`<tr data-i="${k}"><td>${n}</td><td class="a">${(w*h).toFixed(1).replace(".",",")}</td></tr>`).join("")}</tbody>
+          <tfoot><tr><td>Итого</td><td class="a">${total.toFixed(1).replace(".",",")}</td></tr></tfoot></table>
+      </div>
+      <section style="padding-bottom:40px"><div class="gal">${p.gal.map(g=>`<img src="${g}" alt="${p.name}" loading="lazy">`).join("")}</div></section>
+      <div class="pager"><a href="project.html#${prev.slug}"><small>← предыдущий</small>${prev.name}</a><a href="project.html#${next.slug}" style="text-align:right"><small>следующий →</small>${next.name}</a></div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function hl(i){ document.querySelectorAll(".room,tbody tr").forEach(el=>el.classList.toggle("on", el.dataset.i===i)); }
+document.addEventListener("mouseover", e=>{ const t = e.target.closest(".room,tbody tr"); if(t) hl(t.dataset.i); });
+document.addEventListener("focusin", e=>{ const t = e.target.closest(".room"); if(t) hl(t.dataset.i); });
+document.addEventListener("click", e=>{ const t = e.target.closest(".room,tbody tr"); if(t) hl(t.dataset.i); });
+window.addEventListener("hashchange", render);
+render();
+</script>
+</body>
+</html>

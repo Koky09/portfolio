@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Проекты — Ось</title>
+<meta name="description" content="Проекты бюро «Ось»: жилые дома, офисы, общественные здания, интерьеры. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600&family=Noto+Sans:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .filters{display:flex;gap:26px;flex-wrap:wrap;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);padding:14px 0;margin-bottom:40px}
+  .filters button{background:none;border:0;padding:4px 0;font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid transparent}
+  .filters button:hover{color:var(--ink)}
+  .filters button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--clay)}
+  .filters small{font-weight:400;margin-left:4px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap">
+    <span class="tag">2019–2026</span>
+    <h1>Проекты</h1>
+    <p>От квартиры на 88 м² до учебного корпуса на 22 000 м². Для каждого проекта — описание, цифры и планировка.</p>
+  </div></div>
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="filters" id="filters" role="group" aria-label="Тип проекта"></div>
+      <div class="grid-p" id="grid"></div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+let f = "all";
+function render(){
+  document.getElementById("filters").innerHTML = [["all","Все"],...Object.entries(TYPES)].map(([k,v])=>
+    `<button data-f="${k}" aria-pressed="${f===k}">${v}<small>${k==="all"?PROJECTS.length:PROJECTS.filter(p=>p.type===k).length}</small></button>`).join("");
+  document.getElementById("grid").innerHTML = PROJECTS.filter(p=>f==="all"||p.type===f).map(projectCard).join("");
+}
+document.getElementById("filters").addEventListener("click", e=>{ const b = e.target.closest("[data-f]"); if(!b) return; f = b.dataset.f; render(); });
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Контакты — Ось</title>
+<meta name="description" content="Студия бюро «Ось», как с нами начать проект. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600&family=Noto+Sans:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px)}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .grid img{width:100%;aspect-ratio:4/5;object-fit:cover}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .info{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:40px;border-top:1px solid var(--ink);padding-top:16px}
+  .info span{display:block;font-family:var(--display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .info b{font-weight:400;font-size:17px}
+  .types{display:flex;gap:8px;flex-wrap:wrap}
+  .types label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);padding:8px 14px;font-size:15px;cursor:pointer}
+  .types input{accent-color:var(--clay);margin:0}
+  .types label:has(input:checked){background:var(--ink);color:var(--bg)}
+  fieldset{border:0;margin:0;padding:0}
+  legend{font-family:var(--display);font-weight:600;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap">
+    <span class="tag">Начать проект</span>
+    <h1>Контакты</h1>
+    <p>Первая встреча — в студии или на участке. Мы расскажем, как будем работать, и оценим объём, а вы решите, подходим ли мы друг другу.</p>
+  </div></div>
+  <section style="padding-top:0">
+    <div class="wrap grid">
+      <div>
+        <div class="info">
+          <div><span>Студия</span><b>Хлебозавод, корпус 3, 2 этаж</b></div>
+          <div><span>Часы</span><b>Пн–Пт, 10:00–19:00</b></div>
+          <div><span>Почта</span><b style="user-select:all">studio@os.example</b></div>
+          <div><span>Телефон</span><b style="user-select:all">+7 900 010-20-30</b></div>
+        </div>
+        <form class="form" data-demo novalidate>
+          <div class="row2"><label class="f" for="n">Имя<input id="n" autocomplete="name" required></label><label class="f" for="c">Телефон или почта<input id="c" required></label></div>
+          <fieldset><legend>Что проектируем</legend><div class="types">
+            <label for="t1"><input type="radio" name="t" id="t1" checked>Частный дом</label><label for="t2"><input type="radio" name="t" id="t2">Интерьер</label>
+            <label for="t3"><input type="radio" name="t" id="t3">Жилой комплекс</label><label for="t4"><input type="radio" name="t" id="t4">Общественное здание</label></div></fieldset>
+          <label class="f" for="a">Площадь, м²<input id="a" type="number" min="20" placeholder="Примерно"></label>
+          <label class="f" for="m">О проекте<textarea id="m" placeholder="Участок, сроки, что важно"></textarea></label>
+          <button class="btn" type="submit" style="justify-self:start">Отправить</button>
+          <div class="ok" hidden></div>
+        </form>
+      </div>
+      <img src="img/desk.jpg" alt="Эскизы и маркеры на рабочем столе" loading="lazy">
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+</body>
+</html>
