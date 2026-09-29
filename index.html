@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Портфолио</title>
+<meta name="description" content="Портфолио веб-разработки: сайты-визитки, корпоративные сайты, интернет-магазины и промо-сайты с 3D.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    color-scheme:light;
+    --bg:#F3F3EF; --card:#FFFFFF; --ink:#141414; --ink-2:#55554F; --muted:#8B8B84; --line:#DCDCD5;
+    --accent:#3D4BFF;
+    --sans:"Onest","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+    --gut:clamp(16px,4vw,56px);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#111110;--card:#1B1B19;--ink:#F1F1EC;--ink-2:#B3B3AB;--muted:#7D7D76;--line:#2E2E2A;--accent:#8C95FF}}
+  :root[data-theme="dark"]{color-scheme:dark;--bg:#111110;--card:#1B1B19;--ink:#F1F1EC;--ink-2:#B3B3AB;--muted:#7D7D76;--line:#2E2E2A;--accent:#8C95FF}
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  img{display:block;max-width:100%}
+  button{font:inherit;color:inherit;cursor:pointer}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .wrap{max-width:1360px;margin-inline:auto;padding-inline:var(--gut)}
+  .mono{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em}
+
+  header{padding-block:clamp(40px,7vw,96px) clamp(28px,4vw,48px)}
+  h1{margin:0;font-weight:800;font-size:clamp(52px,10vw,148px);line-height:.9;letter-spacing:-.045em}
+  .intro{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:end;margin-top:28px}
+  @media (max-width:820px){.intro{grid-template-columns:1fr}}
+  .intro p{margin:0;font-size:clamp(18px,1.7vw,22px);color:var(--ink-2);max-width:44ch}
+  .counts{display:flex;gap:28px;flex-wrap:wrap;justify-content:flex-end}
+  @media (max-width:820px){.counts{justify-content:flex-start}}
+  .counts div{display:flex;flex-direction:column}
+  .counts b{font-size:32px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+  .counts span{color:var(--muted);font-size:13.5px}
+
+  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-block:1px solid var(--line)}
+  .bar .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+  .chip{flex:none;border:1px solid var(--line);background:var(--card);padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500}
+  .chip small{font-family:var(--mono);color:var(--muted);margin-left:6px;font-size:12px}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .chip[aria-pressed="true"] small{color:inherit;opacity:.6}
+
+  section{padding-block:40px 24px}
+  .cat-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .cat-head h2{margin:0;font-size:clamp(26px,3vw,36px);font-weight:600;letter-spacing:-.02em}
+  .cat-head p{margin:0;color:var(--muted);max-width:52ch}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 20px}
+  @media (max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:620px){.grid{grid-template-columns:1fr}}
+
+  .work{display:flex;flex-direction:column;gap:12px;text-decoration:none}
+  .frame{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
+  .frame .dots{display:flex;gap:6px;padding:9px 12px;border-bottom:1px solid var(--line)}
+  .frame .dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+  .frame .shot{aspect-ratio:16/10;overflow:hidden;background:var(--line)}
+  .frame img{width:100%;height:100%;object-fit:cover;object-position:top}
+  a.work:hover .frame{transform:translateY(-4px);box-shadow:0 18px 40px -20px rgba(0,0,0,.35)}
+  .soon .shot{display:grid;place-items:center;background:repeating-linear-gradient(-45deg,transparent 0 10px,color-mix(in srgb,var(--line) 60%,transparent) 10px 11px)}
+  .soon .shot span{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--card);padding:6px 10px;border:1px solid var(--line);border-radius:999px}
+  .meta{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .meta h3{margin:0;font-size:18px;font-weight:600}
+  .meta .mono{color:var(--muted);white-space:nowrap}
+  .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tags span{font-size:12.5px;color:var(--ink-2);background:var(--card);border:1px solid var(--line);padding:3px 9px;border-radius:999px}
+
+  footer{padding-block:64px 40px;color:var(--muted);font-size:14px}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:24px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Портфолио</h1>
+    <div class="intro">
+      <p>Сайты под ключ: от визитки на одну страницу до интернет-магазина и промо-сайта с 3D. Каждая работа открывается и работает на телефоне.</p>
+      <div class="counts" id="counts"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="bar" aria-label="Тип сайта"><div class="wrap" id="chips"></div></nav>
+
+<main id="list"></main>
+
+<footer><div class="wrap"><span>Все бизнесы, имена и контакты в работах вымышленные. Фото: Unsplash.</span><span>2026</span></div></footer>
+
+<script>
+const CATS = [
+  {id:"flagship", name:"Промо-сайты", about:"Показательные проекты: 3D-сцены, анимации при прокрутке, нестандартная подача."},
+  {id:"vizitka",  name:"Сайты-визитки", about:"Одна страница: кто вы, услуги и цены, запись и контакты. Запуск за несколько дней."},
+  {id:"corp",     name:"Корпоративные сайты", about:"Сайт компании: услуги, проекты, команда, заявки. Несколько страниц и разделов."},
+  {id:"shop",     name:"Интернет-магазины", about:"Каталог с фильтрами, карточки товаров, корзина и оформление заказа."},
+];
+// status: "done" — готово, "soon" — в работе
+const WORKS = [
+  {cat:"vizitka", slug:"vizitka-barber", name:"Кадык", niche:"барбершоп", tags:["прайс-лист","онлайн-запись","мастера"], status:"done"},
+  {cat:"vizitka", slug:"vizitka-nails", name:"Маникюр", niche:"мастер маникюра", status:"soon"},
+  {cat:"vizitka", slug:"vizitka-lawyer", name:"Юрист", niche:"частная практика", status:"soon"},
+  {cat:"vizitka", slug:"vizitka-photo", name:"Фотограф", niche:"свадьбы и портреты", status:"soon"},
+  {cat:"vizitka", slug:"vizitka-english", name:"Репетитор", niche:"английский язык", status:"soon"},
+  {cat:"corp", slug:"corp-build", name:"Стройка", niche:"строительная компания", status:"soon"},
+  {cat:"corp", slug:"corp-it", name:"IT-студия", niche:"разработка", status:"soon"},
+  {cat:"corp", slug:"corp-logistics", name:"Логистика", niche:"грузоперевозки", status:"soon"},
+  {cat:"corp", slug:"corp-dental", name:"Стоматология", niche:"клиника", status:"soon"},
+  {cat:"corp", slug:"corp-arch", name:"Архбюро", niche:"архитектура", status:"soon"},
+  {cat:"shop", slug:"shop-coffee", name:"Кофе", niche:"обжарка", status:"soon"},
+  {cat:"shop", slug:"shop-sneakers", name:"Кроссовки", niche:"стритвир", status:"soon"},
+  {cat:"shop", slug:"shop-ceramics", name:"Керамика", niche:"ручная работа", status:"soon"},
+  {cat:"shop", slug:"shop-plants", name:"Растения", niche:"комнатные растения", status:"soon"},
+  {cat:"shop", slug:"shop-tech", name:"Электроника", niche:"гаджеты", status:"soon"},
+  {cat:"flagship", slug:"promo-3d", name:"Промо с 3D", niche:"запуск продукта", status:"soon"},
+];
+let filter = "all";
+try{ filter = localStorage.getItem("pf-filter") || "all"; }catch(_){}
+
+function render(){
+  const done = WORKS.filter(w=>w.status==="done").length;
+  document.getElementById("counts").innerHTML =
+    `<div><b>${done}</b><span>готово</span></div><div><b>${WORKS.length}</b><span>в плане</span></div><div><b>${CATS.length}</b><span>типа сайтов</span></div>`;
+  document.getElementById("chips").innerHTML =
+    `<button class="chip" data-f="all" aria-pressed="${filter==="all"}">Все<small>${WORKS.length}</small></button>` +
+    CATS.map(c=>`<button class="chip" data-f="${c.id}" aria-pressed="${filter===c.id}">${c.name}<small>${WORKS.filter(w=>w.cat===c.id).length}</small></button>`).join("");
+  document.getElementById("list").innerHTML = CATS.filter(c=>filter==="all"||filter===c.id).map(c=>`
+    <section id="${c.id}"><div class="wrap">
+      <div class="cat-head"><h2>${c.name}</h2><p>${c.about}</p></div>
+      <div class="grid">${WORKS.filter(w=>w.cat===c.id).map(card).join("")}</div>
+    </div></section>`).join("");
+}
+function card(w){
+  const inner = `
+    <div class="frame"><div class="dots"><i></i><i></i><i></i></div>
+      <div class="shot">${w.status==="done" ? `<img src="thumbs/${w.slug}.jpg" alt="Главный экран сайта «${w.name}»" loading="lazy">` : `<span>в работе</span>`}</div></div>
+    <div class="meta"><h3>${w.name}</h3><span class="mono">${w.niche}</span></div>
+    ${w.tags ? `<div class="tags">${w.tags.map(t=>`<span>${t}</span>`).join("")}</div>` : ""}`;
+  return w.status==="done" ? `<a class="work" href="${w.slug}/">${inner}</a>` : `<div class="work soon">${inner}</div>`;
+}
+document.getElementById("chips").addEventListener("click", e=>{
+  const b = e.target.closest("[data-f]"); if(!b) return;
+  filter = b.dataset.f; try{ localStorage.setItem("pf-filter", filter); }catch(_){}
+  render();
+});
+render();
+</script>
+</body>
+</html>
