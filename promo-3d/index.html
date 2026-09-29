@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Меридиан 01 — механические часы</title>
+<meta name="description" content="Меридиан 01: промо-сайт механических часов с 3D-моделью в реальном времени, разбором механизма и конфигуратором. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@300;400;500;600&display=swap">
+<style>
+  :root{
+    --night:#0B1020; --night-2:#131A30; --ivory:#EDE7DA; --ivory-2:#B9B4A9; --gold:#D4A657; --line:rgba(237,231,218,.14);
+    --serif:"Cormorant Garamond",Georgia,serif; --sans:"Montserrat","Helvetica Neue",Arial,sans-serif;
+    --gut:clamp(18px,5vw,72px); --ex:0;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html{scroll-behavior:smooth;color-scheme:dark}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:radial-gradient(ellipse at 70% 20%,#1A2340 0,var(--night) 55%) fixed,var(--night);color:var(--ivory);font:300 16.5px/1.7 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  button,input,select{font:inherit;color:inherit}
+  button{cursor:pointer}
+  :focus-visible{outline:1.5px solid var(--gold);outline-offset:4px}
+  h1,h2,h3{margin:0;font-family:var(--serif);font-weight:500;letter-spacing:-.01em;line-height:1;text-wrap:balance}
+  .label{font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:500}
+
+  #scene{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;touch-action:pan-y;cursor:grab}
+  #scene:active{cursor:grabbing}
+  .veil{position:fixed;inset:0;z-index:5;background:var(--night);display:grid;place-items:center;transition:opacity 1.2s .3s,visibility 1.2s .3s}
+  .veil span{font-family:var(--serif);font-size:clamp(40px,7vw,90px);letter-spacing:.2em;opacity:.8}
+  .ready .veil{opacity:0;visibility:hidden}
+  .no-webgl #scene{display:none}
+  .fallback{display:none}
+  .no-webgl .fallback{display:block;position:fixed;right:var(--gut);top:30%;width:min(40vw,420px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#2C4A86,#0E1A38 70%);box-shadow:0 0 0 14px #B9BCC2,0 40px 80px rgba(0,0,0,.6)}
+
+  .demo{position:relative;z-index:3;background:rgba(0,0,0,.35);color:var(--ivory-2);font-size:12px;text-align:center;padding:8px 16px}
+  .demo a{color:var(--gold)}
+  header.top{position:fixed;left:0;right:0;top:0;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:44px var(--gut) 0;pointer-events:none}
+  header.top > *{pointer-events:auto}
+  .brand{font-family:var(--serif);font-size:24px;letter-spacing:.3em;text-decoration:none}
+  .brand small{font-family:var(--sans);font-size:10px;letter-spacing:.3em;color:var(--gold);margin-left:8px;vertical-align:middle}
+  nav.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:4;display:grid;gap:14px}
+  nav.dots a{width:9px;height:9px;border-radius:50%;border:1px solid var(--ivory-2);display:block;transition:background .3s,transform .3s}
+  nav.dots a.on{background:var(--gold);border-color:var(--gold);transform:scale(1.3)}
+  @media (max-width:760px){nav.dots{display:none}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:52px;padding:0 28px;border:1px solid var(--gold);background:transparent;color:var(--ivory);text-decoration:none;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;transition:background .3s,color .3s}
+  .btn:hover{background:var(--gold);color:var(--night)}
+  .btn.fill{background:var(--gold);color:var(--night)}
+  .btn.fill:hover{background:#E6BC70}
+
+  main{position:relative;z-index:2}
+  .sec{min-height:100vh;display:flex;align-items:center;padding:120px var(--gut) 80px;pointer-events:none}
+  .sec > *{pointer-events:auto}
+  .sec.right{justify-content:flex-end}
+  .copy{max-width:470px}
+  .copy p{color:var(--ivory-2);font-size:17px;margin:22px 0 0}
+  @media (max-width:760px){.sec{align-items:flex-end;min-height:115vh}.copy{background:linear-gradient(transparent,rgba(11,16,32,.92) 18%);padding-top:40px}}
+
+  .hero h1{font-size:clamp(56px,7.6vw,120px);margin:18px 0 6px}
+  .hero h1 i{color:var(--gold)}
+  .hero .sub{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.4vw,32px);color:var(--ivory-2)}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+  .scroll-hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-size:11px;letter-spacing:.3em;color:var(--ivory-2);display:grid;justify-items:center;gap:10px}
+  .scroll-hint::after{content:"";width:1px;height:46px;background:linear-gradient(var(--gold),transparent);animation:drip 2s infinite}
+  @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  .facts{display:grid;grid-template-columns:repeat(3,auto);gap:10px 34px;justify-content:start;margin-top:30px}
+  .facts b{display:block;font-family:var(--serif);font-size:40px;font-weight:500;color:var(--ivory);line-height:1}
+  .facts span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-2)}
+  .sec h2{font-size:clamp(44px,5.6vw,84px);margin-top:16px}
+
+  /* подписи слоёв при разборе */
+  .layer-label{position:fixed;left:0;top:0;z-index:3;pointer-events:none;opacity:calc(var(--ex)*1.4 - .3);white-space:nowrap;font-size:12.5px;letter-spacing:.08em;display:flex;align-items:center;gap:10px;margin-top:-10px}
+  .layer-label::before{content:"";width:46px;height:1px;background:var(--gold)}
+  .layer-label b{font-weight:500;color:var(--ivory)}
+  .layer-label span{color:var(--ivory-2)}
+  @media (max-width:760px){.layer-label{display:none}}
+  .explode .copy{align-self:flex-start}
+  .explode-list{display:none}
+  @media (max-width:760px){.explode-list{display:grid;gap:6px;margin-top:18px;font-size:14px;color:var(--ivory-2)}}
+
+  /* конфигуратор */
+  .panel{width:min(440px,100%);background:rgba(19,26,48,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);padding:28px;display:grid;gap:22px}
+  .panel h2{font-size:48px;margin:0}
+  .grp h3{font-family:var(--sans);font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:500;color:var(--ivory-2);margin-bottom:12px}
+  .sw{display:flex;gap:10px;flex-wrap:wrap}
+  .sw button{display:grid;justify-items:center;gap:7px;background:none;border:0;font-size:12.5px;color:var(--ivory-2);padding:0}
+  .sw i{width:42px;height:42px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);transition:transform .2s}
+  .sw button[aria-pressed="true"]{color:var(--ivory)}
+  .sw button[aria-pressed="true"] i{box-shadow:0 0 0 2px var(--night),0 0 0 3px var(--gold)}
+  .sw button:hover i{transform:scale(1.08)}
+  .price{display:flex;justify-content:space-between;align-items:end;border-top:1px solid var(--line);padding-top:18px}
+  .price b{font-family:var(--serif);font-size:44px;font-weight:500;line-height:1}
+  .price span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-2)}
+  .drag{font-size:12.5px;color:var(--ivory-2);display:flex;gap:10px;align-items:center}
+  .drag::before{content:"⟲";color:var(--gold);font-size:18px}
+
+  /* характеристики и предзаказ */
+  .specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line);margin-top:32px}
+  .specs div{padding:16px 16px 16px 0;border-bottom:1px solid var(--line)}
+  .specs span{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ivory-2)}
+  .specs b{font-family:var(--serif);font-weight:500;font-size:24px}
+  form{display:grid;gap:14px;margin-top:28px}
+  .f{display:grid;gap:4px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ivory-2)}
+  .f input{background:transparent;border:0;border-bottom:1px solid var(--line);padding:10px 0;font-size:17px;letter-spacing:0;text-transform:none;color:var(--ivory);border-radius:0}
+  .f input:focus{outline:none;border-bottom-color:var(--gold)}
+  .ok{border-left:1px solid var(--gold);padding:8px 14px;color:var(--ivory-2);font-size:15px}
+  .counter{font-family:var(--serif);font-size:18px;color:var(--ivory-2);margin-top:14px}
+  .counter b{color:var(--gold);font-weight:600}
+  footer.site{position:relative;z-index:2;padding:40px var(--gut);border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ivory-2);background:var(--night)}
+</style>
+</head>
+<body>
+<canvas id="scene" aria-label="3D-модель часов Меридиан 01. Можно вращать мышью или пальцем." role="img"></canvas>
+<div class="fallback" aria-hidden="true"></div>
+<div class="veil" aria-hidden="true"><span>МЕРИДИАН</span></div>
+<div class="demo">Демо-сайт из портфолио · бренд и часы вымышленные, модель построена в Three.js · <a href="../">← все работы</a></div>
+<header class="top">
+  <a class="brand" href="#s0">МЕРИДИАН<small>01</small></a>
+  <a class="btn" href="#s4">Предзаказ</a>
+</header>
+<nav class="dots" aria-label="Разделы">
+  <a href="#s0" aria-label="Начало"></a><a href="#s1" aria-label="Механизм"></a><a href="#s2" aria-label="Разбор"></a><a href="#s3" aria-label="Конфигуратор"></a><a href="#s4" aria-label="Предзаказ"></a>
+</nav>
+
+<span class="layer-label" data-layer="crystal"><b>Сапфировое стекло</b><span>9 по Моосу, двойной антиблик</span></span>
+<span class="layer-label" data-layer="hands"><b>Стрелки</b><span>люминесцентное покрытие</span></span>
+<span class="layer-label" data-layer="dial"><b>Циферблат</b><span>гильоше «солнечные лучи»</span></span>
+<span class="layer-label" data-layer="movement"><b>Калибр М-25</b><span>25 камней, 28 800 пк/ч</span></span>
+<span class="layer-label" data-layer="rotor"><b>Ротор</b><span>автоподзавод в обе стороны</span></span>
+<span class="layer-label" data-layer="caseback"><b>Задняя крышка</b><span>сапфировое окно</span></span>
+
+<main>
+  <section class="sec hero" id="s0" data-key="0">
+    <div class="copy">
+      <span class="label">Механические часы · 2026</span>
+      <h1>Меридиан <i>01</i></h1>
+      <div class="sub">Время, которое можно разобрать до винтика</div>
+      <p>Автоматический калибр собственной сборки, корпус 40 мм и сапфир с двух сторон. Модель справа идёт по вашему времени — прямо сейчас.</p>
+      <div class="cta"><a class="btn fill" href="#s3">Собрать свои</a><a class="btn" href="#s1">Смотреть механизм</a></div>
+    </div>
+    <div class="scroll-hint">ЛИСТАЙТЕ</div>
+  </section>
+
+  <section class="sec right" id="s1" data-key="1">
+    <div class="copy">
+      <span class="label">Калибр М-25</span>
+      <h2>Сердце, которое видно</h2>
+      <p>Переверните часы: через сапфировое окно видно, как колеблется баланс — четыре раза в секунду — и как ротор подзаводит пружину от каждого движения руки.</p>
+      <div class="facts"><div><b>72 ч</b><span>запас хода</span></div><div><b>25</b><span>камней</span></div><div><b>±6 с</b><span>в сутки</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec explode" id="s2" data-key="2">
+    <div class="copy">
+      <span class="label">Анатомия</span>
+      <h2>Шесть слоёв</h2>
+      <p>158 деталей, из них 40 обработаны вручную. Каждый слой можно заменить при сервисе — часы рассчитаны на поколения.</p>
+      <div class="explode-list"><span>Сапфировое стекло</span><span>Стрелки с люминофором</span><span>Циферблат гильоше</span><span>Калибр М-25, 25 камней</span><span>Ротор автоподзавода</span><span>Задняя крышка с окном</span></div>
+    </div>
+  </section>
+
+  <section class="sec right" id="s3" data-key="3">
+    <div class="panel">
+      <span class="label">Конфигуратор</span>
+      <h2>Ваши Меридиан</h2>
+      <div class="grp"><h3>Корпус</h3><div class="sw" id="oCase"></div></div>
+      <div class="grp"><h3>Циферблат</h3><div class="sw" id="oDial"></div></div>
+      <div class="grp"><h3>Ремешок</h3><div class="sw" id="oStrap"></div></div>
+      <span class="drag">Потяните часы, чтобы повернуть</span>
+      <div class="price"><div><span>Стоимость</span><br><b id="price"></b></div><a class="btn fill" href="#s4">Предзаказ</a></div>
+    </div>
+  </section>
+
+  <section class="sec" id="s4" data-key="4">
+    <div class="copy">
+      <span class="label">Первая серия · 300 экземпляров</span>
+      <h2>Предзаказ</h2>
+      <div class="specs">
+        <div><span>Корпус</span><b>40 × 11,8 мм</b></div><div><span>Водозащита</span><b>100 м</b></div>
+        <div><span>Калибр</span><b>М-25, автомат</b></div><div><span>Частота</span><b>4 Гц</b></div>
+        <div><span>Стекло</span><b>сапфир с антибликом</b></div><div><span>Гарантия</span><b>5 лет</b></div>
+      </div>
+      <form id="form" novalidate>
+        <p style="margin:0;color:var(--ivory-2)" id="summary"></p>
+        <label class="f" for="n">Имя<input id="n" autocomplete="name"></label>
+        <label class="f" for="e">E-mail<input id="e" type="email" autocomplete="email"></label>
+        <button class="btn fill" type="submit" style="justify-self:start">Забронировать номер</button>
+        <div class="ok" id="ok" hidden></div>
+      </form>
+      <div class="counter">Забронировано <b>217</b> из 300</div>
+    </div>
+  </section>
+</main>
+<footer class="site"><span>«Меридиан» — вымышленный бренд. Демо-сайт для портфолио: 3D-модель построена кодом на Three.js, без готовых файлов.</span><span>© 2026</span></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="watch.js"></script>
+<script>
+const OPTS = {
+  case:[["steel","Сталь","linear-gradient(135deg,#F2F3F5,#9CA0A8)",0],["gold","Золото 585","linear-gradient(135deg,#F5D79A,#B3843A)",38000],["black","Чёрный DLC","linear-gradient(135deg,#55575D,#141517)",9000]],
+  dial:[["blue","Синий","#1E3A6B",0],["ivory","Слоновая кость","#EDE7DA",0],["green","Зелёный","#1F4A3A",0],["salmon","Лосось","#E3A48F",4000]],
+  strap:[["brown","Кожа, коньяк","#6B4028",0],["black","Кожа, чёрный","#18191B",0],["navy","Замша, синий","#1E2A44",0],["steel","Браслет","linear-gradient(135deg,#F2F3F5,#9CA0A8)",14000]],
+};
+const BASE = 89000;
+const cfg = {case:"steel", dial:"blue", strap:"brown"};
+const rub = n => n.toLocaleString("ru-RU").replace(/ /g," ") + " ₽";
+function renderCfg(){
+  [["case","oCase"],["dial","oDial"],["strap","oStrap"]].forEach(([k,id])=>{
+    document.getElementById(id).innerHTML = OPTS[k].map(([v,n,c,p])=>`<button data-k="${k}" data-v="${v}" aria-pressed="${cfg[k]===v}"><i style="background:${c}"></i>${n}${p?`<small style="color:var(--gold)">+${(p/1000)} тыс.</small>`:""}</button>`).join("");
+  });
+  const total = BASE + ["case","dial","strap"].reduce((a,k)=>a + OPTS[k].find(o=>o[0]===cfg[k])[3], 0);
+  document.getElementById("price").textContent = rub(total);
+  document.getElementById("summary").textContent = `Ваша конфигурация: ${OPTS.case.find(o=>o[0]===cfg.case)[1].toLowerCase()}, ${OPTS.dial.find(o=>o[0]===cfg.dial)[1].toLowerCase()} циферблат, ${OPTS.strap.find(o=>o[0]===cfg.strap)[1].toLowerCase()} — ${rub(total)}. Предоплата 10%.`;
+  window.MERIDIAN && MERIDIAN.apply(cfg);
+}
+document.querySelector(".panel").addEventListener("click", e=>{ const b = e.target.closest("[data-k]"); if(!b) return; cfg[b.dataset.k] = b.dataset.v; renderCfg(); });
+renderCfg();
+// активная точка навигации
+const dots = [...document.querySelectorAll("nav.dots a")];
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const i = +e.target.dataset.key; dots.forEach((d,k)=>d.classList.toggle("on", k===i)); } }), {threshold:.5});
+document.querySelectorAll("[data-key]").forEach(s=>io.observe(s));
+document.getElementById("form").addEventListener("submit", e=>{
+  e.preventDefault(); const ok = document.getElementById("ok"); ok.hidden = false;
+  const n = document.getElementById("n").value.trim(), m = document.getElementById("e").value.trim();
+  ok.textContent = (!n || !/.+@.+\..+/.test(m)) ? "Укажите имя и корректный e-mail — пришлём номер экземпляра." : `${n}, за вами экземпляр №218 из 300. Это демо-сайт: бронь не создана, письмо не придёт.`;
+});
+// без WebGL всё равно показываем страницу
+setTimeout(()=>document.body.classList.add("ready"), 2500);
+</script>
+</body>
+</html>
