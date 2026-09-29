@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Врачи и запись — Эмаль</title>
+<meta name="description" content="Врачи клиники «Эмаль» и свободное время для записи. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+  .chips button{border:1.5px solid var(--line);background:var(--white);border-radius:999px;padding:8px 16px;font-weight:600;font-size:15.5px}
+  .chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}
+  @media (max-width:1100px){.layout{grid-template-columns:1fr}}
+  .layout .docs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  @media (max-width:640px){.layout .docs{grid-template-columns:1fr}}
+  .book{position:sticky;top:96px;background:var(--white);border-radius:var(--r);padding:24px;display:grid;gap:14px}
+  @media (max-width:1100px){.book{position:static}}
+  .book h2{font-size:28px}
+  .pick{background:var(--teal-soft);border-radius:14px;padding:12px 14px;font-size:15.5px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap"><div class="box">
+    <div class="crumbs"><a href="index.html">Клиника</a> / Врачи</div>
+    <h1>Врачи и запись</h1>
+    <p>Выберите врача и свободное время — справа сразу появится форма записи. Администратор подтвердит визит звонком.</p>
+  </div></div></div>
+  <section style="padding-top:12px">
+    <div class="wrap">
+      <div class="chips" id="chips" role="group" aria-label="Специализация"></div>
+      <div class="layout">
+        <div class="docs" id="docs"></div>
+        <aside class="book" id="book">
+          <h2>Запись</h2>
+          <div class="pick" id="pick">Выберите время у врача слева.</div>
+          <form class="form" data-demo novalidate>
+            <input type="hidden" name="slot" id="slot">
+            <label class="f" for="bn">Имя<input id="bn" autocomplete="name" required></label>
+            <label class="f" for="bp">Телефон<input id="bp" type="tel" autocomplete="tel" required></label>
+            <label class="f" for="bc">Что беспокоит<textarea id="bc" placeholder="Необязательно"></textarea></label>
+            <button class="btn" type="submit">Записаться</button>
+            <div class="ok" hidden></div>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+let spec = "all", sel = null;
+function render(){
+  document.getElementById("chips").innerHTML = [["all","Все врачи"],...Object.entries(SPECS)].map(([k,v])=>`<button data-s="${k}" aria-pressed="${spec===k}">${v}</button>`).join("");
+  document.getElementById("docs").innerHTML = DOCTORS.filter(d=>spec==="all"||d.spec===spec).map(d=>doctorCard(d,true)).join("");
+  if(sel) document.querySelectorAll(`[data-slot]`).forEach(b=>b.setAttribute("aria-pressed", b.dataset.doc===sel.doc && b.dataset.slot===sel.slot));
+}
+document.getElementById("chips").addEventListener("click", e=>{ const b = e.target.closest("[data-s]"); if(!b) return; spec = b.dataset.s; render(); });
+document.getElementById("docs").addEventListener("click", e=>{
+  const b = e.target.closest("[data-slot]"); if(!b) return;
+  sel = {doc:b.dataset.doc, slot:b.dataset.slot}; render();
+  const d = DOCTORS.find(x=>x.name===sel.doc);
+  document.getElementById("pick").innerHTML = `<b>${sel.doc}</b>, ${SPECS[d.spec].toLowerCase()}<br>${sel.slot}`;
+  document.getElementById("slot").value = `${sel.slot} к врачу ${sel.doc}`;
+  if(innerWidth < 1100) document.getElementById("book").scrollIntoView({behavior:"smooth"});
+});
+render();
+</script>
+</body>
+</html>
