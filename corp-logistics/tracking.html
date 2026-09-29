@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Отследить груз — Магистраль</title>
+<meta name="description" content="Отслеживание груза по номеру накладной. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500;700;800&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .search{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;max-width:620px}
+  .search input{flex:1;min-width:220px;height:56px;border:0;border-radius:8px;background:#fff;color:var(--asphalt);padding:0 16px;font-family:var(--mono);font-size:19px;text-transform:uppercase}
+  .hint{margin-top:10px;color:#8B919A;font-size:14px}
+  .hint button{background:none;border:0;color:var(--mark);text-decoration:underline;padding:0;font-family:var(--mono)}
+  .result{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,48px)}
+  @media (max-width:900px){.result{grid-template-columns:1fr}}
+  .card{background:var(--white);border-radius:14px;padding:clamp(20px,3vw,32px)}
+  .status{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:start;margin-bottom:22px}
+  .status h2{font-size:clamp(28px,3vw,40px)}
+  .pill{display:inline-block;border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;background:#E4ECF9;color:var(--sign)}
+  .pill.done{background:#DDF1E6;color:var(--sign-green)}
+  .meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;border-top:1px solid var(--line);padding-top:16px}
+  @media (max-width:560px){.meta{grid-template-columns:1fr 1fr}}
+  .meta span{display:block;font-size:13px;color:var(--muted)}
+  .meta b{font-family:var(--display);font-size:19px}
+  .road{margin:22px 0 6px}
+  .road svg{width:100%;height:auto}
+  .tl{list-style:none;margin:0;padding:0;display:grid}
+  .tl li{display:grid;grid-template-columns:22px 1fr auto;gap:14px;padding-bottom:18px;position:relative}
+  .tl li::before{content:"";width:14px;height:14px;border-radius:50%;margin-top:4px;background:var(--line);box-shadow:0 0 0 4px var(--white)}
+  .tl li::after{content:"";position:absolute;left:6px;top:20px;bottom:-2px;width:2px;background:var(--line)}
+  .tl li:last-child::after{display:none}
+  .tl li.done::before{background:var(--sign)}
+  .tl li.done::after{background:var(--sign)}
+  .tl li.now::before{background:var(--mark);box-shadow:0 0 0 4px var(--white),0 0 0 7px rgba(242,194,48,.4)}
+  .tl b{display:block}
+  .tl span{color:var(--ink-2);font-size:15px}
+  .tl time{font-family:var(--mono);font-size:13px;color:var(--muted);white-space:nowrap}
+  .err{background:#FCE8E6;border-radius:8px;padding:14px 16px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap">
+    <div class="crumbs"><a href="index.html">Главная</a> / Отследить груз</div>
+    <h1>Где мой груз</h1>
+    <form class="search" id="search">
+      <input id="num" aria-label="Номер накладной" placeholder="MG-000000" autocomplete="off">
+      <button class="btn y" type="submit">Найти</button>
+    </form>
+    <p class="hint">Номер вида MG-240517 приходит в SMS после отправки. Для примера: <button type="button" data-n="MG-240517">MG-240517</button> · <button type="button" data-n="MG-118830">MG-118830</button></p>
+  </div><div class="dash"></div></div>
+  <section>
+    <div class="wrap" id="out"></div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+// Демо: маршрут и статусы детерминированно выводятся из номера накладной
+function hash(s){ let h = 7; for(const c of s) h = (h*31 + c.charCodeAt(0)) >>> 0; return h; }
+const NAMES = Object.keys(CITIES);
+const VIA = {"Москва→Казань":["Владимир","Нижний Новгород","Чебоксары"],"Москва→Санкт-Петербург":["Тверь","Великий Новгород"],"Москва→Краснодар":["Воронеж","Ростов-на-Дону"]};
+function track(n){
+  const h = hash(n), from = "Москва", to = NAMES[1 + h % (NAMES.length-1)];
+  const km = roadKm(from, to);
+  const via = VIA[`${from}→${to}`] || ["Транзитный терминал"];
+  const progress = n==="MG-118830" ? 1 : (h % 70 + 20) / 100;
+  const start = new Date(); start.setHours(9,0,0,0); start.setDate(start.getDate() - Math.ceil(km/750*progress));
+  const total = Math.max(1, Math.ceil(km/750));
+  const at = d => { const t = new Date(start); t.setHours(t.getHours() + d); return t.toLocaleString("ru-RU",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}); };
+  const steps = [
+    ["Груз принят на склад", `${from}, терминал «Север»`, 0],
+    ["Погружен, машина выехала", "Фура · гос. номер А 000 АА 00", 3],
+    ...via.map((c,i)=>[`В пути: ${c}`, "Плановая стоянка по тахографу", 3 + (i+1)*total*24/(via.length+1)]),
+    ["Прибыл на терминал", `${to}`, total*24 + 2],
+    ["Доставлен получателю", "Подпись получена, фото накладной в кабинете", total*24 + 8],
+  ];
+  const nowIdx = Math.min(steps.length - 1, Math.floor(progress * (steps.length - 1)));
+  return {from, to, km, progress, steps, nowIdx, at, eta: at(total*24 + 8), done: progress >= 1};
+}
+function render(n){
+  n = n.trim().toUpperCase();
+  const out = document.getElementById("out");
+  if(!/^MG-\d{6}$/.test(n)){ out.innerHTML = `<div class="err">Номер должен быть вида MG-123456. Проверьте SMS или напишите диспетчеру: 8 800 000-00-00.</div>`; return; }
+  const t = track(n), p = t.done ? 1 : t.progress;
+  out.innerHTML = `<div class="result">
+    <div class="card">
+      <div class="status"><div><span class="mono" style="color:var(--muted)">${n}</span><h2>${t.from} → ${t.to}</h2></div>
+        <span class="pill ${t.done?"done":""}">${t.done ? "Доставлен" : "В пути"}</span></div>
+      <div class="road"><svg viewBox="0 0 600 70" role="img" aria-label="Пройдено ${Math.round(p*100)}% пути">
+        <line x1="20" y1="35" x2="580" y2="35" stroke="#DADDE2" stroke-width="10" stroke-linecap="round"/>
+        <line x1="20" y1="35" x2="${20+560*p}" y2="35" stroke="#1653B6" stroke-width="10" stroke-linecap="round"/>
+        <line x1="20" y1="35" x2="580" y2="35" stroke="#fff" stroke-width="2" stroke-dasharray="12 10"/>
+        <circle cx="20" cy="35" r="9" fill="#1653B6"/><circle cx="580" cy="35" r="9" fill="${t.done?"#157A4A":"#DADDE2"}"/>
+        <g transform="translate(${20+560*p-16},12)"><rect width="32" height="22" rx="4" fill="#F2C230" stroke="#1B1F24" stroke-width="2"/></g>
+        <text x="20" y="66" font-family="PT Sans" font-size="13" fill="#555C66">${t.from}</text><text x="580" y="66" text-anchor="end" font-family="PT Sans" font-size="13" fill="#555C66">${t.to}</text>
+      </svg></div>
+      <div class="meta"><div><span>Расстояние</span><b>${t.km.toLocaleString("ru-RU")} км</b></div><div><span>Пройдено</span><b>${Math.round(p*100)}%</b></div><div><span>${t.done?"Доставлен":"Прибытие"}</span><b>${t.eta}</b></div></div>
+    </div>
+    <div class="card"><ol class="tl">${t.steps.map(([h,s,d],i)=>`<li class="${i<t.nowIdx||t.done?"done":i===t.nowIdx?"now":""}"><div><b>${h}</b><span>${s}</span></div><time>${i<=t.nowIdx||t.done?t.at(d):"план"}</time></li>`).join("")}</ol></div>
+  </div>`;
+}
+const num = document.getElementById("num");
+num.value = new URLSearchParams(location.search).get("n") || "MG-240517";
+document.getElementById("search").addEventListener("submit", e=>{ e.preventDefault(); render(num.value); });
+document.querySelector(".hint").addEventListener("click", e=>{ const b = e.target.closest("[data-n]"); if(!b) return; num.value = b.dataset.n; render(num.value); });
+render(num.value);
+</script>
+</body>
+</html>

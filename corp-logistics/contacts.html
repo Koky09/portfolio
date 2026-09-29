@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Контакты — Магистраль</title>
+<meta name="description" content="Филиалы и терминалы «Магистрали» в 12 городах, заявка на перевозку. Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500;700;800&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,4vw,56px);align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--white);border-radius:14px;padding:clamp(20px,3vw,32px);scroll-margin-top:90px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:520px){.row2{grid-template-columns:1fr}}
+  .map svg{width:100%;height:auto;display:block}
+  .map{background:var(--asphalt);border-radius:14px;padding:12px;margin-bottom:18px}
+  .cities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+  @media (max-width:520px){.cities{grid-template-columns:1fr}}
+  .city{padding:12px 0;border-bottom:1px solid var(--line);display:grid;gap:2px;background:none;border-left:0;border-right:0;border-top:0;text-align:left}
+  .city b{font-family:var(--display);font-size:18px}
+  .city span{color:var(--ink-2);font-size:14.5px}
+  .city[aria-pressed="true"] b{color:var(--sign)}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap">
+    <div class="crumbs"><a href="index.html">Главная</a> / Контакты</div>
+    <h1>Контакты</h1>
+    <p>Диспетчерская работает круглосуточно. Терминалы принимают грузы с 8:00 до 20:00.</p>
+  </div><div class="dash"></div></div>
+  <section>
+    <div class="wrap grid">
+      <div class="card" id="form">
+        <h2 style="font-size:clamp(28px,3vw,38px);margin-bottom:18px">Заявка на перевозку</h2>
+        <form class="form" data-demo novalidate>
+          <div class="row2"><label class="f" for="n">Имя<input id="n" autocomplete="name" required></label><label class="f" for="p">Телефон<input id="p" type="tel" autocomplete="tel" required></label></div>
+          <div class="row2"><label class="f" for="fr">Откуда<input id="fr" placeholder="Город"></label><label class="f" for="t">Куда<input id="t" placeholder="Город"></label></div>
+          <label class="f" for="c">Что везём<textarea id="c" placeholder="Например: 6 паллет бытовой химии, 4,2 т, нужна гидроборт"></textarea></label>
+          <button class="btn" type="submit" style="justify-self:start">Отправить заявку</button>
+          <div class="ok" hidden></div>
+        </form>
+      </div>
+      <div>
+        <div class="map" role="img" aria-label="Схема филиалов на карте России"><svg id="map" viewBox="0 0 600 300"></svg></div>
+        <div class="cities" id="cities"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const PHONES = n => `+7 900 ${String(100 + n*37).slice(0,3)}-${String(10+n*7).slice(0,2)}-${String(20+n*3).slice(0,2)}`;
+let cur = "Москва";
+function proj([la, lo]){ return [ (lo - 28) / (86 - 28) * 560 + 20, (61 - la) / (61 - 43) * 250 + 25 ]; }
+function render(){
+  const names = Object.keys(CITIES);
+  const [mx, my] = proj(CITIES["Москва"]);
+  document.getElementById("map").innerHTML =
+    names.filter(n=>n!=="Москва").map(n=>{ const [x,y] = proj(CITIES[n]); return `<line x1="${mx}" y1="${my}" x2="${x}" y2="${y}" stroke="${n===cur?"#F2C230":"#3A404A"}" stroke-width="${n===cur?3:1.5}" stroke-dasharray="${n===cur?"":"4 4"}"/>`; }).join("")
+    + names.map(n=>{ const [x,y] = proj(CITIES[n]); const on = n===cur; return `<g><circle cx="${x}" cy="${y}" r="${on?8:5}" fill="${on?"#F2C230":"#1653B6"}" stroke="#fff" stroke-width="2"/><text x="${x+10}" y="${y+4}" font-family="PT Sans" font-size="${on?14:11}" fill="${on?"#fff":"#A7ADB5"}">${n}</text></g>`; }).join("");
+  document.getElementById("cities").innerHTML = names.map((n,i)=>`<button class="city" data-c="${n}" aria-pressed="${n===cur}"><b>${n}</b><span>Терминал · ${PHONES(i)}</span></button>`).join("");
+}
+document.getElementById("cities").addEventListener("click", e=>{ const b = e.target.closest("[data-c]"); if(!b) return; cur = b.dataset.c; render(); });
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Услуги и автопарк — Магистраль</title>
+<meta name="description" content="Отдельные машины, сборные грузы, рефрижераторы и склад. Автопарк «Магистрали». Демо-сайт для портфолио.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500;700;800&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  .toc{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+  .toc a{text-decoration:none}
+  .toc .sign .in{padding:6px 14px;font-family:var(--display);font-weight:700}
+  .svc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(40px,5vw,64px);border-bottom:1px solid var(--line);scroll-margin-top:90px}
+  .svc:nth-of-type(even) img{order:2}
+  @media (max-width:900px){.svc{grid-template-columns:1fr}.svc:nth-of-type(even) img{order:0}}
+  .svc img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px}
+  .svc h2{font-size:clamp(30px,3.6vw,46px);margin-bottom:12px}
+  .svc p{color:var(--ink-2);margin:0 0 16px}
+  .svc ul{margin:0 0 20px;padding:0;list-style:none;display:grid;gap:8px}
+  .svc li{display:grid;grid-template-columns:22px 1fr;gap:8px}
+  .svc li::before{content:"";width:14px;height:14px;margin-top:5px;background:var(--sign);border-radius:3px;box-shadow:inset 0 0 0 2px var(--sign),inset 0 0 0 4px #fff}
+  .price-tag{display:inline-flex;gap:10px;align-items:baseline;background:var(--white);border:2px solid var(--line);border-radius:8px;padding:8px 14px;font-family:var(--display);font-weight:700;font-size:22px}
+  .price-tag small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted)}
+  .table-wrap{overflow-x:auto;background:var(--white);border-radius:14px}
+  table{width:100%;border-collapse:collapse;min-width:720px;font-size:16px}
+  th,td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--line)}
+  th{font-family:var(--display);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-2);background:var(--bg)}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:0}
+  td b{font-family:var(--display);font-size:18px}
+</style>
+</head>
+<body>
+<div id="header"></div>
+<main>
+  <div class="page-head"><div class="wrap">
+    <div class="crumbs"><a href="index.html">Главная</a> / Услуги и автопарк</div>
+    <h1>Услуги и автопарк</h1>
+    <p>Все машины наши: не перепродаём заказы посредникам. Водители в штате, каждый рейс застрахован.</p>
+    <nav class="toc" aria-label="Услуги">
+      <a class="sign" href="#ftl"><div class="in">Отдельная машина</div></a>
+      <a class="sign" href="#ltl"><div class="in">Сборный груз</div></a>
+      <a class="sign" href="#reefer"><div class="in">Рефрижератор</div></a>
+      <a class="sign green" href="#wh"><div class="in">Склад</div></a>
+    </nav>
+  </div><div class="dash"></div></div>
+
+  <div class="wrap">
+    <article class="svc" id="ftl">
+      <img src="img/ftl.jpg" alt="Фура на трассе" loading="lazy">
+      <div><h2>Отдельная машина</h2>
+        <p>Машина едет только с вашим грузом, от двери до двери. Подходит для партий от 1 тонны или хрупкого товара.</p>
+        <ul><li>Подача машины в Москве — за 3 часа</li><li>GPS-трекинг и фото погрузки в личном кабинете</li><li>Страхование на полную стоимость груза</li></ul>
+        <span class="price-tag">от 38 ₽ <small>за км, Газель</small></span></div>
+    </article>
+    <article class="svc" id="ltl">
+      <img src="img/ltl.jpg" alt="Фургон, загруженный коробками" loading="lazy">
+      <div><h2>Сборный груз</h2>
+        <p>Ваш груз едет вместе с другими на регулярном рейсе. Выгодно, если груз меньше половины машины.</p>
+        <ul><li>Отправки по расписанию, 5 дней в неделю</li><li>Приём от 1 коробки</li><li>Забор от двери и доставка до двери за доплату</li></ul>
+        <span class="price-tag">от 3 500 ₽ <small>за отправку</small></span></div>
+    </article>
+    <article class="svc" id="reefer">
+      <img src="img/reefer.jpg" alt="Белый рефрижератор у склада" loading="lazy">
+      <div><h2>Рефрижератор</h2>
+        <p>Продукты, лекарства, цветы. Держим заданную температуру и выдаём распечатку термописца.</p>
+        <ul><li>Режимы от −20 до +20 °C</li><li>Санобработка кузова перед каждым рейсом</li><li>Сопровождение ветеринарных документов</li></ul>
+        <span class="price-tag">от 49 ₽ <small>за км</small></span></div>
+    </article>
+    <article class="svc" id="wh">
+      <img src="img/fork.jpg" alt="Погрузчик на складе" loading="lazy">
+      <div><h2>Склад</h2>
+        <p>Склад класса А на 18 000 м² у ЦКАД. Храним, комплектуем и отгружаем заказы маркетплейсов.</p>
+        <ul><li>WMS с доступом клиента онлайн</li><li>Отгрузка на склады Ozon и Wildberries по графику</li><li>Круглосуточная охрана и видеонаблюдение</li></ul>
+        <span class="price-tag">от 35 ₽ <small>за паллету в сутки</small></span></div>
+    </article>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="head"><h2>Автопарк</h2><p>Средний возраст машин — 3,2 года. Все с тахографами и GPS.</p></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Машина</th><th>Грузоподъёмность</th><th>Объём кузова</th><th>Длина кузова</th><th>В парке</th><th>Тариф</th></tr></thead>
+          <tbody id="fleet"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer"></div>
+<script src="app.js"></script>
+<script>
+const COUNT = {g:84, m:62, l:41, f:53};
+document.getElementById("fleet").innerHTML = TRUCKS.map(t=>`<tr><td><b>${t.name}</b></td><td class="num">${t.t} т</td><td class="num">${t.m3} м³</td><td class="num">${t.len} м</td><td class="num">${COUNT[t.id]}</td><td class="num">${t.rate} ₽/км</td></tr>`).join("");
+</script>
+</body>
+</html>
